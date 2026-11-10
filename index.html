@@ -2252,10 +2252,10 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
 const openGroups=new Set(); // 已展开的小类
 const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 function render(){
-  const list=q?searchAll(q)
+  const list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(hasPromo)
     :zone==="new"?PRODUCTS.filter(isNew)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)));
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>(a.oos?1:0)-(b.oos?1:0)); /* 售罄排到最后 */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
   const grouped=!q&&cat==="all"&&zone!=="sale"&&zone!=="new";
