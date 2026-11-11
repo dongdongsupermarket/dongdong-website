@@ -374,6 +374,18 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .zrow .add,.zrow .step{width:auto;flex:1}
 .zclose{justify-self:end}
 
+/* deals strip — separate from the info carousel */
+.deals{background:var(--sign);border-bottom:2px solid var(--gold)}
+.deals .wrap{padding-block:12px 14px}
+.dbox{background:var(--surface);border:1px solid var(--red);border-radius:8px;padding:12px 14px;display:grid;gap:10px;min-width:0}
+.dhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.dhead .peye{background:var(--red);color:#fff8ec}
+.dhead h2{margin:0;font-family:var(--cn-display);font-size:clamp(18px,2.6vw,24px);color:var(--red);line-height:1.2}
+.dhead .pbtn{margin-left:auto;background:var(--red);color:#fff8ec;padding:6px 12px;font-size:13px}
+.dstrip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:2px;min-width:0}
+.dstrip::-webkit-scrollbar{display:none}
+.dstrip .pit{scroll-snap-align:start}
+.dstrip .pit .pp{color:var(--red)}
 /* promo carousel */
 .promo{background:var(--sign);border-bottom:2px solid var(--gold)}
 .promo .wrap{padding-block:18px 14px}
@@ -462,6 +474,13 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
     <div class="pv" id="pv"><div class="ptrack" id="ptrack"></div></div>
     <div class="pctrl"><button type="button" class="arrow" id="pprev" aria-label="上一页 Previous">‹</button><div class="dots" id="pdots"></div><button type="button" class="arrow" id="pnext" aria-label="下一页 Next">›</button></div>
   </div>
+</section>
+
+<section class="deals" id="deals" aria-label="特价 Deals" hidden>
+  <div class="wrap"><div class="dbox">
+    <div class="dhead"><span class="peye"><span class="lz">特价</span> <span class="le">SALE</span></span><h2 id="dtitle"></h2><button type="button" class="pbtn" data-go="sale"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
+    <div class="dstrip" id="dstrip"></div>
+  </div></div>
 </section>
 
 <section class="hero">
@@ -2051,7 +2070,7 @@ const liveZones=[...(PRODUCTS.some(hasPromo)?[{id:"sale",zh:"特价",en:"Special
 const BUNDLES={};const IMGS={};const loading={};
 function src(p){const b=Object.keys(BUNDLES).find(k=>p.startsWith(k));if(!b)return p;
   if(IMGS[p])return IMGS[p];
-  if(!loading[b]){loading[b]=fetch(BUNDLES[b]).then(r=>r.json()).then(m=>{Object.assign(IMGS,m);render();if(typeof renderPromo==="function")renderPromo();if(!document.getElementById("zoom").hidden)renderZoom();}).catch(()=>{loading[b]=null;});}
+  if(!loading[b]){loading[b]=fetch(BUNDLES[b]).then(r=>r.json()).then(m=>{Object.assign(IMGS,m);render();if(typeof renderPromo==="function")renderPromo();if(typeof renderDeals==="function")renderDeals();if(!document.getElementById("zoom").hidden)renderZoom();}).catch(()=>{loading[b]=null;});}
   return "data:image/gif;base64,R0lGODlhAQABAAAAACw=";}
 // 打开网站时默认显示的分区
 const DEFAULT_ZONE="grocery";
@@ -2110,6 +2129,20 @@ $("promo").addEventListener("mouseenter",()=>ppaused=true);$("promo").addEventLi
 $("promo").addEventListener("focusin",()=>ppaused=true);$("promo").addEventListener("focusout",()=>ppaused=false);
 let tx=null;$("pv").addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ppaused=true},{passive:true});
 $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){showSlide(si+(dx<0?1:-1));}}tx=null;ppaused=false;startAuto();});
+function renderDeals(){const L=PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p));
+  $("deals").hidden=!L.length;if(!L.length)return;
+  $("dtitle").innerHTML=BS("本周特价","This week's deals"," ");
+  $("dstrip").innerHTML=L.map(miniCard).join("");}
+let dtimer=null,dpaused=false;
+function startDeals(){clearInterval(dtimer);if(reduce)return;dtimer=setInterval(()=>{const el=$("dstrip");if(dpaused||document.hidden||$("deals").hidden||el.scrollWidth<=el.clientWidth+4)return;
+  const step=(el.firstElementChild?el.firstElementChild.offsetWidth:130)+12;
+  if(el.scrollLeft+el.clientWidth>=el.scrollWidth-4)el.scrollTo({left:0,behavior:"smooth"});else el.scrollBy({left:step,behavior:"smooth"});},3500);}
+["mouseenter","focusin","touchstart"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=true,{passive:true}));
+["mouseleave","focusout"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=false));
+$("deals").addEventListener("touchend",()=>setTimeout(()=>dpaused=false,4000),{passive:true});
+$("deals").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;
+  if(liveZones.some(z=>z.id==="sale")){zone="sale";cat="all";q="";$("q").value="";renderZones();render();}
+  document.getElementById("products").scrollIntoView({behavior:reduce?"auto":"smooth"});});
 $("ptrack").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;const g=b.dataset.go;
   if(g==="visit"){document.getElementById("visit").scrollIntoView({behavior:reduce?"auto":"smooth"});return;}
   if(g!=="order"&&liveZones.some(z=>z.id===g)){zone=g;cat="all";q="";$("q").value="";renderZones();render();}
@@ -2399,7 +2432,7 @@ const toTop=$("toTop");
 addEventListener("scroll",()=>{toTop.hidden=scrollY<700;},{passive:true});
 toTop.addEventListener("click",()=>scrollTo({top:0,behavior:reduce?"auto":"smooth"}));
 applyLang();
-render();renderCart();renderPromo();startAuto();
+render();renderCart();renderPromo();startAuto();renderDeals();startDeals();
 const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/London"}));
 const d=now.getDay(),h=now.getHours()+now.getMinutes()/60;
 $("hours").innerHTML=[1,2,3,4,5,6,0].map(i=>`<tr class="${i===d?"today":""}"><td>${B(DAYS[i][0],DAYS[i][1],"en")}</td><td>${HOURS[i]?fmt(HOURS[i][0])+" – "+fmt(HOURS[i][1]):B("休息","Closed")}</td></tr>`).join("");
