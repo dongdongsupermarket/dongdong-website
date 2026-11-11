@@ -2030,6 +2030,9 @@ const zoneOf=p=>(CATS.find(c=>c.id===p.c)||{}).z;
 // 一样商品放在多个分区：商品加 "also": ["分类id", ...]
 const inCat=(p,cid)=>p.c===cid||(p.also||[]).includes(cid);
 const inZone=(p,z)=>zoneOf(p)===z||(p.also||[]).some(cid=>(CATS.find(c=>c.id===cid)||{}).z===z);
+// 过了 BBD（第二天起）：临期商品和面包蛋糕自动显示售罄，并去掉特价
+(function(){const now=new Date();PRODUCTS.forEach(p=>{if(!p.bbd||!(p.short||p.c==="bread"||p.c==="cake"))return;
+  const [d,m,y]=p.bbd.split("/").map(Number);if(now>new Date(y,m-1,d,23,59,59)){p.oos=true;if(p.was){p.price=Math.max(p.price,p.was);delete p.was;delete p.until;}delete p.short;delete p.bbd;}});})();
 // 特价：商品加 "was": 原价，"price" 写特价；可加 "until": "dd/mm/yyyy" 截止日期，过期自动恢复原价
 (function(){const now=new Date();PRODUCTS.forEach(p=>{if(!p.was)return;
   let ok=p.was>p.price;
