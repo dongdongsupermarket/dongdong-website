@@ -2199,7 +2199,7 @@ function defUnit(p){const n=p.zh+" "+p.en,s=p.spec||"",ml=(s.match(/(\d+)\s*ml/i
     case "cupnoodle":return "/杯 cup";
     default:return "/包 pack";}}
 // 最佳食用日期：商品加 "bbd": "dd/mm/yyyy"
-function bbdLine(p){if(!p.bbd)return "";return `<div class="bbd">${B("最佳食用日期","Best before")}：<b>${p.bbd}</b></div>`;}
+function bbdLine(p){if(!p.bbd||onSale(p))return "";return `<div class="bbd">${B("最佳食用日期","Best before")}：<b>${p.bbd}</b></div>`;}
 // 整箱：商品加 "case": {"n":24,"u":"瓶","ue":"bottle"}，自动显示单件价
 function caseLine(p){if(!p.case||!p.case.n)return "";const c=p.case,each=p.price/c.n;
   return `<div class="caseline">${B(`整箱 ${c.n} ${c.u} · 约 ${money(each)}/${c.u}`,`${c.n} ${c.ue||"items"}${c.n>1&&c.ue&&!/s$/.test(c.ue)?"s":""} · approx. ${money(each)} each`)}</div>`;}
@@ -2211,7 +2211,7 @@ function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"�
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
-  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">${B("原价","was")} ${money(p.was)}</span><span class="save">${B("省","Save")} ${money(p.was-p.price)}${p.until?` · ${B("至","until")} ${p.until}`:""}</span></div>`;}
+  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${money(p.was-p.price)}${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
 const ALIAS={
  jiaozi:["饺"],dumpling:["饺","dumpling","gyoza","wan tan","云吞","馄饨"],dumplings:["饺","dumpling"],gyoza:["gyoza","锅贴"],potsticker:["锅贴","煎饺","gyoza"],shuijiao:["水饺"],
