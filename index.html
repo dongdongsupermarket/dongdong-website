@@ -2211,7 +2211,7 @@ function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"�
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
-  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${Math.floor((p.was-p.price)/p.was*100+1e-6)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
+  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${Math.round((p.was-p.price)/p.was*100)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
 const ALIAS={
  jiaozi:["饺"],dumpling:["饺","dumpling","gyoza","wan tan","云吞","馄饨"],dumplings:["饺","dumpling"],gyoza:["gyoza","锅贴"],potsticker:["锅贴","煎饺","gyoza"],shuijiao:["水饺"],
