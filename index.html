@@ -152,6 +152,7 @@ h2 .en{font-family:var(--en-display);font-weight:400;font-size:.65em;letter-spac
 .card.sale{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
 .salebadge{position:absolute;top:8px;right:8px;z-index:1;background:var(--red);color:#fff8ec;font-weight:700;font-size:12px;letter-spacing:.04em;padding:3px 8px;border-radius:3px;line-height:1.2;text-align:center}
 .salebadge.shortbadge{background:#c4621a}
+.pit .pctbadge{position:absolute;top:6px;left:6px;z-index:1;background:var(--red);color:#fff8ec;font-weight:700;font-size:12px;padding:3px 7px;border-radius:3px;line-height:1.2}
 .tag.saletag{background:var(--red);border-color:var(--red);flex-wrap:wrap;column-gap:8px}
 .tag.saletag .price{color:#fff8ec}
 .tag .was{font-size:13px;text-decoration:line-through;opacity:.85}
@@ -2042,6 +2043,7 @@ const inZone=(p,z)=>zoneOf(p)===z||(p.also||[]).some(cid=>(CATS.find(c=>c.id===c
   if(ok&&p.until){const [d,m,y]=p.until.split("/").map(Number);ok=now<=new Date(y,m-1,d,23,59,59);}
   if(!ok){p.price=Math.max(p.price,p.was);delete p.was;delete p.until;}});})();
 const onSale=p=>!!p.was;
+const pct=p=>Math.round((p.was-p.price)/p.was*100);
 // 多件优惠：商品加 "deal"
 //  {"type":"nfor","tiers":[{"n":2,"price":3},{"n":3,"price":5}]}  → 2 个 £3、3 个 £5
 //  {"type":"bxgy","buy":2,"free":1}  → 买二送一（买一送一就是 buy:1,free:1）
@@ -2106,7 +2108,7 @@ const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.n
 if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new",zh:"新品",en:"New arrivals",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}</span><span class="pn">${ZO(p.zh,p.en)}${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn">${ZO(p.zh,p.en)}${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
@@ -2211,7 +2213,7 @@ function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"�
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
-  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${Math.round((p.was-p.price)/p.was*100)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
+  return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${pct(p)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
 const ALIAS={
  jiaozi:["饺"],dumpling:["饺","dumpling","gyoza","wan tan","云吞","馄饨"],dumplings:["饺","dumpling"],gyoza:["gyoza","锅贴"],potsticker:["锅贴","煎饺","gyoza"],shuijiao:["水饺"],
@@ -2313,7 +2315,7 @@ function render(){
 }
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
-     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span></span>`:`<span class="salebadge"><span class="lz">特价</span><span class="lb"><br></span><span class="le">OFFER</span></span>`):""}</div>
+     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge"><span class="lz">特价</span><span class="lb"><br></span><span class="le">OFFER</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
      <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
      ${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
