@@ -569,7 +569,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
           <fieldset class="area"><legend class="arealg"><span class="lz">送货区域</span> <span class="le">Delivery area</span> *</legend>
             <label><input type="radio" name="area" value="uni" id="areaUni"><span><span class="lz">哈德斯菲尔德大学周边学生宿舍</span><span class="le">Student accommodation near University of Huddersfield</span><small><span class="lz">满 £15 免费配送</span> <span class="le">Free delivery over £15</span></small></span></label>
             <label><input type="radio" name="area" value="near" id="areaNear"><span><span class="lz">3 英里内其他地址</span><span class="le">Other addresses within 3 miles</span><small><span class="lz">满 £40 免费配送</span> <span class="le">Free delivery over £40</span></small></span></label>
-            <label><input type="radio" name="area" value="far" id="areaFar"><span><span class="lz">3 英里以外</span><span class="le">More than 3 miles away</span><small><span class="lz">运费在 WhatsApp 商量</span> <span class="le">Delivery fee agreed on WhatsApp</span></small></span></label>
+            <label><input type="radio" name="area" value="far" id="areaFar"><span><span class="lz">3 英里以外 · 全英快递</span><span class="le">More than 3 miles · UK-wide shipping</span><small><span class="lz">运费在 WhatsApp 商量</span> <span class="le">Delivery fee agreed on WhatsApp</span></small></span></label>
           </fieldset>
           <p class="dmsg" id="dmsg" hidden></p>
           <label class="fld"><span><span class="lz">送货地址</span> <span class="le">Delivery address</span> *</span><textarea id="fAddr" autocomplete="street-address"></textarea></label>
@@ -2371,7 +2371,7 @@ function buildMessage(){
 }
 // 送货规则：学生宿舍满 £15、3 英里内满 £40 免费配送；不满只能到店自取；3 英里外运费商量
 const DELIVERY={uni:{min:15,zh:"哈德斯菲尔德大学周边学生宿舍",en:"Student accommodation near University of Huddersfield"},
-  near:{min:40,zh:"3 英里内其他地址",en:"Within 3 miles"},far:{min:0,zh:"3 英里以外",en:"More than 3 miles"}};
+  near:{min:40,zh:"3 英里内其他地址",en:"Within 3 miles"},far:{min:0,zh:"3 英里以外 · 全英快递",en:"More than 3 miles · UK-wide shipping"}};
 const area=()=>(document.querySelector('input[name="area"]:checked')||{}).value;
 const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);};
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
