@@ -152,6 +152,15 @@ h2 .en{font-family:var(--en-display);font-weight:400;font-size:.65em;letter-spac
 .card.sale{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
 .salebadge{position:absolute;top:8px;right:8px;z-index:1;background:var(--red);color:#fff8ec;font-weight:700;font-size:12px;letter-spacing:.04em;padding:3px 8px;border-radius:3px;line-height:1.2;text-align:center}
 .salebadge.shortbadge{background:#c4621a}
+.webdeals .dbox{border-color:var(--gold)}
+.webdeals h2{color:var(--green)!important}
+.wnote{margin:-4px 0 8px;font-size:13px;color:var(--muted)}
+.salebadge.webbadge{background:var(--green)}
+.incl{margin:6px 0 2px;font-size:13px}
+.incl .incb{font-weight:600;margin-bottom:4px}
+.incl .inch{color:var(--muted);font-size:12px}
+.incl ul{margin:2px 0 0;padding-left:18px}
+.incl li{margin:1px 0}
 .pit .pctbadge{position:absolute;top:6px;left:6px;z-index:1;background:var(--red);color:#fff8ec;font-weight:700;font-size:12px;padding:3px 7px;border-radius:3px;line-height:1.2}
 .tag.saletag{background:var(--red);border-color:var(--red);flex-wrap:wrap;column-gap:8px}
 .tag.saletag .price{color:#fff8ec}
@@ -479,6 +488,13 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
   </div>
 </section>
 
+<section class="deals webdeals" id="webdeals" aria-label="网上专享 Online exclusive" hidden>
+  <div class="wrap"><div class="dbox">
+    <div class="dhead"><h2 id="wtitle"></h2><button type="button" class="pbtn" data-go="webonly"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
+    <p class="wnote"><span class="lz">只限网上下单 · 到店直接购买按原价</span><span class="lb"> · </span><span class="le">Online orders only</span></p>
+    <div class="dstrip" id="wstrip"></div>
+  </div></div>
+</section>
 <section class="deals" id="deals" aria-label="特价 Deals" hidden>
   <div class="wrap"><div class="dbox">
     <div class="dhead"><h2 id="dtitle"></h2><button type="button" class="pbtn" data-go="sale"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
@@ -613,6 +629,7 @@ function sp(s){if(!s||!/[\u4e00-\u9fff]/.test(s))return s||"";
   return m?`<span class="lz">${m[1]+m[2]}</span><span class="lb"> </span><span class="le">${m[1]?`<span class="leo">${m[1]}</span>`:""}${m[3]}</span>`:s;}
 const CATS=[
  {id:"all",zh:"全部",en:"All"},
+ {id:"bundle",z:"webonly",zh:"网上专享组合",en:"Online bundles",tone:"--t-sauce",g:"惠"},
  {id:"dumpling",z:"frozen",zh:"水饺煎饺",en:"Dumplings & gyoza",tone:"--t-rice",g:"饺"},
  {id:"bun",z:"frozen",zh:"包子馒头",en:"Buns & bao",tone:"--t-tofu",g:"包"},
  {id:"dimsum",z:"frozen",zh:"港式点心",en:"Dim sum",tone:"--t-sauce",g:"点"},
@@ -702,6 +719,7 @@ const CATS=[
  {id:"preother",z:"preorder",zh:"其他预订",en:"Other pre-order items",tone:"--t-rice",g:"订"}];
 // 分区：只显示有商品的分区
 const ZONES=[
+ {id:"webonly",zh:"网上专享",en:"Online exclusive"},
  {id:"freshzone",zh:"鲜货区",en:"Fresh &amp; homemade"},
  {id:"online",zh:"网上预订 · 仓库货",en:"Online order only"},
  {id:"grocery",zh:"调料干货区",en:"Seasonings & dry goods"},
@@ -719,6 +737,9 @@ const ZONES=[
  {id:"bulk",zh:"整箱整提区",en:"Bulk buy"}];
 // 商品来自店内速冻产品图册。img 为商品照片文件。
 const PRODUCTS_RAW=[
+ {"c": "bundle", "web": true, "zh": "中餐入门组合", "en": "Asian Kitchen Starter Box", "spec": "5 件 5 items", "price": 9.29, "was": 10.31, "img": "img/web_starter.jpg", "blurb": ["做中餐的基础调料一次配齐", "Everything you need to start cooking Chinese at home"], "inc": [["李锦记特级鲜味生抽 500ml", "Lee Kum Kee Premium Light Soy Sauce 500ml"], ["李锦记特级老抽 500ml", "Lee Kum Kee Premium Dark Soy Sauce 500ml"], ["海天上等鲜蚝油 590g", "Haday Superior Oyster Sauce 590g"], ["李锦记混合芝麻油 207ml", "Lee Kum Kee Blended Sesame Oil 207ml"], ["Lucky Boat 帆船面条（2号 炒面）450g", "Lucky Boat No.2 Noodles 450g"]]},
+ {"c": "bundle", "web": true, "zh": "火鸡面组合", "en": "Buldak Box", "spec": "2 × 5连包 2 × 5 pack", "price": 9.89, "was": 10.99, "img": "img/web_buldak.jpg", "inc": [["三养原味火鸡面 5连包 700g", "Samyang Buldak Original 5 pack 700g"], ["三养奶油火鸡面 5连包 650g", "Samyang Buldak Carbonara 5 pack 650g"]]},
+ {"c": "bundle", "web": true, "zh": "饺子之夜", "en": "Dumpling Night", "spec": "2 包 + 饺子汁 2 bags + sauce", "price": 8.99, "was": 10.03, "img": "img/web_dumpling.jpg", "blurb": ["京厨水饺口味任选 2 包，请在订单备注里写上口味", "Choose any 2 Jingchu dumpling flavours — add them in your order notes"], "inc": [["京厨水饺 410g × 2 包（猪肉韭菜 / 猪肉青葱 / 猪肉韭菜虾仁 / 猪肉白菜 / 鸡肉香菇 任选）", "Jingchu Dumplings 410g × 2 (choose from pork & chive, pork & spring onion, pork chive & prawn, pork & Chinese leaf, chicken & mushroom)"], ["李锦记饺子酱汁 207ml", "Lee Kum Kee Dumpling Sauce 207ml"]]},
  {c:"bun",zh:"安井开心紫薯包",en:"Purple Sweet Potato Bun",price:3.75,img:"img/p1_01.jpg"},
  {c:"bun",zh:"安井葱油花卷",en:"Spring Onion Roll",spec:"300g",price:2.49,img:"img/p1_02.jpg"},
  {c:"bun",zh:"安井金沙流沙包",en:"Custard Lava Bun",spec:"300g",price:4.99,img:"img/p1_03.jpg"},
@@ -2074,7 +2095,7 @@ function dealSavings(it){const G={};
     if(save>0){const [z,e]=dealText(d);out.push({zh:z,en:e,save,names:g.names});}});
   return out;}
 const dealTotal=it=>dealSavings(it).reduce((s,x)=>s+x.save,0);
-const liveZones=[...(PRODUCTS.some(hasPromo)?[{id:"sale",zh:"特价",en:"Special offer",sale:true}]:[]),...ZONES.filter(z=>PRODUCTS.some(p=>inZone(p,z.id)))];
+const liveZones=[...(PRODUCTS.some(p=>hasPromo(p)&&!p.web)?[{id:"sale",zh:"特价",en:"Special offer",sale:true}]:[]),...ZONES.filter(z=>PRODUCTS.some(p=>inZone(p,z.id)))];
 // 部分图片打包在一个文件里，按需加载
 const BUNDLES={};const IMGS={};const loading={};
 function src(p){const b=Object.keys(BUNDLES).find(k=>p.startsWith(k));if(!b)return p;
@@ -2089,7 +2110,7 @@ const fmt=h=>String(h).padStart(2,"0")+":00";
 function renderZones(){
   $("zones").innerHTML=liveZones.map(z=>{const on=!q&&z.id===zone;
     const hasSubs=!["sale","new"].includes(z.id);const subs=on&&hasSubs&&expanded===z.id?CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id))):[];
-    return `<button type="button" data-z="${z.id}" aria-pressed="${on}"${hasSubs?` aria-expanded="${on&&expanded===z.id}"`:""}${z.sale?' class="salezone"':z.isnew?' class="newzone"':""}><b>${ZO(z.zh,z.en)}</b><small class="lb">${z.en}</small>${hasSubs?'<i class="chev" aria-hidden="true">›</i>':""}</button>`+
+    return `<button type="button" data-z="${z.id}" aria-pressed="${on}"${hasSubs?` aria-expanded="${on&&expanded===z.id}"`:""}${z.sale||z.id==="webonly"?' class="salezone"':z.isnew?' class="newzone"':""}><b>${ZO(z.zh,z.en)}</b><small class="lb">${z.en}</small>${hasSubs?'<i class="chev" aria-hidden="true">›</i>':""}</button>`+
       (subs.length?`<div class="subcats">${subs.map(c=>`<button type="button" data-jump="${c.id}">${ZO(c.zh,c.en)}<small class="lb">${c.en}</small></button>`).join("")}</div>`:"");}).join("");
   $("cats").innerHTML=CATS.filter(c=>c.id==="all"||(c.z===zone&&PRODUCTS.some(p=>inCat(p,c.id)))).map(c=>`<button type="button" data-c="${c.id}" aria-pressed="${!q&&c.id===cat}">${B(c.zh,c.en,"en")}</button>`).join("");}
 let expanded=null; // 左边栏当前展开的分区
@@ -2138,7 +2159,9 @@ $("promo").addEventListener("mouseenter",()=>ppaused=true);$("promo").addEventLi
 $("promo").addEventListener("focusin",()=>ppaused=true);$("promo").addEventListener("focusout",()=>ppaused=false);
 let tx=null;$("pv").addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ppaused=true},{passive:true});
 $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){showSlide(si+(dx<0?1:-1));}}tx=null;ppaused=false;startAuto();});
-function renderDeals(){const L=PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p));
+function renderWeb(){const L=PRODUCTS.filter(p=>p.web&&!isOOS(p));$("webdeals").hidden=!L.length;if(!L.length)return;
+  $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
+function renderDeals(){renderWeb();const L=PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web);
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
   $("dstrip").innerHTML=L.map(miniCard).join("");}
@@ -2149,6 +2172,8 @@ function startDeals(){clearInterval(dtimer);if(reduce)return;dtimer=setInterval(
 ["mouseenter","focusin","touchstart"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=true,{passive:true}));
 ["mouseleave","focusout"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=false));
 $("deals").addEventListener("touchend",()=>setTimeout(()=>dpaused=false,4000),{passive:true});
+$("webdeals").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;
+  zone="webonly";cat="all";q="";$("q").value="";renderZones();render();document.getElementById("products").scrollIntoView({behavior:reduce?"auto":"smooth"});});
 $("deals").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;
   if(liveZones.some(z=>z.id==="sale")){zone="sale";cat="all";q="";$("q").value="";renderZones();render();}
   document.getElementById("products").scrollIntoView({behavior:reduce?"auto":"smooth"});});
@@ -2209,6 +2234,7 @@ function caseLine(p){if(!p.case||!p.case.n)return "";const c=p.case,each=p.price
 function approxLine(p){if(!p.approx)return "";const k=p.perkg?`<b>${money(p.perkg)}/kg</b> · `:"";return `<div class="apxline">${k}${B("约价，按实际重量计价","Approx. price, final price by actual weight")}</div>`;}
 const RESTOCK={"周一":"Monday","周二":"Tuesday","周三":"Wednesday","周四":"Thursday","周五":"Friday","周六":"Saturday","周日":"Sunday","周二、周五":"Tuesday & Friday","周二和周五":"Tuesday & Friday"};
 function restockLine(p){if(!isOOS(p)||p.oos===true)return "";const r=String(p.oos),en=p.oosEn||RESTOCK[r]||r;return `<div class="restock">${B(`预计${r}回货`,`Back in stock ${en}`)}</div>`;}
+function incLine(p){if(!p.inc)return "";return `<div class="incl">${p.blurb?`<div class="incb">${B(p.blurb[0],p.blurb[1])}</div>`:""}<div class="inch">${B("组合包含","Includes")}</div><ul>${p.inc.map(x=>`<li>${B(x[0],x[1])}</li>`).join("")}</ul></div>`;}
 function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"英国本地制作",en:"Made in the UK"};return `<div class="ukline">${B(t.zh,t.en)}</div>`;}
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
@@ -2290,7 +2316,7 @@ const openGroups=new Set(); // 已展开的小类
 const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 function render(){
   const list=(q?searchAll(q)
-    :zone==="sale"?PRODUCTS.filter(hasPromo)
+    :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>(a.oos?1:0)-(b.oos?1:0)); /* 售罄排到最后 */
   const z=liveZones.find(x=>x.id===zone);
@@ -2315,8 +2341,8 @@ function render(){
 }
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
-     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge"><span class="lz">特价</span><span class="lb"><br></span><span class="le">OFFER</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
-     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
+     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
+     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
      ${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
    </article>`}
@@ -2339,7 +2365,7 @@ function ctrl(i,style){const n=cart[i]||0;
 function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];else cart[i]=n;try{localStorage.setItem("dd-cart4",JSON.stringify(cart))}catch(e){}render();renderCart();if(!$("zoom").hidden)renderZoom();}
 let zi=-1;
 function renderZoom(){const p=PRODUCTS[zi];if(!p)return;
-  $("zbox").innerHTML=`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" id="zimg"><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}<div class="zrow">${priceTag(p)}${ctrl(zi,"add")}</div></div>`;}
+  $("zbox").innerHTML=`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" id="zimg"><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}<div class="zrow">${priceTag(p)}${ctrl(zi,"add")}</div></div>`;}
 function openZoom(i){zi=i;renderZoom();$("zoom").hidden=false;$("zclose").focus();}
 function closeZoom(){$("zoom").hidden=true;}
 document.addEventListener("click",e=>{const z=e.target.closest("[data-zoom]");if(z){openZoom(+z.dataset.zoom);return;}
@@ -2365,7 +2391,7 @@ const mode=()=>$("modeDelivery").checked?"delivery":"pickup";
 function buildMessage(){
   const it=items(),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it),d=mode()==="delivery";
   const L=["東東超市 新订单 New order",`订单编号 Order no.: ${orderNo()}`,""];
-  it.forEach(x=>L.push(`${x.p.kg?`约 ${x.n} kg ×`:`${x.n} ×`} ${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 approx. ${money(x.n*x.p.price)}（${money(x.p.price)}/kg，按实际重量计价 priced by actual weight）`:money(x.n*x.p.price)}${onSale(x.p)?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}`));
+  it.forEach(x=>L.push(`${x.p.kg?`约 ${x.n} kg ×`:`${x.n} ×`} ${x.p.web?"【网上专享 Online exclusive】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 approx. ${money(x.n*x.p.price)}（${money(x.p.price)}/kg，按实际重量计价 priced by actual weight）`:money(x.n*x.p.price)}${onSale(x.p)?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}`));
   if(deals.length){L.push("");deals.forEach(dd=>L.push(`优惠 Deal: ${dd.zh} ${dd.en}（${dd.names.map(p=>p.zh).join("/")}）−${money(dd.save)}`));}
   L.push("",`商品合计 Subtotal: ${it.some(x=>x.p.kg||x.p.approx)?"约 approx. ":""}${money(total)}${it.some(x=>x.p.mp)?" + 时价商品 market-price items":""}`,"");
   if(it.some(x=>isAlc(x.p)))L.push("含须年满18岁商品（酒类/刀具/燃气罐），本人已年满18岁 Contains age-restricted items, I am 18 or over","");
