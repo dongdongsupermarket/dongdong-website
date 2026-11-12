@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans">
+<html lang="zh-Hans" class="nd" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -21,6 +21,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "GroceryStore", "name": "東東超市 Dong Dong Supermarket", "url": "https://dongdong.co.uk/", "telephone": "+447546185999", "email": "info@dongdong.co.uk", "foundingDate": "2007", "image": "https://dongdong.co.uk/og-image.jpg", "logo": "https://dongdong.co.uk/icon-512.png", "address": {"@type": "PostalAddress", "streetAddress": "29–37 Beast Market", "addressLocality": "Huddersfield", "postalCode": "HD1 1QF", "addressCountry": "GB"}, "openingHoursSpecification": [{"@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], "opens": "11:00", "closes": "19:00"}, {"@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "18:00"}]}</script>
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;700&display=swap">
 </head>
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -504,18 +505,16 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 </section>
 
 <section class="hero">
-  <div class="wrap">
+  <div class="wrap"><div class="pv-hero">
     <div class="hero-text">
       <span class="open-now"><span class="dot" id="dot"></span><span id="openText"><span class="lz">营业中</span> <span class="le">Open now</span></span></span>
-      <h1><span class="lz">高品质亚洲食品</span><span class="leo">Quality Asian Food</span></h1>
-      <div class="sub lb">Quality Asian Food</div>
-      <p><span class="lz">包子馒头、水饺、春卷、汤圆等各类速冻食品，以及新鲜蔬果、米面和调味料。</span><span class="le blk lbo">Frozen buns, dumplings, spring rolls and rice balls, plus fresh produce, rice, noodles and sauces.</span></p>
-      <div class="actions"><a class="btn primary" href="#products"><span class="lz">查看商品</span> <span class="le">Browse products</span></a><a class="btn ghost" href="#visit"><span class="lz">到店信息</span> <span class="le">Visit us</span></a></div>
-      <div class="pillars"><span><span class="lz">亚洲食品</span> <span class="le">Asian Groceries</span></span><span><span class="lz">新鲜蔬果</span> <span class="le">Fresh Produce</span></span><span><span class="lz">饮料零食</span> <span class="le">Drinks &amp; Snacks</span></span></div>
+      <div class="pv-eyebrow">Asian supermarket · Huddersfield · Est. 2007</div>
+      <h1><span class="le">Find your favourite Asian groceries.</span><span class="lz pv-zh">找到你爱吃的亚洲味道</span></h1>
+      <p><span class="le">Noodles, sauces, snacks, frozen dumplings and fresh produce. Order online, then collect in store, get local delivery or UK-wide shipping.</span><span class="lz pv-zh">面条、调料、零食、速冻水饺和新鲜蔬果。网上下单，到店自取、本地送货或全英快递。</span></p>
+      <div class="actions"><a class="btn primary" href="#products"><span class="le">Shop now</span> <span class="lz">开始选购</span> →</a><a class="btn ghost" href="#visit"><span class="le">Visit us</span> <span class="lz">到店信息</span></a></div>
     </div>
-    <figure class="photo"><img src="shopfront.jpg" alt="東東超市店面 Dong Dong Supermarket shopfront, Beast Market, Huddersfield"></figure>
-    <!-- 装修效果图备用：storefront.jpg -->
-  </div>
+    <div class="pv-mosaic" aria-hidden="true"><span><img src="img/sw3_shin5.jpg" alt="" loading="lazy"></span><span><img src="img/sw2_ns_blackgarlic.jpg" alt="" loading="lazy"></span><span><img src="img/sw3_bd5_carb.jpg" alt="" loading="lazy"></span><span><img src="img/ph_lkk_light.jpg" alt="" loading="lazy"></span><span><img src="img/ph_jc_jc2.jpg" alt="" loading="lazy"></span><span><img src="img/sw2_ns_cup_seafood.jpg" alt="" loading="lazy"></span></div>
+  </div></div>
 </section>
 
 <main class="wrap" id="products">
@@ -2482,5 +2481,138 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
   navigator.clipboard?.writeText(el.textContent).then(()=>{$("copyTel").innerHTML=B("已复制","Copied")}).catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);});});
 </script>
 
+
+<style>
+/* ===== 新版预览外观：米白底、白卡片、深绿、衬线标题 ===== */
+html.nd{--bg:#f7f5ef;--surface:#ffffff;--ink:#1f2e26;--muted:#6d766e;--line:#e5e2d8;--green:#233d30;--green-deep:#1b3026;--gold:#b98f35;--gold-hi:#e6d39a;--red:#b3261e;--sign:#fdfcf8;--on-green:#f7f3e6;--placeholder:#f4ecd0;--soft:#ece4c4;
+  --en-display:"DM Serif Display","Noto Serif SC",Georgia,serif;--cn-display:"Noto Serif SC","Songti SC",serif;--body:"DM Sans","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;--num:"DM Sans","Noto Sans SC",sans-serif;color-scheme:light}
+html.nd body{background:var(--bg);color:var(--ink)}
+.pv-strip{background:var(--green);color:var(--on-green);text-align:center;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;line-height:1.4}
+/* header */
+html.nd header{background:var(--sign);border-bottom:1px solid var(--line)}
+html.nd .sign{background:none;border:0;box-shadow:none}
+html.nd .sign .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand basket" "search search";gap:14px 14px;align-items:center;padding-block:18px 14px;position:static}
+.pv-brand{grid-area:brand;text-decoration:none;min-width:0}
+.pv-brand b{font-family:var(--en-display);font-weight:400;font-size:clamp(20px,5.7vw,32px);line-height:1.05;color:var(--green);display:block;letter-spacing:-.01em;white-space:nowrap}
+.pv-brand small{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);font-weight:700;margin-top:6px}
+.pv-basket{grid-area:basket;font:inherit;font-size:15px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 10px 8px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.pv-basket b{background:var(--soft);border-radius:999px;min-width:28px;height:28px;padding:0 6px;display:grid;place-items:center;font-weight:500}
+html.nd .search{grid-area:search;max-width:none;flex:none;display:block}
+html.nd .search input{padding:13px 16px;border-radius:12px;background:#f4f2ea;border:1px solid var(--line);font-size:16px}
+@media (min-width:900px){html.nd .sign .wrap{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand search basket";gap:28px}html.nd .search{max-width:620px}}
+html.nd nav{background:none;border-top:1px solid var(--line)}
+html.nd nav .wrap{gap:6px 18px;padding-block:8px;font-size:13px}
+html.nd nav a{color:var(--muted);opacity:1}
+html.nd nav a:hover{color:var(--green)}
+html.nd .langsw{border-color:var(--line)}
+html.nd .langsw button{color:var(--muted);font-size:12.5px}
+html.nd .langsw button[aria-pressed="true"]{background:var(--green);color:var(--on-green)}
+html[data-lang="both"] .pv-basket .lz{display:none!important}
+.pv-info{display:grid;gap:10px;padding-block:14px 0}
+.pv-info>div{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.pv-info .wrap{max-width:none;padding-inline:14px}
+html.nd .dbar{background:#f6f0dc;color:var(--ink)}
+html.nd .ukbar{background:#eef3ea;color:var(--ink)}
+html.nd .ukbar b,html.nd .ukbar b *{color:var(--green)!important}
+html.nd .betabar{background:#fbf6e6}
+/* 分区标签栏 */
+.pv-tabs{position:sticky;top:0;z-index:15;background:var(--sign);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+html.nd .zones{position:static;flex-direction:row;gap:2px;overflow-x:auto;overflow-y:hidden;max-height:none;background:none;border:0;border-radius:0;padding:0;scrollbar-width:none}
+html.nd .zones::-webkit-scrollbar{display:none}
+html.nd .zones button{width:auto;flex:none;border-left:0;border-bottom:3px solid transparent;border-radius:0;padding:11px 12px 8px;justify-items:center;text-align:center;background:none}
+html.nd .zones button b{font-family:var(--body);font-size:15px;font-weight:500;color:var(--muted);white-space:nowrap;letter-spacing:0}
+html.nd .zones button small{font-family:var(--body);font-size:10.5px;text-transform:none;letter-spacing:0;white-space:nowrap;color:var(--muted)}
+html.nd .zones button[aria-pressed="true"]{background:none;border-bottom-color:var(--green)}
+html.nd .zones button[aria-pressed="true"] b{color:var(--green);font-weight:700}
+html.nd .zones button.salezone b{color:var(--red)}
+html.nd .zones .chev,html.nd .zones .subcats{display:none!important}
+html.nd .shop{display:block;margin-inline:0}
+html.nd #cats{display:flex!important;gap:8px;padding:2px 0 6px}
+html.nd .cats button{border-radius:999px;background:var(--surface);border:1px solid var(--line);padding:7px 14px}
+html.nd .cats button[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:var(--on-green)}
+html.nd .grp{scroll-margin-top:78px}
+/* hero */
+html.nd .hero{background:none;color:inherit;padding-top:18px}
+html.nd .hero .wrap{display:block;padding-block:0}
+.pv-hero{background:var(--green);color:var(--on-green);border-radius:22px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:stretch}
+html.nd .hero-text{padding:40px 36px;align-content:center}
+.pv-eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-hi);font-weight:700;margin-bottom:14px}
+html.nd .hero h1{font-family:var(--en-display);font-weight:400;font-size:clamp(34px,5vw,54px);line-height:1.05;color:#fff;letter-spacing:-.01em;margin:0 0 16px}
+html.nd .hero h1 .pv-zh{display:block;font-family:var(--cn-display);font-weight:700;font-size:.44em;line-height:1.4;color:var(--gold-hi);margin-top:10px;letter-spacing:.04em}
+html[data-lang="zh"].nd .hero h1 .pv-zh{font-size:.8em;color:#fff;margin-top:0}
+html.nd .hero p{font-size:16px;line-height:1.6;max-width:44ch;opacity:.92;margin:0 0 22px}
+html.nd .hero p .pv-zh{display:block;font-size:14px;opacity:.85;margin-top:6px}
+html[data-lang="zh"].nd .hero p .pv-zh{font-size:16px;margin-top:0}
+html.nd .open-now{border-color:rgba(230,211,154,.5);font-size:12.5px;margin-bottom:18px}
+html.nd .btn{border-radius:10px;padding:12px 20px;font-weight:700;font-size:15px}
+html.nd .btn.primary{background:var(--gold-hi);color:var(--green)}
+html.nd .btn.ghost{border-color:rgba(247,243,230,.45)}
+.pv-mosaic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:22px;background:#2c4a3a;align-content:center}
+.pv-mosaic span{background:#fff;border-radius:14px;aspect-ratio:1;overflow:hidden;display:block}
+.pv-mosaic img{width:100%;height:100%;object-fit:contain;padding:6px;display:block}
+@media (max-width:760px){.pv-hero{grid-template-columns:minmax(0,1fr)}html.nd .hero-text{padding:30px 24px 28px}.pv-mosaic{padding:14px;gap:8px}}
+/* 轮播、网上专享、特价 */
+html.nd .promo,html.nd .deals{background:none;border:0}
+html.nd .dbox{border:1px solid var(--line);border-radius:18px;padding:16px}
+html.nd .webdeals .dbox{border:1px solid var(--line)}
+html.nd h2{font-family:var(--en-display);font-weight:400;color:var(--green);letter-spacing:-.01em}
+html.nd .pit{border-radius:14px}
+html.nd .pit .pp{font-family:var(--body);color:var(--ink)}
+/* 商品卡片 */
+html.nd .grid:not(.grouped){grid-template-columns:repeat(auto-fill,minmax(210px,1fr))!important;gap:14px!important}
+html.nd .grp-list{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:1000px){html.nd .grp-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){html.nd .grp-list,html.nd .grid:not(.grouped){grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}}
+html.nd .grp-h h3{font-family:var(--en-display);font-weight:400;font-size:24px;color:var(--green)}
+html.nd .grp-h h3 .en{font-family:var(--body);font-size:.55em;color:var(--muted)}
+html.nd .card{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"art" "body" "tag" "add";grid-template-rows:auto 1fr auto auto;padding:10px 12px 12px;border-radius:16px;border:1px solid var(--line);background:var(--surface);overflow:hidden;box-shadow:none}
+html.nd .card.sale{border-color:var(--line);box-shadow:none}
+html.nd .card .art{grid-area:art;aspect-ratio:1;background:#fff!important;border-radius:10px}
+html.nd .card .body{grid-area:body;padding:8px 0 0!important;gap:3px}
+html.nd .card .pen{order:-1;font-weight:700;font-size:15px;line-height:1.3;color:var(--ink)}
+html.nd .card .name{font-weight:400;font-size:14px;line-height:1.4;color:var(--ink)}
+html[data-lang="zh"].nd .card .name{font-weight:700;font-size:15px}
+html.nd .card .spec{color:var(--muted);font-size:13px}
+html.nd .card .tag{grid-area:tag;margin:10px 0 0!important;padding:0!important;background:none;border:0;color:var(--ink);justify-content:flex-start;flex-wrap:wrap}
+html.nd .tag .price{font-family:var(--body);font-size:20px;color:var(--ink);font-weight:700}
+html.nd .tag .unit{color:var(--muted)}
+html.nd .tag.saletag .price{color:var(--red)}
+html.nd .tag .was{color:var(--muted);opacity:1}
+html.nd .tag .save{text-align:left;color:var(--red);font-size:12px}
+html.nd .tag.mptag{border:0}
+html.nd .card .addrow{grid-area:add;padding:0;margin:10px 0 0}
+html.nd .add{width:100%;background:#eef1e6;border:1px solid #d9dfcc;color:var(--green);border-radius:10px;padding:8px 12px;font-weight:700;white-space:nowrap}
+html.nd .add.preadd{background:#e8eef5;border-color:#c9d6e4;color:#2f5d8a}
+html.nd .add.oosbtn{background:var(--bg);border-color:var(--line);color:var(--muted)}
+html.nd .step{border-radius:10px}
+/* 英文模式：价格和 + Add 并排，像样站 */
+html[data-lang="en"].nd .card:not(:has(.step)):not(:has(.saletag)):not(:has(.preadd)):not(:has(.oosbtn)){grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"art art" "body body" "tag add";column-gap:8px;align-items:start}
+html[data-lang="en"].nd .card .tag,html[data-lang="en"].nd .card .addrow{align-self:end}
+html[data-lang="en"].nd .card:not(:has(.step)):not(:has(.saletag)):not(:has(.preadd)):not(:has(.oosbtn)) .add{width:auto}
+html[data-lang="en"].nd .add:not(.preadd):not(.oosbtn)::before{content:"+ "}
+html.nd .salebadge{border-radius:999px;padding:3px 9px}
+html.nd .more{border-color:var(--line);border-radius:999px;color:var(--green);background:var(--surface)}
+html.nd .cartbar{border-top:0;box-shadow:0 -6px 20px rgba(0,0,0,.12)}
+html.nd .cartbar button{background:var(--gold-hi);color:var(--green);border-radius:10px}
+html.nd .cartbar .sum b{font-family:var(--body)}
+html.nd .zbox,html.nd .askbox{border-radius:16px}
+</style>
+<script>
+(function(){
+  const header=document.querySelector("header"),sign=document.querySelector(".sign .wrap");
+  sign.innerHTML='<a class="pv-brand" href="#"><b>Dong Dong Supermarket</b><small>東東超市 · Asian Groceries</small></a><button type="button" class="pv-basket" id="pvBasket"><span class="lz">购物车</span> <span class="le">Basket</span><b id="pvCount">0</b></button>';
+  sign.appendChild(document.querySelector("label.search"));
+  const tabs=document.createElement("div");tabs.className="pv-tabs";tabs.innerHTML='<div class="wrap"></div>';tabs.firstChild.appendChild(document.getElementById("zones"));header.after(tabs);
+  const hero=document.querySelector(".hero");tabs.after(hero);
+  const web=document.getElementById("webdeals");hero.after(web);
+  const info=document.createElement("div");info.className="wrap pv-info";[".dbar",".ukbar",".betabar"].forEach(q=>{const e=document.querySelector(q);if(e)info.appendChild(e)});web.after(info);
+  document.getElementById("pvBasket").addEventListener("click",()=>document.getElementById("openCart").click());
+  const cc=document.getElementById("cartCount"),pc=document.getElementById("pvCount");const sync=()=>{pc.textContent=cc.textContent||"0"};sync();
+  new MutationObserver(sync).observe(cc,{childList:true,characterData:true,subtree:true});
+  document.getElementById("zones").addEventListener("click",e=>{if(!e.target.closest("button"))return;
+    const p=document.getElementById("products");setTimeout(()=>{const r=p.getBoundingClientRect();if(r.top>innerHeight*0.5||r.top<-40)window.scrollTo({top:scrollY+r.top-tabs.offsetHeight-8,behavior:"smooth"});
+      const on=document.querySelector('#zones button[aria-pressed="true"]');if(on)on.scrollIntoView({inline:"center",block:"nearest"})},60)});
+})();
+</script>
 </body>
 </html>
