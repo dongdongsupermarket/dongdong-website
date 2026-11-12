@@ -2424,9 +2424,7 @@ function orderNo(){if(!ORDER_NO){const d=new Date(new Date().toLocaleString("en-
   ORDER_NO=`DD-${String(d.getDate()).padStart(2,"0")}${String(d.getMonth()+1).padStart(2,"0")}-${String(Math.floor(1000+Math.random()*9000))}`;}return ORDER_NO;}
 function cartHint(t){const a=area();const T=(zh,en)=>LANG==="en"?en:zh;
   if(mode()==="delivery"&&a&&a!=="far"){const m=DELIVERY[a].min;return t>=m?T(`✓ 已满 £${m}，可免费配送`,`✓ Free delivery (over £${m})`):T(`还差 ${money(m-t)} 免费配送`,`${money(m-t)} more for free delivery`);}
-  if(t<15)return T(`再买 ${money(15-t)} 可免费送到学生宿舍`,`${money(15-t)} more for free delivery to student halls`);
-  if(t<40)return T(`学生宿舍可免费配送 · 再买 ${money(40-t)} 可送 3 英里内`,`Free to student halls · ${money(40-t)} more for free delivery within 3 miles`);
-  return T("✓ 3 英里内可免费配送","✓ Free delivery within 3 miles");}
+  return "";} // 没选送货上门时不提示免费配送
 function problem(){
   if(!items().length)return B("请先加入商品。","Please add some items first.");
   if(!$("fName").value.trim())return B("请填写姓名。","Please enter your name.");
