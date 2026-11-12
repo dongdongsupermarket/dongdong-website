@@ -2497,7 +2497,7 @@ html.nd body{background:var(--bg);color:var(--ink)}
 /* header */
 html.nd header{background:var(--sign);border-bottom:1px solid var(--line)}
 html.nd .sign{background:none;border:0;box-shadow:none}
-html.nd .sign .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand basket" "search search";gap:14px 14px;align-items:center;padding-block:18px 14px;position:static}
+html.nd .sign .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"brand basket";gap:14px 14px;align-items:center;padding-block:18px 14px;position:static}
 .pv-brand{grid-area:brand;text-decoration:none;min-width:0}
 .pv-brand b{font-family:var(--en-display);font-weight:400;font-size:clamp(20px,5.7vw,32px);line-height:1.05;color:var(--green);display:block;letter-spacing:-.01em;white-space:nowrap}
 .pv-brand small{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink);font-weight:700;margin-top:6px}
@@ -2505,7 +2505,10 @@ html.nd .sign .wrap{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-t
 .pv-basket b{background:var(--soft);border-radius:999px;min-width:28px;height:28px;padding:0 6px;display:grid;place-items:center;font-weight:500}
 html.nd .search{grid-area:search;max-width:none;flex:none;display:block}
 html.nd .search input{padding:13px 16px;border-radius:12px;background:#f4f2ea;border:1px solid var(--line);font-size:16px}
-@media (min-width:900px){html.nd .sign .wrap{grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"brand search basket";gap:28px}html.nd .search{max-width:620px}}
+html.nd .pv-tabs .search{display:block;margin:10px 0 2px}
+html.nd .pv-tabs .search input{padding:10px 14px;font-size:16px}
+html.nd .pv-tabs.fix .search{margin-top:8px}
+@media (min-width:900px){html.nd .pv-tabs .search{max-width:560px}}
 html.nd nav{background:none;border-top:1px solid var(--line)}
 html.nd nav .wrap{gap:6px 18px;padding-block:8px;font-size:13px}
 html.nd nav a{color:var(--muted);opacity:1}
@@ -2655,8 +2658,7 @@ html.nd .pv-info .dbar[hidden],html.nd .pv-info .ukbar[hidden]{display:none!impo
 (function(){
   const header=document.querySelector("header"),sign=document.querySelector(".sign .wrap");
   sign.innerHTML='<a class="pv-brand" href="#"><b>Dong Dong Supermarket</b><small>東東超市 · Asian Groceries</small></a><button type="button" class="pv-basket" id="pvBasket"><span class="lz">购物车</span> <span class="le">Basket</span><b id="pvCount">0</b></button>';
-  sign.appendChild(document.querySelector("label.search"));
-  const tabs=document.createElement("div");tabs.className="pv-tabs";tabs.innerHTML='<div class="wrap"></div>';tabs.firstChild.appendChild(document.getElementById("zones"));header.after(tabs);
+  const tabs=document.createElement("div");tabs.className="pv-tabs";tabs.innerHTML='<div class="wrap"></div>';tabs.firstChild.appendChild(document.querySelector("label.search"));tabs.firstChild.appendChild(document.getElementById("zones"));header.after(tabs);
   /* 分区栏一直停在屏幕顶部（所有手机都适用，不靠 sticky） */
   const ph=document.createElement("div");tabs.before(ph);
   const pin=()=>{const on=ph.getBoundingClientRect().top<=0;if(on!==tabs.classList.contains("fix")){ph.style.height=on?tabs.offsetHeight+"px":"0";tabs.classList.toggle("fix",on)}};
