@@ -2462,7 +2462,7 @@ function buildMessage(){
   L.push(`方式 Method: ${d?"送货上门 Delivery":"到店自取 Collect in store"}`);
   L.push(`姓名 Name: ${$("fName").value.trim()}`,`电话 Phone: ${$("fPhone").value.trim()}`);
   if(d&&area()){const a=DELIVERY[area()];L.push(`区域 Area: ${a.zh} ${a.en}`,`运费 Delivery fee: ${FEE_TBC(area())?"待商量 To be agreed":"免费 Free"}`);
-    if(area()==="uk"&&coldItems().length)L.push(`⚠ 冻货/鲜货待商量 Chilled/frozen items to discuss: ${coldItems().map(x=>x.p.zh).join("、")}`);if(area()==="uk"&&localItems().length)L.push(`⚠ 仅限 Huddersfield，不能快递 Huddersfield only: ${localItems().map(x=>x.p.zh).join("、")}`);}
+    if(area()==="uk"&&coldItems().length)L.push(`⚠ 冻货/鲜货待商量 Chilled/frozen items to discuss: ${coldItems().map(x=>x.p.zh).join("、")}`);if(area()==="uk"&&localItems().length)L.push(`⚠ 只限 Huddersfield 送货或自取，不能快递 Huddersfield delivery/collection only: ${localItems().map(x=>x.p.zh).join("、")}`);}
   if(d){L.push(`地址 Address: ${$("fAddr").value.trim().replace(/\s*\n\s*/g,", ")}`,`邮编 Postcode: ${$("fPost").value.trim().toUpperCase()}`,`付款 Payment: ${$("fPay").value}`);}
   else L.push("付款 Payment: 到店付款 Pay in store");
   if($("fTime").value.trim())L.push(`希望时间 Preferred time: ${$("fTime").value.trim()}`);
@@ -2483,7 +2483,7 @@ const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
   const a=DELIVERY[area()],t=subtotal();m.hidden=false;m.classList.toggle("bad",a.min&&t<a.min);
   if(area()==="far")m.innerHTML=BB("运费会在 WhatsApp 上和您商量。冻货和鲜货也可以送。","We'll agree the delivery fee with you on WhatsApp. Frozen and fresh items can be delivered.");
-  else if(area()==="uk"){const c=coldItems();m.innerHTML=BB("运费和到货时间会在 WhatsApp 上和您确认。","We'll confirm postage and delivery time with you on WhatsApp.")+(c.length?`<div style="margin-top:6px">${BB(`冻货、冷藏和鲜货暂时还不能快递，下单后我们会联系您商量：${c.map(x=>x.p.zh).join("、")}`,`Frozen, chilled and fresh items can't be posted yet. We'll contact you about: ${c.map(x=>x.p.en).join(", ")}`)}</div>`:"");{const w=localItems();if(w.length)m.innerHTML+=`<div style="margin-top:6px">${BB(`以下商品只在 Huddersfield 本地出售，不能快递，请从购物篮中删除：${w.map(x=>x.p.zh).join("、")}`,`These items are sold in Huddersfield only and can't be posted. Please remove: ${w.map(x=>x.p.en).join(", ")}`)}</div>`;}}
+  else if(area()==="uk"){const c=coldItems();m.innerHTML=BB("运费和到货时间会在 WhatsApp 上和您确认。","We'll confirm postage and delivery time with you on WhatsApp.")+(c.length?`<div style="margin-top:6px">${BB(`冻货、冷藏和鲜货暂时还不能快递，下单后我们会联系您商量：${c.map(x=>x.p.zh).join("、")}`,`Frozen, chilled and fresh items can't be posted yet. We'll contact you about: ${c.map(x=>x.p.en).join(", ")}`)}</div>`:"");{const w=localItems();if(w.length)m.innerHTML+=`<div style="margin-top:6px">${BB(`以下商品只限 Huddersfield 送货或到店自取，不能快递，请从购物篮中删除：${w.map(x=>x.p.zh).join("、")}`,`These items are for Huddersfield delivery or in-store collection only and can't be posted. Please remove: ${w.map(x=>x.p.en).join(", ")}`)}</div>`;}}
   else if(t>=a.min)m.innerHTML=BB(`✓ 已满 £${a.min}，免费配送`,`✓ Over £${a.min}: free delivery`);
   else m.innerHTML=BB(`还差 ${money(a.min-t)} 才能送货（满 £${a.min} 免费配送），也可以改为到店自取。`,`Add ${money(a.min-t)} more for delivery (free over £${a.min}), or choose collection.`);}
 // 订单编号：DD-日月-四位随机数，例如 DD-0911-4827；发送后换一个新的
