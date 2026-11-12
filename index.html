@@ -2737,6 +2737,13 @@ html.nd .pv-info .dbar[hidden],html.nd .pv-info .ukbar[hidden]{display:none!impo
     const on=document.querySelector('#zones button[aria-pressed="true"]');if(on){const z=document.getElementById("zones");z.scrollLeft+=on.getBoundingClientRect().left-z.getBoundingClientRect().left-(z.clientWidth-on.offsetWidth)/2}}))};
   document.getElementById("zones").addEventListener("click",e=>{if(e.target.closest("button"))goProducts()});
   document.getElementById("cats").addEventListener("click",e=>{if(e.target.closest("button"))goProducts()});
+  /* 搜索：打完字（停顿一下）或按回车，直接跳到搜索结果 */
+  {const qi=document.getElementById("q");let st=null;
+   const goRes=()=>{if(!qi.value.trim())return;requestAnimationFrame(()=>requestAnimationFrame(()=>{
+     const g=document.getElementById("grid");if(!g)return;let n=0;
+     const fix=()=>{pin();const d=g.getBoundingClientRect().top-tabs.offsetHeight-10;if(Math.abs(d)>3)window.scrollBy(0,d);if(++n<8)setTimeout(fix,60)};fix()}))};
+   qi.addEventListener("input",()=>{clearTimeout(st);st=setTimeout(goRes,700)});
+   qi.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(st);qi.blur();goRes()}});}
   /* 中英并排时英文在前：把每组「中文 + 英文」调成「英文 + 中文」 */
   const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b"))return;let n=z.nextSibling,lb=null;
       while(n&&(n.nodeType===3&&!n.textContent.trim()||n.nodeType===1&&n.classList.contains("lb"))){if(n.nodeType===1)lb=n;n=n.nextSibling}
