@@ -2665,9 +2665,14 @@ html.nd .pv-info .dbar[hidden],html.nd .pv-info .ukbar[hidden]{display:none!impo
   document.getElementById("pvBasket").addEventListener("click",()=>document.getElementById("openCart").click());
   const cc=document.getElementById("cartCount"),pc=document.getElementById("pvCount");const sync=()=>{pc.textContent=cc.textContent||"0"};sync();
   new MutationObserver(sync).observe(cc,{childList:true,characterData:true,subtree:true});
-  document.getElementById("zones").addEventListener("click",e=>{if(!e.target.closest("button"))return;
-    const p=document.getElementById("products");setTimeout(()=>{const r=p.getBoundingClientRect();if(r.top>innerHeight*0.5||r.top<-40)window.scrollTo({top:scrollY+r.top-tabs.offsetHeight-8,behavior:"smooth"});
-      const on=document.querySelector('#zones button[aria-pressed="true"]');if(on)on.scrollIntoView({inline:"center",block:"nearest"})},60)});
+  /* 点分区或小分类后，直接跳到商品那一块（分类按钮的位置，下面就是商品） */
+  const goProducts=()=>{requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    const T=()=>{const c=document.getElementById("cats");return (c&&c.children.length&&c.offsetHeight)?c:document.getElementById("grid")};
+    const go=()=>window.scrollTo(0,Math.max(0,T().getBoundingClientRect().top+window.pageYOffset-tabs.offsetHeight-10));
+    let n=0;const fix=()=>{pin();const d=T().getBoundingClientRect().top-tabs.offsetHeight-10;if(Math.abs(d)>3)window.scrollBy(0,d);if(++n<8)setTimeout(fix,60)};go();fix();
+    const on=document.querySelector('#zones button[aria-pressed="true"]');if(on){const z=document.getElementById("zones");z.scrollLeft+=on.getBoundingClientRect().left-z.getBoundingClientRect().left-(z.clientWidth-on.offsetWidth)/2}}))};
+  document.getElementById("zones").addEventListener("click",e=>{if(e.target.closest("button"))goProducts()});
+  document.getElementById("cats").addEventListener("click",e=>{if(e.target.closest("button"))goProducts()});
   /* 中英并排时英文在前：把每组「中文 + 英文」调成「英文 + 中文」 */
   const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b"))return;let n=z.nextSibling,lb=null;
       while(n&&(n.nodeType===3&&!n.textContent.trim()||n.nodeType===1&&n.classList.contains("lb"))){if(n.nodeType===1)lb=n;n=n.nextSibling}
