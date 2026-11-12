@@ -2417,8 +2417,8 @@ const DELIVERY={uni:{min:15,zh:"哈德斯菲尔德大学周边学生宿舍",en:"
 const FEE_TBC=a=>a==="far"||a==="uk";
 const coldItems=()=>items().filter(x=>["frozen","chilled","freshzone","fresh","bakery"].some(z=>inZone(x.p,z)));
 const area=()=>(document.querySelector('input[name="area"]:checked')||{}).value;
-// 全英快递不能付现金：选了就自动改成银行转账，现金选项暂时关掉
-document.addEventListener("change",e=>{if(e.target.name!=="area")return;const f=$("fPay"),c=f.querySelector('option[value="现金 Cash"]'),uk=area()==="uk";if(c)c.disabled=uk;if(uk&&f.value==="现金 Cash"){f.value="银行转账 Bank transfer";f.dispatchEvent(new Event("change",{bubbles:true}))}});
+// 全英快递暂时只收银行转账（以后开了 PayPal 再加）
+document.addEventListener("change",e=>{if(e.target.name!=="area")return;const f=$("fPay"),uk=area()==="uk";f.querySelectorAll("option").forEach(o=>{o.disabled=uk&&o.value!=="银行转账 Bank transfer"});if(uk&&f.value!=="银行转账 Bank transfer"){f.value="银行转账 Bank transfer";f.dispatchEvent(new Event("change",{bubbles:true}))}});
 const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);};
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
   const a=DELIVERY[area()],t=subtotal();m.hidden=false;m.classList.toggle("bad",a.min&&t<a.min);
