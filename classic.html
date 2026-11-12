@@ -589,7 +589,8 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
           <fieldset class="area"><legend class="arealg"><span class="lz">送货区域</span> <span class="le">Delivery area</span> *</legend>
             <label><input type="radio" name="area" value="uni" id="areaUni"><span><span class="lz">哈德斯菲尔德大学周边学生宿舍</span><span class="le">Student accommodation near University of Huddersfield</span><small><span class="lz">满 £15 免费配送</span> <span class="le">Free delivery over £15</span></small></span></label>
             <label><input type="radio" name="area" value="near" id="areaNear"><span><span class="lz">3 英里内其他地址</span><span class="le">Other addresses within 3 miles</span><small><span class="lz">满 £40 免费配送</span> <span class="le">Free delivery over £40</span></small></span></label>
-            <label><input type="radio" name="area" value="far" id="areaFar"><span><span class="lz">3 英里以外 · 全英快递</span><span class="le">More than 3 miles · UK-wide shipping</span><small><span class="lz">运费在 WhatsApp 商量</span> <span class="le">Delivery fee agreed on WhatsApp</span></small></span></label>
+            <label><input type="radio" name="area" value="far" id="areaFar"><span><span class="lz">Huddersfield 3 英里以外</span><span class="le">Huddersfield area, more than 3 miles</span><small><span class="lz">运费在 WhatsApp 商量</span> <span class="le">Delivery fee agreed on WhatsApp</span></small></span></label>
+            <label><input type="radio" name="area" value="uk" id="areaUk"><span><span class="lz">英国其他城市 · 全英快递</span><span class="le">Other UK cities · UK-wide shipping</span><small><span class="lz">运费和到货时间在 WhatsApp 确认</span> <span class="le">Postage and delivery time confirmed on WhatsApp</span></small></span></label>
           </fieldset>
           <p class="dmsg" id="dmsg" hidden></p>
           <label class="fld"><span><span class="lz">送货地址</span> <span class="le">Delivery address</span> *</span><textarea id="fAddr" autocomplete="street-address"></textarea></label>
@@ -2401,7 +2402,8 @@ function buildMessage(){
   if(it.some(x=>isAlc(x.p)))L.push("含须年满18岁商品（酒类/刀具/燃气罐），本人已年满18岁 Contains age-restricted items, I am 18 or over","");
   L.push(`方式 Method: ${d?"送货上门 Delivery":"到店自取 Collect in store"}`);
   L.push(`姓名 Name: ${$("fName").value.trim()}`,`电话 Phone: ${$("fPhone").value.trim()}`);
-  if(d&&area()){const a=DELIVERY[area()];L.push(`区域 Area: ${a.zh} ${a.en}`,`运费 Delivery fee: ${area()==="far"?"待商量 To be agreed":"免费 Free"}`);}
+  if(d&&area()){const a=DELIVERY[area()];L.push(`区域 Area: ${a.zh} ${a.en}`,`运费 Delivery fee: ${FEE_TBC(area())?"待商量 To be agreed":"免费 Free"}`);
+    if(area()==="uk"&&coldItems().length)L.push(`⚠ 冻货/鲜货待商量 Chilled/frozen items to discuss: ${coldItems().map(x=>x.p.zh).join("、")}`);}
   if(d){L.push(`地址 Address: ${$("fAddr").value.trim().replace(/\s*\n\s*/g,", ")}`,`邮编 Postcode: ${$("fPost").value.trim().toUpperCase()}`,`付款 Payment: ${$("fPay").value}`);}
   else L.push("付款 Payment: 到店付款 Pay in store");
   if($("fTime").value.trim())L.push(`希望时间 Preferred time: ${$("fTime").value.trim()}`);
@@ -2410,12 +2412,18 @@ function buildMessage(){
 }
 // 送货规则：学生宿舍满 £15、3 英里内满 £40 免费配送；不满只能到店自取；3 英里外运费商量
 const DELIVERY={uni:{min:15,zh:"哈德斯菲尔德大学周边学生宿舍",en:"Student accommodation near University of Huddersfield"},
-  near:{min:40,zh:"3 英里内其他地址",en:"Within 3 miles"},far:{min:0,zh:"3 英里以外 · 全英快递",en:"More than 3 miles · UK-wide shipping"}};
+  near:{min:40,zh:"3 英里内其他地址",en:"Within 3 miles"},far:{min:0,zh:"Huddersfield 3 英里以外",en:"Huddersfield area, more than 3 miles"},
+  uk:{min:0,zh:"英国其他城市 · 全英快递",en:"Other UK cities · UK-wide shipping"}};
+const FEE_TBC=a=>a==="far"||a==="uk";
+const coldItems=()=>items().filter(x=>["frozen","chilled","freshzone","fresh","bakery"].some(z=>inZone(x.p,z)));
 const area=()=>(document.querySelector('input[name="area"]:checked')||{}).value;
+// 全英快递不能付现金：选了就自动改成银行转账，现金选项暂时关掉
+document.addEventListener("change",e=>{if(e.target.name!=="area")return;const f=$("fPay"),c=f.querySelector('option[value="现金 Cash"]'),uk=area()==="uk";if(c)c.disabled=uk;if(uk&&f.value==="现金 Cash"){f.value="银行转账 Bank transfer";f.dispatchEvent(new Event("change",{bubbles:true}))}});
 const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);};
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
   const a=DELIVERY[area()],t=subtotal();m.hidden=false;m.classList.toggle("bad",a.min&&t<a.min);
-  if(area()==="far")m.innerHTML=BB("运费会在 WhatsApp 上和您商量。","We'll agree the delivery fee with you on WhatsApp.");
+  if(area()==="far")m.innerHTML=BB("运费会在 WhatsApp 上和您商量。冻货和鲜货也可以送。","We'll agree the delivery fee with you on WhatsApp. Frozen and fresh items can be delivered.");
+  else if(area()==="uk"){const c=coldItems();m.innerHTML=BB("运费和到货时间会在 WhatsApp 上和您确认。","We'll confirm postage and delivery time with you on WhatsApp.")+(c.length?`<div style="margin-top:6px">${BB(`冻货、冷藏和鲜货暂时还不能快递，下单后我们会联系您商量：${c.map(x=>x.p.zh).join("、")}`,`Frozen, chilled and fresh items can't be posted yet. We'll contact you about: ${c.map(x=>x.p.en).join(", ")}`)}</div>`:"");}
   else if(t>=a.min)m.innerHTML=BB(`✓ 已满 £${a.min}，免费配送`,`✓ Over £${a.min}: free delivery`);
   else m.innerHTML=BB(`还差 ${money(a.min-t)} 才能送货（满 £${a.min} 免费配送），也可以改为到店自取。`,`Add ${money(a.min-t)} more for delivery (free over £${a.min}), or choose collection.`);}
 // 订单编号：DD-日月-四位随机数，例如 DD-0911-4827；发送后换一个新的
@@ -2423,7 +2431,7 @@ let ORDER_NO="";
 function orderNo(){if(!ORDER_NO){const d=new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/London"}));
   ORDER_NO=`DD-${String(d.getDate()).padStart(2,"0")}${String(d.getMonth()+1).padStart(2,"0")}-${String(Math.floor(1000+Math.random()*9000))}`;}return ORDER_NO;}
 function cartHint(t){const a=area();const T=(zh,en)=>LANG==="en"?en:zh;
-  if(mode()==="delivery"&&a&&a!=="far"){const m=DELIVERY[a].min;return t>=m?T(`✓ 已满 £${m}，可免费配送`,`✓ Free delivery (over £${m})`):T(`还差 ${money(m-t)} 免费配送`,`${money(m-t)} more for free delivery`);}
+  if(mode()==="delivery"&&a&&!FEE_TBC(a)){const m=DELIVERY[a].min;return t>=m?T(`✓ 已满 £${m}，可免费配送`,`✓ Free delivery (over £${m})`):T(`还差 ${money(m-t)} 免费配送`,`${money(m-t)} more for free delivery`);}
   return "";} // 没选送货上门时不提示免费配送
 function problem(){
   if(!items().length)return B("请先加入商品。","Please add some items first.");
@@ -2431,7 +2439,7 @@ function problem(){
   if($("fPhone").value.replace(/\D/g,"").length<10)return B("请填写正确的电话号码。","Please enter a valid phone number.");
   if(items().some(x=>x.p.combo)&&!$("fNote").value.trim())return B("双拼请在备注里写明选哪两样（叉烧、烧肉、烧鸭任选两样）。","For the Two-Meat Combo, please write your two choices (char siu, roast pork, roast duck) in Notes.");
   if(mode()==="delivery"&&!area())return B("请选择送货区域。","Please choose your delivery area.");
-  if(mode()==="delivery"&&area()!=="far"&&subtotal()<DELIVERY[area()].min){const a=DELIVERY[area()];return B(`满 £${a.min} 才能送货，还差 ${money(a.min-subtotal())}。请继续选购或改为到店自取。`,`Delivery needs £${a.min} or more. Add ${money(a.min-subtotal())} more, or choose collection.`);}
+  if(mode()==="delivery"&&!FEE_TBC(area())&&subtotal()<DELIVERY[area()].min){const a=DELIVERY[area()];return B(`满 £${a.min} 才能送货，还差 ${money(a.min-subtotal())}。请继续选购或改为到店自取。`,`Delivery needs £${a.min} or more. Add ${money(a.min-subtotal())} more, or choose collection.`);}
   if(mode()==="delivery"&&(!$("fAddr").value.trim()||!$("fPost").value.trim()))return B("送货请填写地址和邮编。","Please enter your address and postcode for delivery.");
   return "";
 }
