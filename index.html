@@ -2161,7 +2161,9 @@ let tx=null;$("pv").addEventListener("touchstart",e=>{tx=e.touches[0].clientX;pp
 $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){showSlide(si+(dx<0?1:-1));}}tx=null;ppaused=false;startAuto();});
 function renderWeb(){const L=PRODUCTS.filter(p=>p.web&&!isOOS(p));$("webdeals").hidden=!L.length;if(!L.length)return;
   $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
-function renderDeals(){renderWeb();const L=PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web);
+// 首页特价那一排：暂时关掉（改成 true 就重新显示）
+const SHOW_DEALS=false;
+function renderDeals(){renderWeb();const L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web):[];
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
   $("dstrip").innerHTML=L.map(miniCard).join("");}
