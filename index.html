@@ -2129,7 +2129,7 @@ const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.n
 if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new",zh:"新品",en:"New arrivals",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn">${ZO(p.zh,p.en)}${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn"><span class="le pne">${p.en}</span><span class="lb"> </span><span class="lz pnz">${p.zh}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
@@ -2607,12 +2607,30 @@ html[data-lang="both"].nd .zones button[aria-pressed="true"] small{color:var(--g
 html[data-lang="both"].nd .zones button[aria-pressed="true"] b{color:var(--green)}
 html[data-lang="both"].nd .zones button.salezone small{color:var(--red)}
 html[data-lang="both"].nd .zones button.salezone b{color:var(--red);font-weight:400}
-html[data-lang="both"].nd .cats button{display:inline-flex;flex-direction:row-reverse;gap:5px;align-items:baseline}
 html[data-lang="both"].nd .cats button .lz{font-size:12px;opacity:.75}
 html[data-lang="both"].nd .cats button .le{font-size:14px;color:inherit}
-html[data-lang="both"].nd .grp-h h3{display:flex;flex-direction:row-reverse;justify-content:flex-end;align-items:baseline;gap:8px}
 html[data-lang="both"].nd .grp-h h3 .lz{font-size:.62em;color:var(--muted);font-family:var(--body);font-weight:400}
 html[data-lang="both"].nd .grp-h h3 .le{font-family:var(--en-display);font-size:1em;color:var(--green)}
+/* 中/EN 模式：全站英文为主 */
+html[data-lang="both"].nd .pit .pn{-webkit-line-clamp:4;min-height:0}
+html[data-lang="both"].nd .pit .pne{font-weight:700;color:var(--ink)}
+html[data-lang="both"].nd .pit .pnz{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+html[data-lang="both"].nd .pit .pn .lb{display:none!important}
+html[data-lang="both"].nd .zinfo .zclose{order:-3}
+html[data-lang="both"].nd .zinfo .pen{order:-2;font-size:18px;font-weight:700;color:var(--ink)}
+html[data-lang="both"].nd .zinfo .name{order:-1;font-size:14px;font-weight:400;color:var(--muted)}
+html[data-lang="both"].nd .line .nm{display:flex;flex-direction:column}
+html[data-lang="both"].nd .line .nm>.le{order:-1;font-weight:700;color:var(--ink);font-size:14px}
+html[data-lang="both"].nd .line .nm>.lz{font-size:12.5px;color:var(--muted)}
+html[data-lang="both"].nd .line .nm>.lb{display:none!important}
+html[data-lang="both"].nd #wtitle .lb,html[data-lang="both"].nd #dtitle .lb{display:none!important}
+html[data-lang="both"].nd #wtitle .lz,html[data-lang="both"].nd #dtitle .lz,html[data-lang="both"].nd .bar h2 .lz{font-size:.6em;color:var(--muted);font-family:var(--body)}
+html[data-lang="both"].nd .bar h2 .le{font-size:1em;color:var(--green);font-family:var(--en-display)}
+html[data-lang="both"].nd .add .lz,html[data-lang="both"].nd .pbtn .lz{font-size:.8em;font-weight:400;opacity:.85}
+html[data-lang="both"].nd .lz{font-size:.9em}
+html[data-lang="both"].nd .grp-n .lz{display:none!important}
+html[data-lang="both"].nd .drawer h2 .le,html[data-lang="both"].nd .panel h2 .le{font-size:1em;color:var(--green)}
+html[data-lang="both"].nd .zones .lz,html[data-lang="both"].nd .card .name,html[data-lang="both"].nd .zinfo .name{font-size:inherit}
 /* 送货 / 全英快递：两个小按钮，点开再看详情 */
 .nd-dl{display:flex;gap:8px}
 .nd-dl button{flex:1 1 0;min-width:0;justify-content:center;padding:7px 6px!important;font-size:13px!important}
@@ -2639,6 +2657,12 @@ html.nd .pv-info .dbar[hidden],html.nd .pv-info .ukbar[hidden]{display:none!impo
   document.getElementById("zones").addEventListener("click",e=>{if(!e.target.closest("button"))return;
     const p=document.getElementById("products");setTimeout(()=>{const r=p.getBoundingClientRect();if(r.top>innerHeight*0.5||r.top<-40)window.scrollTo({top:scrollY+r.top-tabs.offsetHeight-8,behavior:"smooth"});
       const on=document.querySelector('#zones button[aria-pressed="true"]');if(on)on.scrollIntoView({inline:"center",block:"nearest"})},60)});
+  /* 中英并排时英文在前：把每组「中文 + 英文」调成「英文 + 中文」 */
+  const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b"))return;let n=z.nextSibling,lb=null;
+      while(n&&(n.nodeType===3&&!n.textContent.trim()||n.nodeType===1&&n.classList.contains("lb"))){if(n.nodeType===1)lb=n;n=n.nextSibling}
+      if(n&&n.nodeType===1&&n.classList.contains("le")&&!n.classList.contains("lzc")){const par=z.parentNode;par.insertBefore(n,z);if(lb)par.insertBefore(lb,z);else par.insertBefore(document.createTextNode(" "),z)}})};
+  let qd=false;const run=()=>{qd=false;swap(document.body)};run();
+  new MutationObserver(()=>{if(!qd){qd=true;requestAnimationFrame(run)}}).observe(document.body,{childList:true,subtree:true});
   {const dbar=document.querySelector(".dbar"),uk=document.querySelector(".ukbar");
    if(dbar&&uk){const row=document.createElement("div");row.className="nd-dl";
     row.innerHTML='<button type="button" data-t="d" aria-expanded="false">🚚 <span class="le">Delivery</span> <span class="lz">送货上门</span> <i>⌄</i></button><button type="button" data-t="u" aria-expanded="false">📦 <span class="le">UK shipping</span> <span class="lz">全英快递</span> <i>⌄</i></button>';
