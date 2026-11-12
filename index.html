@@ -513,7 +513,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
       <p><span class="le">Noodles, sauces, snacks, frozen dumplings and fresh produce. Order online, then collect in store, get local delivery or UK-wide shipping.</span><span class="lz pv-zh">面条、调料、零食、速冻水饺和新鲜蔬果。网上下单，到店自取、本地送货或全英快递。</span></p>
       <div class="actions"><a class="btn primary" href="#products"><span class="le">Shop now</span> <span class="lz">开始选购</span> →</a><a class="btn ghost" href="#visit"><span class="le">Visit us</span> <span class="lz">到店信息</span></a></div>
     </div>
-    <div class="pv-mosaic" aria-hidden="true"><span><img src="img/sw3_shin5.jpg" alt="" loading="lazy"></span><span><img src="img/sw2_ns_blackgarlic.jpg" alt="" loading="lazy"></span><span><img src="img/sw3_bd5_carb.jpg" alt="" loading="lazy"></span><span><img src="img/ph_lkk_light.jpg" alt="" loading="lazy"></span><span><img src="img/ph_jc_jc2.jpg" alt="" loading="lazy"></span><span><img src="img/sw2_ns_cup_seafood.jpg" alt="" loading="lazy"></span></div>
+    <figure class="pv-photo"><img src="shopfront.jpg" alt="東東超市店面 Dong Dong Supermarket shopfront, Beast Market, Huddersfield"></figure>
   </div></div>
 </section>
 
@@ -2557,7 +2557,9 @@ html.nd .btn.ghost{border-color:rgba(247,243,230,.45)}
 .pv-mosaic{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:22px;background:#2c4a3a;align-content:center}
 .pv-mosaic span{background:#fff;border-radius:14px;aspect-ratio:1;overflow:hidden;display:block}
 .pv-mosaic img{width:100%;height:100%;object-fit:contain;padding:6px;display:block}
-@media (max-width:760px){.pv-hero{grid-template-columns:minmax(0,1fr)}html.nd .hero-text{padding:30px 24px 28px}.pv-mosaic{padding:14px;gap:8px}}
+.pv-photo{margin:0;background:#2c4a3a;display:flex}
+.pv-photo img{width:100%;height:100%;object-fit:cover;object-position:20% 70%;display:block;min-height:240px}
+@media (max-width:760px){.pv-hero{grid-template-columns:minmax(0,1fr)}.pv-photo img{aspect-ratio:16/9;height:auto;min-height:0}html.nd .hero-text{padding:30px 24px 28px}.pv-mosaic{padding:14px;gap:8px}}
 /* 轮播、网上专享、特价 */
 html.nd .promo,html.nd .deals{background:none;border:0}
 html.nd .dbox{border:1px solid var(--line);border-radius:18px;padding:16px}
