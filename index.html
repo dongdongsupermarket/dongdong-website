@@ -225,6 +225,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .preline{color:#8fb6dd}}
 :root[data-theme="dark"] .preline{color:#8fb6dd}
 .prenext{font-weight:700}
+.localbadge{position:absolute;top:8px;right:8px;z-index:1;background:#1f4e79;color:#fff;font-weight:700;font-size:11px;padding:3px 7px;border-radius:3px;line-height:1.25;text-align:center}
 .homebadge{position:absolute;bottom:8px;right:8px;z-index:1;background:#7a4a1e;color:#fff4e0;font-weight:700;font-size:11px;padding:3px 7px;border-radius:3px;line-height:1.2}
 .caseline{margin-top:4px;font-size:12.5px;font-weight:600;color:var(--green)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .caseline{color:var(--gold-hi)}}
@@ -439,7 +440,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 @media (max-width:760px){.slide{grid-template-columns:1fr;gap:12px;min-height:0;padding:14px}.pit{flex-basis:118px}}
 @media (prefers-reduced-motion:reduce){.ptrack{transition:none}}
 @media (max-width:760px){.hero .wrap{grid-template-columns:1fr;gap:22px;padding-block:24px 28px}.photo{order:-1}}
-@media (max-width:760px){.homebadge{font-size:9.5px;padding:2px 5px;bottom:4px;right:4px}html[data-lang="both"] .homebadge .le,html[data-lang="both"] .homebadge .lb{display:none!important}html[data-lang="both"] .preline .le,html[data-lang="both"] .preline .lb{display:none!important}.add.preadd{font-size:13px}.prebadge{font-size:9.5px;padding:2px 5px;bottom:4px;left:4px}html[data-lang="both"] .prebadge .le,html[data-lang="both"] .prebadge .lb{display:none!important}.newbadge{font-size:10px;padding:2px 5px;top:4px;left:4px}.chev{right:3px;font-size:15px}.subcats{margin-left:2px;padding-left:2px}.subcats button{padding:6px 4px;font-size:12.5px}.subcats button small{font-size:9px}
+@media (max-width:760px){.localbadge{font-size:9.5px;padding:2px 5px;top:4px;right:4px}html[data-lang="both"] .localbadge .lz,html[data-lang="both"] .localbadge .lb{display:none!important}.homebadge{font-size:9.5px;padding:2px 5px;bottom:4px;right:4px}html[data-lang="both"] .homebadge .le,html[data-lang="both"] .homebadge .lb{display:none!important}html[data-lang="both"] .preline .le,html[data-lang="both"] .preline .lb{display:none!important}.add.preadd{font-size:13px}.prebadge{font-size:9.5px;padding:2px 5px;bottom:4px;left:4px}html[data-lang="both"] .prebadge .le,html[data-lang="both"] .prebadge .lb{display:none!important}.newbadge{font-size:10px;padding:2px 5px;top:4px;left:4px}.chev{right:3px;font-size:15px}.subcats{margin-left:2px;padding-left:2px}.subcats button{padding:6px 4px;font-size:12.5px}.subcats button small{font-size:9px}
 .grp-list{grid-template-columns:1fr;gap:8px}.grp-h h3{font-size:17px}
 .shop{grid-template-columns:96px minmax(0,1fr);gap:10px;margin-inline:-6px}.zones{padding:4px}.zones button{padding:10px 6px 10px 7px;border-left-width:3px}.zones button b{font-size:14px;letter-spacing:-.02em}.zones button small{font-size:9.5px;letter-spacing:.02em}
 .grid{grid-template-columns:minmax(0,1fr)!important;gap:8px!important}
@@ -1246,9 +1247,9 @@ const PRODUCTS_RAW=[
  {"c": "softdrink", "zh": "OKF芦荟饮料", "en": "OKF Aloe Vera Drink", "spec": "1.5L", "price": 3.49, "img": "img/sw_aloe15.jpg"},
  {"c": "softdrink", "zh": "康师傅冰红茶", "en": "KSF Iced Tea", "spec": "1L", "price": 2.79, "img": "img/sw_ksf_icetea1l.jpg"},
  {"c": "softdrink", "zh": "康师傅低糖绿茶", "en": "KSF Green Tea", "spec": "1L", "price": 2.49, "img": "img/sw_ksf_green1l.jpg"},
- {"c": "casedrink", "zh": "Volvic 天然矿泉水 整箱 24 瓶", "en": "Volvic Natural Mineral Water 24 × 500ml", "spec": "24 × 500ml", "price": 9.99, "case": {"n": 24, "u": "瓶", "ue": "bottle"}, "also": ["softdrink"], "img": "img/volvic_24x500.jpg"},
-{"c": "casedrink", "zh": "Volvic 天然矿泉水 整箱 12 瓶", "en": "Volvic Natural Mineral Water 12 × 1.5L", "spec": "12 × 1.5L", "price": 9.99, "case": {"n": 12, "u": "瓶", "ue": "bottle"}, "also": ["softdrink"], "img": "img/volvic_12x15.jpg"},
-{"c": "softdrink", "zh": "Volvic 天然矿泉水", "en": "Volvic Mineral Water", "spec": "1.5L", "price": 1.49, "img": "img/sw_volvic15.jpg"},
+ {"c": "casedrink", "zh": "Volvic 天然矿泉水 整箱 24 瓶", "en": "Volvic Natural Mineral Water 24 × 500ml", "spec": "24 × 500ml", "local": true, "price": 9.99, "case": {"n": 24, "u": "瓶", "ue": "bottle"}, "also": ["softdrink"], "img": "img/volvic_24x500.jpg"},
+{"c": "casedrink", "zh": "Volvic 天然矿泉水 整箱 12 瓶", "en": "Volvic Natural Mineral Water 12 × 1.5L", "spec": "12 × 1.5L", "local": true, "price": 9.99, "case": {"n": 12, "u": "瓶", "ue": "bottle"}, "also": ["softdrink"], "img": "img/volvic_12x15.jpg"},
+{"c": "softdrink", "zh": "Volvic 天然矿泉水", "en": "Volvic Mineral Water", "spec": "1.5L", "local": true, "price": 1.49, "img": "img/sw_volvic15.jpg"},
  {"c": "softdrink", "zh": "统一冰红茶", "en": "Uni Ice Tea", "spec": "2L", "price": 3.99, "img": "img/sw_uni_icetea2l.jpg"},
  {"c": "softdrink", "zh": "统一茉莉绿茶", "en": "Uni Jasmine Green Tea", "spec": "2L", "price": 3.49, "img": "img/sw_uni_green2l.jpg"},
  {"c": "softdrink", "zh": "加多宝凉茶", "en": "JDB Herbal Tea", "spec": "310ml", "price": 0.99, "img": "img/sw_jdb310.jpg"},
@@ -1295,7 +1296,7 @@ const PRODUCTS_RAW=[
  {"c": "softdrink", "zh": "康师傅冰红茶", "en": "Master Kong Iced Black Tea", "spec": "500ml", "price": 3.99, "img": "img/sw_ksf_icetea_jug.jpg"},
  {"c": "softdrink", "zh": "银鹭牛奶花生 12罐装", "en": "Yinlu Peanut Milk Drink 12 Cans", "spec": "12罐 12 cans", "price": 10.99, "unit": "/箱 case", "img": "img/sw_yinlu12.jpg"},
  {"c": "softdrink", "zh": "Wonderfarm 冬瓜茶", "en": "Wonderfarm Winter Melon Tea", "spec": "310ml", "price": 0.9, "img": "img/sw_wonderfarm.jpg"},
- {"c": "softdrink", "zh": "Volvic 矿泉水", "en": "Volvic Natural Mineral Water", "spec": "500ml", "price": 1.0, "img": "img3/d3_16.jpg"},
+ {"c": "softdrink", "zh": "Volvic 矿泉水", "en": "Volvic Natural Mineral Water", "spec": "500ml", "local": true, "price": 1.0, "img": "img3/d3_16.jpg"},
  {"c": "softdrink", "zh": "元气森林白桃气泡水 6罐", "en": "Chi Forest White Peach 6 Cans", "spec": "330ml × 6", "price": 5.79, "img": "img/sw_chi6.jpg"},
  {"c": "softdrink", "zh": "东方树叶乌龙茶", "en": "Oriental Leaf Oolong Tea", "spec": "500ml", "price": 1.15, "img": "img/sw_dfsy_wulong.jpg"},
  {"c": "softdrink", "zh": "东方树叶黑乌龙", "en": "Oriental Leaf Black Oolong Tea", "spec": "500ml", "price": 1.15, "img": "img/sw_dfsy_heiwulong.jpg"},
@@ -1304,7 +1305,7 @@ const PRODUCTS_RAW=[
  {"c": "softdrink", "zh": "东方树叶红茶", "en": "Oriental Leaf Black Tea", "spec": "500ml", "price": 1.15, "img": "img/sw_dfsy_hongcha.jpg"},
  {"c": "softdrink", "zh": "康师傅酸梅汤", "en": "Master Kong Sour Plum Drink", "spec": "500ml", "price": 1.25, "img": "img/sw_ksf_suanmei.jpg"},
  {"c": "softdrink", "zh": "Highland Spring 气泡水", "en": "Highland Spring Sparkling Water", "spec": "500ml", "price": 1.59, "img": "img/sw_highland.jpg"},
- {"c": "softdrink", "zh": "Volvic 矿泉水", "en": "Volvic Natural Mineral Water", "spec": "1L", "price": 1.5, "img": "img3/d4_05.jpg"},
+ {"c": "softdrink", "zh": "Volvic 矿泉水", "en": "Volvic Natural Mineral Water", "spec": "1L", "local": true, "price": 1.5, "img": "img3/d4_05.jpg"},
  {"c": "softdrink", "zh": "VAMINO 豆奶 六瓶装", "en": "VAMINO Soy Milk (6 Bottles)", "spec": "6瓶 6 bottles", "price": 7.99, "img": "img/sw_vamino6.jpg"},
  {"c": "softdrink", "zh": "Schweppes 怡泉忌廉汽水", "en": "Schweppes Cream Soda", "spec": "8×330ml", "price": 8.99, "img": "img/sw_schw8.jpg"},
  {"c": "softdrink", "zh": "娃哈哈AD钙奶", "en": "Wahaha AD Milk", "spec": "4×210ml", "price": 3.99, "img": "img/sw_wahaha_ad.jpg"},
@@ -2403,7 +2404,7 @@ function render(){
 }
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
-     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
+     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
      <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
      ${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
@@ -2460,7 +2461,7 @@ function buildMessage(){
   L.push(`方式 Method: ${d?"送货上门 Delivery":"到店自取 Collect in store"}`);
   L.push(`姓名 Name: ${$("fName").value.trim()}`,`电话 Phone: ${$("fPhone").value.trim()}`);
   if(d&&area()){const a=DELIVERY[area()];L.push(`区域 Area: ${a.zh} ${a.en}`,`运费 Delivery fee: ${FEE_TBC(area())?"待商量 To be agreed":"免费 Free"}`);
-    if(area()==="uk"&&coldItems().length)L.push(`⚠ 冻货/鲜货待商量 Chilled/frozen items to discuss: ${coldItems().map(x=>x.p.zh).join("、")}`);}
+    if(area()==="uk"&&coldItems().length)L.push(`⚠ 冻货/鲜货待商量 Chilled/frozen items to discuss: ${coldItems().map(x=>x.p.zh).join("、")}`);if(area()==="uk"&&localItems().length)L.push(`⚠ 仅限 Huddersfield，不能快递 Huddersfield only: ${localItems().map(x=>x.p.zh).join("、")}`);}
   if(d){L.push(`地址 Address: ${$("fAddr").value.trim().replace(/\s*\n\s*/g,", ")}`,`邮编 Postcode: ${$("fPost").value.trim().toUpperCase()}`,`付款 Payment: ${$("fPay").value}`);}
   else L.push("付款 Payment: 到店付款 Pay in store");
   if($("fTime").value.trim())L.push(`希望时间 Preferred time: ${$("fTime").value.trim()}`);
@@ -2472,7 +2473,8 @@ const DELIVERY={uni:{min:15,zh:"哈德斯菲尔德大学周边学生宿舍",en:"
   near:{min:40,zh:"3 英里内其他地址",en:"Within 3 miles"},far:{min:0,zh:"Huddersfield 3 英里以外",en:"Huddersfield area, more than 3 miles"},
   uk:{min:0,zh:"英国其他城市 · 全英快递",en:"Other UK cities · UK-wide shipping"}};
 const FEE_TBC=a=>a==="far"||a==="uk";
-const coldItems=()=>items().filter(x=>["frozen","chilled","freshzone","fresh","bakery"].some(z=>inZone(x.p,z)));
+const localItems=()=>items().filter(x=>x.p.local);
+const coldItems=()=>items().filter(x=>!x.p.local&&["frozen","chilled","freshzone","fresh","bakery"].some(z=>inZone(x.p,z)));
 const area=()=>(document.querySelector('input[name="area"]:checked')||{}).value;
 // 全英快递暂时只收银行转账（以后开了 PayPal 再加）
 document.addEventListener("change",e=>{if(e.target.name!=="area")return;const f=$("fPay"),uk=area()==="uk";f.querySelectorAll("option").forEach(o=>{o.disabled=uk&&o.value!=="银行转账 Bank transfer"});if(uk&&f.value!=="银行转账 Bank transfer"){f.value="银行转账 Bank transfer";f.dispatchEvent(new Event("change",{bubbles:true}))}});
@@ -2480,7 +2482,7 @@ const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
   const a=DELIVERY[area()],t=subtotal();m.hidden=false;m.classList.toggle("bad",a.min&&t<a.min);
   if(area()==="far")m.innerHTML=BB("运费会在 WhatsApp 上和您商量。冻货和鲜货也可以送。","We'll agree the delivery fee with you on WhatsApp. Frozen and fresh items can be delivered.");
-  else if(area()==="uk"){const c=coldItems();m.innerHTML=BB("运费和到货时间会在 WhatsApp 上和您确认。","We'll confirm postage and delivery time with you on WhatsApp.")+(c.length?`<div style="margin-top:6px">${BB(`冻货、冷藏和鲜货暂时还不能快递，下单后我们会联系您商量：${c.map(x=>x.p.zh).join("、")}`,`Frozen, chilled and fresh items can't be posted yet. We'll contact you about: ${c.map(x=>x.p.en).join(", ")}`)}</div>`:"");}
+  else if(area()==="uk"){const c=coldItems();m.innerHTML=BB("运费和到货时间会在 WhatsApp 上和您确认。","We'll confirm postage and delivery time with you on WhatsApp.")+(c.length?`<div style="margin-top:6px">${BB(`冻货、冷藏和鲜货暂时还不能快递，下单后我们会联系您商量：${c.map(x=>x.p.zh).join("、")}`,`Frozen, chilled and fresh items can't be posted yet. We'll contact you about: ${c.map(x=>x.p.en).join(", ")}`)}</div>`:"");{const w=localItems();if(w.length)m.innerHTML+=`<div style="margin-top:6px">${BB(`矿泉水只在 Huddersfield 本地出售，不能快递，请从购物篮中删除：${w.map(x=>x.p.zh).join("、")}`,`Bottled water is sold in Huddersfield only and can't be posted. Please remove: ${w.map(x=>x.p.en).join(", ")}`)}</div>`;}}
   else if(t>=a.min)m.innerHTML=BB(`✓ 已满 £${a.min}，免费配送`,`✓ Over £${a.min}: free delivery`);
   else m.innerHTML=BB(`还差 ${money(a.min-t)} 才能送货（满 £${a.min} 免费配送），也可以改为到店自取。`,`Add ${money(a.min-t)} more for delivery (free over £${a.min}), or choose collection.`);}
 // 订单编号：DD-日月-四位随机数，例如 DD-0911-4827；发送后换一个新的
