@@ -428,6 +428,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .pit{flex:0 0 132px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);cursor:pointer;display:grid;text-align:left;font:inherit;color:inherit;padding:0}
 .pit .pimg{aspect-ratio:1;background:#fff;position:relative;overflow:hidden}
 .pit .pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:4px;box-sizing:border-box}
+.pit .acol{position:absolute;inset:0;display:grid;gap:2px;padding:4px;box-sizing:border-box}.pit .acol.n2,.pit .acol.n3,.pit .acol.n4{grid-template-columns:1fr 1fr}.pit .acol.n3 img:first-child{grid-column:1/3}.pit .acol img{position:static!important;width:100%;height:100%;object-fit:contain;padding:0!important;min-height:0}
 .pit .pimg .glyph{display:grid;place-items:center;height:100%;font-family:var(--cn-display);font-size:40px;color:var(--green)}
 .pit .pn{font-size:13px;font-weight:500;line-height:1.3;padding:6px 8px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .pit .pp{padding:2px 8px 8px;font-family:var(--num);font-weight:700;font-size:18px;color:var(--green);font-variant-numeric:tabular-nums}
@@ -2184,7 +2185,7 @@ const $=id=>document.getElementById(id);
 const fmt=h=>String(h).padStart(2,"0")+":00";
 function renderZones(){
   $("zones").innerHTML=liveZones.map(z=>{const on=!q&&z.id===zone;
-    const hasSubs=!["sale","new"].includes(z.id);const subs=on&&hasSubs&&expanded===z.id?CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id))):[];
+    const hasSubs=!["sale","new","arr"].includes(z.id);const subs=on&&hasSubs&&expanded===z.id?CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id))):[];
     return `<button type="button" data-z="${z.id}" aria-pressed="${on}"${hasSubs?` aria-expanded="${on&&expanded===z.id}"`:""}${z.sale||z.id==="webonly"?' class="salezone"':z.isnew?' class="newzone"':""}><b>${ZO(z.zh,z.en)}</b><small class="lb">${z.en}</small>${hasSubs?'<i class="chev" aria-hidden="true">›</i>':""}</button>`+
       (subs.length?`<div class="subcats">${subs.map(c=>`<button type="button" data-jump="${c.id}">${ZO(c.zh,c.en)}<small class="lb">${c.en}</small></button>`).join("")}</div>`:"");}).join("");
   $("cats").innerHTML=CATS.filter(c=>c.id==="all"||(c.z===zone&&PRODUCTS.some(p=>inCat(p,c.id)))).map(c=>`<button type="button" data-c="${c.id}" aria-pressed="${!q&&c.id===cat}">${B(c.zh,c.en,"en")}</button>`).join("");}
@@ -2197,14 +2198,15 @@ const NEW_DAYS=28;
 // 到货通知：只有文字，可加 "until": "dd/mm/yyyy" 截止日期
 // 到货/回货（不算新品）：商品加 "arr": "dd/mm/yyyy"，首页轮播显示 ARR_DAYS 天
 const ARR_DAYS=3;
-const isArr=p=>p.arr&&!isOOS(p)&&(today0-ukDate(p.arr))/864e5<ARR_DAYS&&(today0-ukDate(p.arr))>=0;
+const isArr=p=>p.arr&&!p.oos&&(today0-ukDate(p.arr))/864e5<ARR_DAYS&&(today0-ukDate(p.arr))>=0;
 const NOTICES=[
  // {tag:"新鲜蔬菜到货 Fresh veg",zh:"今天新到：上海青、大白菜、韭菜",en:"In today: pak choi, Chinese leaf, chives",until:"10/11/2026"},
 ];
 const ukDate=t=>{const [d,m,y]=t.split("/").map(Number);return new Date(y,m-1,d);};
 const today0=new Date(new Date().toDateString());
 const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.new))>=0;
-if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new",zh:"新品",en:"New arrivals",sale:false,isnew:true});
+if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new",zh:"新品",en:"New products",sale:false,isnew:true});
+if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
   return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn"><span class="le pne">${p.en}</span><span class="lb"> </span><span class="lz pnz">${p.zh}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
@@ -2240,8 +2242,11 @@ $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[
 // 首页"网上专享"那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_WEB=false;
 function renderArr(){const L=PRODUCTS.filter(isArr).sort((a,b)=>ukDate(b.arr)-ukDate(a.arr));$("arrivals").hidden=!L.length;if(!L.length)return;
-  const zc={};L.forEach(x=>{const z=(CATS.find(c=>c.id===x.c)||{}).z;zc[z]=(zc[z]||0)+1});$("ago").dataset.go=Object.keys(zc).sort((a,b)=>zc[b]-zc[a])[0];
-  $("atitle").innerHTML=BS("新到货","Just in"," ");$("astrip").innerHTML=L.map(miniCard).join("");}
+  $("ago").dataset.go="arr";
+  $("atitle").innerHTML=BS("新到货","Just in"," ");
+  const G=CATS.filter(c=>c.id!=="all").map(c=>({c,items:L.filter(p=>p.c===c.id)})).filter(g=>g.items.length);
+  $("astrip").innerHTML=G.map(g=>{const ims=g.items.filter(p=>p.img).slice(0,4);
+    return `<button type="button" class="pit agrp" data-ag="${g.c.id}" aria-label="${g.c.zh} ${g.c.en}"><span class="pimg"><span class="acol n${ims.length}">${ims.map(p=>`<img src="${src(p.img)}" alt="" loading="lazy">`).join("")||`<span class="glyph">${g.c.g||"食"}</span>`}</span></span><span class="pn"><span class="le pne">${g.c.en}</span><span class="lb"> </span><span class="lz pnz">${g.c.zh}</span></span><span class="pp">${g.items.length} ${B("样","items")} ›</span></button>`}).join("");}
 function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isOOS(p)):[];$("webdeals").hidden=!L.length;if(!L.length)return;
   $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
@@ -2258,7 +2263,9 @@ function startArr(){clearInterval(atimer);if(reduce)return;atimer=setInterval(()
 ["mouseenter","focusin","touchstart"].forEach(ev=>$("arrivals").addEventListener(ev,()=>apaused=true,{passive:true}));
 ["mouseleave","focusout"].forEach(ev=>$("arrivals").addEventListener(ev,()=>apaused=false));
 $("arrivals").addEventListener("touchend",()=>setTimeout(()=>apaused=false,4000),{passive:true});
-$("arrivals").addEventListener("click",e=>{const b=e.target.closest("[data-go]");if(!b)return;const g=b.dataset.go;
+$("arrivals").addEventListener("click",e=>{const ag=e.target.closest("[data-ag]");if(ag){zone="arr";expanded=null;cat="all";q="";$("q").value="";openGroups.add(ag.dataset.ag);renderZones();render();
+    setTimeout(()=>{const el=document.getElementById("grp-"+ag.dataset.ag);if(el)el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});},50);return;}
+  const b=e.target.closest("[data-go]");if(!b)return;const g="arr";
   if(liveZones.some(z=>z.id===g)){zone=g;expanded=g;cat="all";q="";$("q").value="";renderZones();render();}
   document.getElementById("products").scrollIntoView({behavior:reduce?"auto":"smooth"});});
 function startDeals(){clearInterval(dtimer);if(reduce)return;dtimer=setInterval(()=>{const el=$("dstrip");if(dpaused||document.hidden||$("deals").hidden||el.scrollWidth<=el.clientWidth+4)return;
@@ -2414,13 +2421,14 @@ function render(){
   const list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
+    :zone==="arr"?PRODUCTS.filter(isArr)
     :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>(a.oos?1:0)-(b.oos?1:0)); /* 售罄排到最后 */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
-  const grouped=!q&&cat==="all"&&zone!=="sale"&&zone!=="new";
+  const agroup=!q&&zone==="arr";const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new");
   $("grid").classList.toggle("grouped",grouped);
   if(grouped){
-    const groups=CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
+    const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
     $("grid").innerHTML=groups.map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
       <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GROUP_N)).map(cardHTML).join("")}</div>
       ${g.items.length>GROUP_N?(openGroups.has(g.c.id)
