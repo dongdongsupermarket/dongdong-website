@@ -380,6 +380,9 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .err{color:var(--red);font-size:14px;margin:0}
 .wa{display:block;text-align:center;text-decoration:none;background:#1f7a46;color:#fff;font-weight:700;border-radius:8px;padding:12px;font-size:16px}
 .wa:hover{background:#196339}
+.altorder{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:10px 0 2px;font-size:13px;color:var(--muted)}
+.altbtn{font:inherit;font-size:14px;font-weight:600;color:var(--green);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;cursor:pointer}
+.altbtn:hover{border-color:var(--green)}
 [hidden]{display:none!important}
 .art img{cursor:zoom-in}
 .zoom{position:fixed;inset:0;z-index:40;background:rgba(8,16,11,.78);display:grid;place-items:center;padding:calc(16px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
@@ -625,6 +628,10 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
     <p class="notice"><span class="lz"><b>过敏原：</b>如需了解商品的过敏原信息，请在下单前联系我们 07546 185999。</span><span class="le blk">For allergen information on any product, please contact us before ordering.</span></p>
     <p class="err" id="err" hidden></p>
     <a class="wa" id="sendWa" href="https://wa.me/447546185999" target="_blank" rel="noopener"><span class="lz">一键下单</span> <span class="le">Place order</span></a>
+    <div class="altorder"><span class="lz">没有 WhatsApp？</span><span class="le">No WhatsApp?</span>
+      <a class="altbtn" id="sendMail" href="mailto:info@dongdong.co.uk"><span class="lz">用邮件下单</span> <span class="le">Order by email</span></a>
+      <button type="button" class="altbtn" id="copyOrder"><span class="lz">复制订单</span> <span class="le">Copy order</span></button></div>
+    <p class="note" id="copyNote" hidden><span class="lz">订单已复制，可以粘贴到短信或其他 App 发给我们（07546 185999）。</span><span class="le blk">Order copied. Paste it into a text message or any app and send it to 07546 185999.</span></p>
     <p class="note"><span class="lz">订单会自动填好，在打开的 WhatsApp 里点一下发送 ➤ 就行。订单以我们回复确认为准，价格以店内为准。</span><span class="le blk">Your order is filled in for you. Just tap send ➤ in WhatsApp. Your order is confirmed once we reply.</span></p>
   </div>
 </div>
@@ -2543,10 +2550,15 @@ function problem(){
   if(mode()==="delivery"&&(!$("fAddr").value.trim()||!$("fPost").value.trim()))return B("送货请填写地址和邮编。","Please enter your address and postcode for delivery.");
   return "";
 }
-function updateLink(){$("sendWa").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(buildMessage())}`;}
+function updateLink(){const m=buildMessage();$("sendWa").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(m)}`;
+  $("sendMail").href=`mailto:info@dongdong.co.uk?subject=${encodeURIComponent("東東超市 新订单 New order "+orderNo())}&body=${encodeURIComponent(m)}`;}
 $("orderForm").addEventListener("input",()=>{$("err").hidden=true;updateLink();});
 $("orderForm").addEventListener("change",()=>{renderCart();const d=mode()==="delivery";$("deliveryFields").hidden=!d;$("pickupNote").hidden=d;deliveryMsg();updateLink();});
 $("orderForm").addEventListener("submit",e=>e.preventDefault());
+$("sendMail").addEventListener("click",e=>{const p=problem();if(p){e.preventDefault();$("err").innerHTML=p;$("err").hidden=false;return;}updateLink();setTimeout(()=>{ORDER_NO="";updateLink();},2000);});
+$("copyOrder").addEventListener("click",async()=>{const p=problem();if(p){$("err").innerHTML=p;$("err").hidden=false;return;}const m=buildMessage();
+  try{await navigator.clipboard.writeText(m);}catch(e){const ta=document.createElement("textarea");ta.value=m;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(_){}ta.remove();}
+  $("copyNote").hidden=false;setTimeout(()=>{$("copyNote").hidden=true;ORDER_NO="";updateLink();},8000);});
 $("sendWa").addEventListener("click",e=>{const p=problem();if(p){e.preventDefault();$("err").innerHTML=p;$("err").hidden=false;return;}updateLink();setTimeout(()=>{ORDER_NO="";updateLink();},2000);});
 $("openCart").addEventListener("click",()=>{$("drawer").hidden=false;$("closeCart").focus();});
 $("closeCart").addEventListener("click",()=>{$("drawer").hidden=true;});
