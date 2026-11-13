@@ -2464,7 +2464,7 @@ function startArr(){clearInterval(atimer);if(reduce)return;atimer=setInterval(()
 ["mouseenter","focusin","touchstart"].forEach(ev=>$("arrivals").addEventListener(ev,()=>apaused=true,{passive:true}));
 ["mouseleave","focusout"].forEach(ev=>$("arrivals").addEventListener(ev,()=>apaused=false));
 $("arrivals").addEventListener("touchend",()=>setTimeout(()=>apaused=false,4000),{passive:true});
-$("arrivals").addEventListener("click",e=>{const ag=e.target.closest("[data-ag]");if(ag){zone="arr";expanded=null;cat="all";q="";$("q").value="";openGroups.add(ag.dataset.ag);renderZones();render();
+$("arrivals").addEventListener("click",e=>{const ag=e.target.closest("[data-ag]");if(ag){const cz=(CATS.find(c=>c.id===ag.dataset.ag)||{}).z;zone=liveZones.some(z=>z.id===cz)?cz:"arr";expanded=zone;cat="all";q="";$("q").value="";openGroups.add(ag.dataset.ag);renderZones();render();
     setTimeout(()=>{const el=document.getElementById("grp-"+ag.dataset.ag);if(el)el.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});},50);return;}
   const b=e.target.closest("[data-go]");if(!b)return;const g="arr";
   if(liveZones.some(z=>z.id===g)){zone=g;expanded=g;cat="all";q="";$("q").value="";renderZones();render();}
@@ -2623,7 +2623,7 @@ function render(){
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :zone==="arr"?PRODUCTS.filter(isArr)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>(a.oos?1:0)-(b.oos?1:0)); /* 售罄排到最后 */
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>((a.oos?1:0)-(b.oos?1:0))||((isArr(b)?1:0)-(isArr(a)?1:0))); /* 售罄排到最后 */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
   const agroup=!q&&zone==="arr";const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new");
