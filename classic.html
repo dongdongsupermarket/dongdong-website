@@ -383,6 +383,9 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .altorder{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:10px 0 2px;font-size:13px;color:var(--muted)}
 .altbtn{font:inherit;font-size:14px;font-weight:600;color:var(--green);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;cursor:pointer}
 .altbtn:hover{border-color:var(--green)}
+.contact .qrs{display:flex!important;flex-direction:row!important;gap:12px;flex-wrap:wrap;margin-top:6px;grid-template-columns:none}
+.contact .qr{display:grid;justify-items:center;flex:0 0 auto;gap:2px;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;width:150px;text-align:center}
+.qr img{width:130px;height:130px}.qr b{font-size:14px;color:#222}.qr small{font-size:11px;color:#666}
 .wxbox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0;background:var(--surface);font-size:14px}
 .wxbox ol{margin:6px 0 8px;padding-left:20px}.wxbox li{margin:4px 0}
 .wxok{margin:0;font-weight:700;color:#07a35a}
@@ -570,6 +573,10 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
       <div><strong><span class="lz">电话</span> <span class="le">Phone</span></strong><span class="big" id="tel">07546 185999</span><button class="copy" type="button" id="copyTel"><span class="lz">复制号码</span> <span class="le">Copy number</span></button></div>
       <div><strong><span class="lz">地址</span> <span class="le">Address</span></strong><span>29–37 Beast Market<br>Huddersfield<br>HD1 1QF</span><span class="since2"><span class="lz">自 2007 年起在 Beast Market 营业</span><span class="lb"> · </span><span class="le">On Beast Market since 2007</span></span><a class="copy" href="https://www.google.com/maps/search/?api=1&query=29-37+Beast+Market+Huddersfield+HD1+1QF" target="_blank" rel="noopener" style="text-decoration:none"><span class="lz">在地图中打开</span> <span class="le">Open in Maps</span></a></div>
       <div><strong><span class="lz">邮箱</span> <span class="le">Email</span></strong><span>info@dongdong.co.uk</span></div>
+      <div class="qrs">
+        <a class="qr" href="https://wa.me/447546185999" target="_blank" rel="noopener"><img src="img/whatsapp_qr.png" alt="WhatsApp 二维码 WhatsApp QR code" width="140" height="140" loading="lazy"><b>WhatsApp</b><small><span class="lz">扫码或点击聊天</span><span class="lb"> · </span><span class="le">Scan or tap to chat</span></small></a>
+        <a class="qr" href="img/wechat_qr.png" download="东东超市微信二维码.png"><img src="img/wechat_qr.png" alt="微信二维码 WeChat QR code" width="140" height="140" loading="lazy"><b><span class="lz">微信</span><span class="lb"> </span><span class="le">WeChat</span></b><small><span class="lz">扫码加好友 · 点击保存</span><span class="lb"> · </span><span class="le">Scan to add · tap to save</span></small></a>
+      </div>
     </div>
     <div style="display:grid;gap:18px;align-content:start"><div><h3><span class="lz">付款方式</span><span class="lb"> · </span><span class="le">Payment</span></h3><p style="margin:0"><span class="lz">到店：现金、刷卡、非接触支付、银行转账、人民币付款<br>送货：现金、银行转账、人民币付款</span><span class="le blk en">In store: cash, card, contactless, bank transfer<br>Delivery: cash, bank transfer</span></p></div>
     <div><h3><span class="lz">送货上门</span><span class="lb"> · </span><span class="le">Delivery</span></h3><ul class="drules">
