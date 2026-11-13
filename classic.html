@@ -217,6 +217,7 @@ html[data-lang="both"] .area label>span>.le{font-size:12.5px;color:var(--muted)}
 html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .oosbadge>span{display:inline!important}.oosbadge>span+span{margin-left:5px}
 .add.oosbtn{border-color:var(--line);color:var(--muted);background:var(--bg);cursor:not-allowed}
+.arrbadge{background:#1f7a46!important;color:#fff!important}
 .newbadge{position:absolute;top:8px;left:8px;z-index:1;background:var(--gold);color:#1a140a;font-weight:700;font-size:12px;letter-spacing:.04em;padding:3px 8px;border-radius:3px;line-height:1.2;text-align:center}
 .zones button.newzone b{color:var(--gold)}
 .prebadge{position:absolute;bottom:8px;left:8px;z-index:1;background:#2f5d8a;color:#fff;font-weight:700;font-size:11px;letter-spacing:.04em;padding:3px 7px;border-radius:3px;line-height:1.2;text-align:center}
@@ -2229,7 +2230,7 @@ function clearSearch(){if(!q)return;q="";$("q").value="";}
 const NEW_DAYS=28;
 // 到货通知：只有文字，可加 "until": "dd/mm/yyyy" 截止日期
 // 到货/回货（不算新品）：商品加 "arr": "dd/mm/yyyy"，首页轮播显示 ARR_DAYS 天
-const ARR_DAYS=3;
+const ARR_DAYS=4;  // 新到货标签显示几天
 const isArr=p=>p.arr&&!p.oos&&(today0-ukDate(p.arr))/864e5<ARR_DAYS&&(today0-ukDate(p.arr))>=0;
 const NOTICES=[
  // {tag:"新鲜蔬菜到货 Fresh veg",zh:"今天新到：上海青、大白菜、韭菜",en:"In today: pak choi, Chinese leaf, chives",until:"10/11/2026"},
@@ -2477,7 +2478,7 @@ function render(){
 }
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
-     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
+     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${!isNew(p)&&isArr(p)?`<span class="newbadge arrbadge"><span class="lz">新到</span><span class="lb"><br></span><span class="le">JUST IN</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
      <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
      ${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
