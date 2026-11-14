@@ -174,8 +174,8 @@ html[data-lang="both"].nd .grp-h h3 .lz{font-size:.62em;color:var(--muted);font-
 html[data-lang="both"].nd .grp-h h3 .le{font-family:var(--en-display);font-size:1em;color:var(--green)}
 /* 中/EN 模式：全站英文为主 */
 html[data-lang="both"].nd .pit .pn{-webkit-line-clamp:4;min-height:0}
-html[data-lang="both"].nd .pit .pne{font-weight:700;color:var(--ink)}
-html[data-lang="both"].nd .pit .pnz{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
+html[data-lang="both"].nd .pit .pnz{display:block;font-weight:700;color:var(--ink)}
+html[data-lang="both"].nd .pit .pne{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
 html[data-lang="both"].nd .pit .pn .lb{display:none!important}
 html[data-lang="both"].nd .zinfo .zclose{order:-3}
 html[data-lang="both"].nd .zinfo .pen{order:-2;font-size:18px;font-weight:700;color:var(--ink)}
@@ -2471,7 +2471,7 @@ if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new"
 if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn"><span class="le pne">${p.en}</span><span class="lb"> </span><span class="lz pnz">${p.zh}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
@@ -2919,7 +2919,7 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
    qi.addEventListener("input",()=>{clearTimeout(st);st=setTimeout(goRes,700);drawRQ();remember()});
    qi.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(st);qi.blur();goRes();remember()}});}
   /* 中英并排时英文在前：把每组「中文 + 英文」调成「英文 + 中文」 */
-  const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b"))return;let n=z.nextSibling,lb=null;
+  const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b")||z.closest(".pit:not(.agrp)"))return;let n=z.nextSibling,lb=null;
       while(n&&(n.nodeType===3&&!n.textContent.trim()||n.nodeType===1&&n.classList.contains("lb"))){if(n.nodeType===1)lb=n;n=n.nextSibling}
       if(n&&n.nodeType===1&&n.classList.contains("le")&&!n.classList.contains("lzc")){const par=z.parentNode;par.insertBefore(n,z);if(lb)par.insertBefore(lb,z);else par.insertBefore(document.createTextNode(" "),z)}})};
   let qd=false;const run=()=>{qd=false;swap(document.body)};run();
