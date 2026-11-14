@@ -64,6 +64,12 @@ html.nd .betabar{background:#fbf6e6}
 .pv-tabs.fix{position:fixed;top:0;left:0;right:0;padding-top:env(safe-area-inset-top,0px);box-shadow:0 2px 10px rgba(0,0,0,.08)}
 html.nd .zones{position:static;flex-direction:row;gap:2px;overflow-x:auto;overflow-y:hidden;max-height:none;background:none;border:0;border-radius:0;padding:0;scrollbar-width:none}
 html.nd .zones::-webkit-scrollbar{display:none}
+.pv-zw{position:relative}
+.pv-za{position:absolute;top:0;bottom:3px;z-index:2;width:46px;border:0;padding:0;display:flex;align-items:center;cursor:pointer;color:var(--green);font:700 26px/1 system-ui,sans-serif}
+.pv-za[hidden]{display:none!important}
+.pv-za.l{left:0;justify-content:flex-start;padding-left:2px;background:linear-gradient(90deg,var(--sign) 55%,transparent)}
+.pv-za.r{right:0;justify-content:flex-end;padding-right:2px;background:linear-gradient(270deg,var(--sign) 55%,transparent)}
+.pv-za span{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--sign);border:1px solid var(--line);box-shadow:0 1px 4px rgba(0,0,0,.12);font-size:20px;line-height:1}
 html.nd .zones button{width:auto;flex:none;border-left:0;border-bottom:3px solid transparent;border-radius:0;padding:11px 12px 8px;justify-items:center;text-align:center;background:none}
 html.nd .zones button b{font-family:var(--body);font-size:15px;font-weight:500;color:var(--muted);white-space:nowrap;letter-spacing:0}
 html.nd .zones button small{font-family:var(--body);font-size:10.5px;text-transform:none;letter-spacing:0;white-space:nowrap;color:var(--muted)}
@@ -2811,6 +2817,13 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
   const header=document.querySelector("header"),sign=document.querySelector(".sign .wrap");
   sign.innerHTML='<a class="pv-brand" href="#"><b>Dong Dong Supermarket</b><small>東東超市 · Asian Groceries</small></a><button type="button" class="pv-basket" id="pvBasket"><span class="lz">购物车</span> <span class="le">Basket</span><b id="pvCount">0</b></button>';
   const tabs=document.createElement("div");tabs.className="pv-tabs";tabs.innerHTML='<div class="wrap"></div>';tabs.firstChild.appendChild(document.querySelector("label.search"));tabs.firstChild.appendChild(document.getElementById("zones"));header.after(tabs);
+  /* 分区栏两边的箭头：还能往左/往右滑的时候才出现 */
+  {const zs=document.getElementById("zones"),zw=document.createElement("div");zw.className="pv-zw";zs.before(zw);zw.appendChild(zs);
+   const mk=(c,t,lab)=>{const b=document.createElement("button");b.type="button";b.className="pv-za "+c;b.setAttribute("aria-label",lab);b.innerHTML="<span>"+t+"</span>";b.hidden=true;zw.appendChild(b);return b};
+   const L=mk("l","‹","往左看更多分区"),R=mk("r","›","往右看更多分区");
+   const upd=()=>{const max=zs.scrollWidth-zs.clientWidth;L.hidden=zs.scrollLeft<=4;R.hidden=zs.scrollLeft>=max-4};
+   L.onclick=()=>zs.scrollBy({left:-zs.clientWidth*.7,behavior:"smooth"});R.onclick=()=>zs.scrollBy({left:zs.clientWidth*.7,behavior:"smooth"});
+   zs.addEventListener("scroll",upd,{passive:true});addEventListener("resize",upd);new MutationObserver(upd).observe(zs,{childList:true,subtree:true});setTimeout(upd,300);upd();}
   /* 分区栏一直停在屏幕顶部（所有手机都适用，不靠 sticky） */
   const ph=document.createElement("div");tabs.before(ph);
   const pin=()=>{const on=ph.getBoundingClientRect().top<=0;if(on!==tabs.classList.contains("fix")){ph.style.height=on?tabs.offsetHeight+"px":"0";tabs.classList.toggle("fix",on)}};
