@@ -2590,6 +2590,7 @@ function priceTag(p){const u=sp(p.unit||defUnit(p));
   return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${pct(p)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
 const ALIAS={
+ "螺狮粉":["螺蛳粉"],"螺丝粉":["螺蛳粉"],"螺师粉":["螺蛳粉"],"螺狮":["螺蛳"],"螺丝":["螺蛳"],luosifen:["螺蛳粉"],"snail noodle":["螺蛳粉"],"snail noodles":["螺蛳粉"],
  jiaozi:["饺"],dumpling:["饺","dumpling","gyoza","wan tan","云吞","馄饨"],dumplings:["饺","dumpling"],gyoza:["gyoza","锅贴"],potsticker:["锅贴","煎饺","gyoza"],shuijiao:["水饺"],
  baozi:["包"],bao:["包"],bun:["包","bao"],buns:["包","bao"],mantou:["馒头"],xiaolongbao:["小笼"],xlb:["小笼"],dimsum:["点心","烧卖","虾饺","叉烧包","sui mai","siew mai"],"dim sum":["点心","烧卖","虾饺"],
  siumai:["烧卖"],shaomai:["烧卖"],wonton:["云吞","馄饨","wan tan"],huntun:["馄饨","云吞"],yuntun:["云吞"],chunjuan:["春卷"],"spring roll":["春卷"],tangyuan:["汤圆"],
