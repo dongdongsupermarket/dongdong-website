@@ -2326,6 +2326,7 @@ function renderArr(){const L=PRODUCTS.filter(isArr).sort((a,b)=>ukDate(b.arr)-uk
   $("ago").dataset.go="arr";
   $("atitle").innerHTML=BS("新到货","Just in"," ");
   const G=CATS.filter(c=>c.id!=="all").map(c=>({c,items:L.filter(p=>p.c===c.id)})).filter(g=>g.items.length);
+  if(G.length<=1||L.length<=12){$("astrip").innerHTML=L.map(miniCard).join("");return;}
   $("astrip").innerHTML=G.map(g=>{const ims=g.items.filter(p=>p.img).slice(0,4);
     return `<button type="button" class="pit agrp" data-ag="${g.c.id}" aria-label="${g.c.zh} ${g.c.en}"><span class="pimg"><span class="acol n${ims.length}">${ims.map(p=>`<img src="${src(p.img)}" alt="" loading="lazy">`).join("")||`<span class="glyph">${g.c.g||"食"}</span>`}</span></span><span class="pn"><span class="le pne">${g.c.en}</span><span class="lb"> </span><span class="lz pnz">${g.c.zh}</span></span><span class="pp">${g.items.length} ${B("样","items")} ›</span></button>`}).join("");}
 function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isOOS(p)):[];$("webdeals").hidden=!L.length;if(!L.length)return;
