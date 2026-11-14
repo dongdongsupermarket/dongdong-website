@@ -648,6 +648,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .art .glyph{font-size:36px!important}}
 @media (max-width:520px){.rule{display:none}.sign .wrap{gap:4px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.art .glyph{font-size:48px}.tag{margin:10px;padding:2px 8px}.tag .price{font-size:22px}.name{font-size:14px}.body{padding:10px 10px 0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.clearrow{display:flex;justify-content:flex-end;margin:4px 0 2px}.clearcart{border:1px solid #d9cfc0;background:none;color:#8a3b2e;border-radius:18px;padding:5px 12px;font-size:13px;cursor:pointer}.clearcart.armed{background:#b3261e;border-color:#b3261e;color:#fff}.clearcart[hidden]{display:none}
 </style>
 
 <header>
@@ -780,6 +781,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
     <div class="panel-head"><h2 id="cartTitle"><span class="lz">购物车</span> <span class="le en">Basket</span></h2><button type="button" class="x" id="closeCart"><span class="lz">关闭</span> <span class="le">Close</span></button></div>
     <div class="lines" id="lines"></div>
+    <div class="clearrow"><button type="button" class="clearcart" id="clearCart" hidden><span class="lz">🗑 清空购物车</span> <span class="le">Clear basket</span></button></div>
     <div class="total"><span><span class="lz">商品合计</span> <span class="le">Subtotal</span></span><span id="panelTotal">£0.00</span></div>
     <form id="orderForm" novalidate>
       <fieldset>
@@ -2706,8 +2708,14 @@ function renderCart(){
   $("cartCount").textContent=count;$("cartTotal").textContent=money(total);$("cartHint").textContent=count?cartHint(total):"";$("panelTotal").textContent=money(total);
   $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*x.p.price)}</span>${ctrl(x.i)}</div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
     :`<p class="note">${BB("购物车是空的。","Your basket is empty.")}</p>`;
+  {const cb=$("clearCart");if(cb){cb.hidden=!it.length;if(!it.length)resetClear()}}
   updateLink();
 }
+const CLEAR_TXT='<span class="lz">🗑 清空购物车</span> <span class="le">Clear basket</span>';
+function resetClear(){const cb=$("clearCart");if(!cb)return;clearTimeout(resetClear.t);delete cb.dataset.armed;cb.classList.remove("armed");cb.innerHTML=CLEAR_TXT}
+document.addEventListener("click",e=>{const cb=e.target.closest&&e.target.closest("#clearCart");if(!cb)return;
+  if(!cb.dataset.armed){cb.dataset.armed="1";cb.classList.add("armed");cb.innerHTML='<span class="lz">再点一次，确认清空</span> <span class="le">Tap again to clear</span>';clearTimeout(resetClear.t);resetClear.t=setTimeout(resetClear,3500);return}
+  cart={};try{localStorage.setItem("dd-cart4","{}")}catch(x){}resetClear();render();renderCart();});
 const mode=()=>$("modeDelivery").checked?"delivery":"pickup";
 function buildMessage(){
   const it=items(),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it),d=mode()==="delivery";
