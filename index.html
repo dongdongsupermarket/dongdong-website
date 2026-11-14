@@ -649,6 +649,16 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 @media (max-width:520px){.rule{display:none}.sign .wrap{gap:4px 12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.art .glyph{font-size:48px}.tag{margin:10px;padding:2px 8px}.tag .price{font-size:22px}.name{font-size:14px}.body{padding:10px 10px 0}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 .clearrow{display:flex;justify-content:flex-end;margin:4px 0 2px}.clearcart{border:1px solid #d9cfc0;background:none;color:#8a3b2e;border-radius:18px;padding:5px 12px;font-size:13px;cursor:pointer}.clearcart.armed{background:#b3261e;border-color:#b3261e;color:#fff}.clearcart[hidden]{display:none}
+.howsend{border:0;padding:0;margin:14px 0 10px}.howsend legend{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:6px;padding:0}
+.hsopts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.hsopts label{cursor:pointer}.hsopts input{position:absolute;opacity:0;pointer-events:none}
+.hsopts label>span{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center;border:1.5px solid var(--line);border-radius:10px;padding:9px 4px;background:var(--surface);min-height:58px;justify-content:center}
+.hsopts b{font-size:14px}.hsopts small{font-size:11px;color:var(--muted);overflow-wrap:anywhere}
+.hsopts input:checked+span{border-color:#1f7a46;background:#e3f1e8;box-shadow:inset 0 0 0 1px #1f7a46}
+.hsopts input:checked+span b::before{content:"✓ ";color:#1f7a46}
+.hsopts input:focus-visible+span{outline:2px solid #1f7a46;outline-offset:2px}
+button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
+.sendbtn[hidden],.sendnote[hidden]{display:none!important}
 </style>
 
 <header>
@@ -817,11 +827,16 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
     <p class="notice" id="alcNote" hidden><span class="lz"><b>购物车里有须年满 18 岁才能购买的商品（如酒类、刀具、燃气罐）。</b>取货或送货时我们可能查看证件，未满 18 岁不予出售。</span><span class="le blk">Your basket contains age-restricted items (such as alcohol, knives or gas canisters). You must be 18 or over. We may ask for ID on collection or delivery.</span></p>
     <p class="notice"><span class="lz"><b>过敏原：</b>如需了解商品的过敏原信息，请在下单前联系我们 07546 185999。</span><span class="le blk">For allergen information on any product, please contact us before ordering.</span></p>
     <p class="err" id="err" hidden></p>
-    <a class="wa" id="sendWa" href="https://wa.me/447546185999" target="_blank" rel="noopener"><span class="lz">一键下单</span> <span class="le">Place order</span></a>
-    <div class="altorder"><span class="lz">没有 WhatsApp？</span><span class="le">No WhatsApp?</span>
-      <a class="altbtn" id="sendMail" href="mailto:info@dongdong.co.uk"><span class="lz">用邮件下单</span> <span class="le">Order by email</span></a>
-      <button type="button" class="altbtn" id="wxOrder"><span class="lz">微信下单</span> <span class="le">WeChat</span></button>
-      <button type="button" class="altbtn" id="copyOrder"><span class="lz">复制订单</span> <span class="le">Copy order</span></button></div>
+    <fieldset class="howsend" id="howSend" data-m="wa"><legend><span class="lz">选择下单方式</span><span class="lb"> · </span><span class="le">How to send your order</span></legend>
+      <div class="hsopts">
+        <label><input type="radio" name="sendby" value="wa" checked><span><b>WhatsApp</b><small><span class="lz">推荐</span><span class="lb"> · </span><span class="le">Recommended</span></small></span></label>
+        <label><input type="radio" name="sendby" value="mail"><span><b><span class="lz">邮件</span><span class="lb"> </span><span class="le">Email</span></b><small><span class="lz">用手机邮箱发</span><span class="lb"> · </span><span class="le">Your email app</span></small></span></label>
+        <label><input type="radio" name="sendby" value="wx"><span><b><span class="lz">微信</span><span class="lb"> </span><span class="le">WeChat</span></b><small><span class="lz">复制后发给我们</span><span class="lb"> · </span><span class="le">Copy &amp; send</span></small></span></label>
+      </div></fieldset>
+    <a class="wa sendbtn" data-for="wa" id="sendWa" href="https://wa.me/447546185999" target="_blank" rel="noopener"><span class="lz">用 WhatsApp 下单</span> <span class="le">Order on WhatsApp</span></a>
+    <a class="wa sendbtn" data-for="mail" id="sendMail" href="mailto:info@dongdong.co.uk" hidden><span class="lz">用邮件下单</span> <span class="le">Order by email</span></a>
+    <button type="button" class="wa sendbtn" data-for="wx" id="wxOrder" hidden><span class="lz">用微信下单</span> <span class="le">Order on WeChat</span></button>
+    <div class="altorder"><button type="button" class="altbtn" id="copyOrder"><span class="lz">复制订单</span> <span class="le">Copy order</span></button></div>
     <div class="wxbox" id="wxBox" hidden>
       <p class="wxok"><span class="lz">✓ 订单已复制</span><span class="lb"> · </span><span class="le">Order copied</span></p>
       <ol>
@@ -832,7 +847,9 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
       <div class="wxbtns"><a class="altbtn" href="img/wechat_qr.png" download="东东超市微信二维码.png"><span class="lz">保存二维码</span> <span class="le">Save QR</span></a><a class="altbtn" href="weixin://"><span class="lz">打开微信</span> <span class="le">Open WeChat</span></a></div>
     </div>
     <p class="note" id="copyNote" hidden><span class="lz">订单已复制，可以粘贴到短信、微信或其他 App 发给我们（07546 185999）。</span><span class="le blk">Order copied. Paste it into a text message or any app and send it to 07546 185999.</span></p>
-    <p class="note"><span class="lz">订单会自动填好，在打开的 WhatsApp 里点一下发送 ➤ 就行。订单以我们回复确认为准，价格以店内为准。</span><span class="le blk">Your order is filled in for you. Just tap send ➤ in WhatsApp. Your order is confirmed once we reply.</span></p>
+    <p class="note sendnote" data-for="wa"><span class="lz">订单会自动填好，在打开的 WhatsApp 里点一下发送 ➤ 就行。订单以我们回复确认为准，价格以店内为准。</span><span class="le blk">Your order is filled in for you. Just tap send ➤ in WhatsApp. Your order is confirmed once we reply.</span></p>
+    <p class="note sendnote" data-for="mail" hidden><span class="lz">会打开您手机的邮件，订单已经写好，点发送就行。订单以我们回复确认为准，价格以店内为准。</span><span class="le blk">Your email app opens with the order written in. Just tap send. Your order is confirmed once we reply.</span></p>
+    <p class="note sendnote" data-for="wx" hidden><span class="lz">点按钮会先复制订单，再按提示加我们微信，把订单粘贴发过来。订单以我们回复确认为准。</span><span class="le blk">Tap the button to copy your order, then add us on WeChat and paste it. Your order is confirmed once we reply.</span></p>
   </div>
 </div>
 
@@ -2779,6 +2796,8 @@ $("wxOrder").addEventListener("click",async()=>{const p=problem();if(p){$("err")
 $("copyOrder").addEventListener("click",async()=>{const p=problem();if(p){$("err").innerHTML=p;$("err").hidden=false;return;}const m=buildMessage();
   try{await navigator.clipboard.writeText(m);}catch(e){const ta=document.createElement("textarea");ta.value=m;document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(_){}ta.remove();}
   $("copyNote").hidden=false;setTimeout(()=>{$("copyNote").hidden=true;ORDER_NO="";updateLink();},8000);});
+document.addEventListener("change",e=>{if(e.target.name!=="sendby")return;const m=e.target.value;$("howSend").dataset.m=m;
+  document.querySelectorAll(".sendbtn,.sendnote").forEach(x=>x.hidden=x.dataset.for!==m);if(m!=="wx")$("wxBox").hidden=true;});
 $("sendWa").addEventListener("click",e=>{const p=problem();if(p){e.preventDefault();$("err").innerHTML=p;$("err").hidden=false;return;}updateLink();setTimeout(()=>{ORDER_NO="";updateLink();},2000);});
 $("openCart").addEventListener("click",()=>{$("drawer").hidden=false;$("closeCart").focus();});
 $("closeCart").addEventListener("click",()=>{$("drawer").hidden=true;});
