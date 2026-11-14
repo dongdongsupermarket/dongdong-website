@@ -42,6 +42,12 @@ html.nd .search{grid-area:search;max-width:none;flex:none;display:block}
 html.nd .search input{padding:13px 16px;border-radius:12px;background:#f4f2ea;border:1px solid var(--line);font-size:16px}
 html.nd .pv-tabs .search{display:block;margin:10px 0 2px}
 html.nd .pv-tabs .search input{padding:10px 14px;font-size:16px}
+html.nd .pv-recent{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 2px;font-size:13px}
+html.nd .pv-recent[hidden]{display:none}
+html.nd .pv-recent .rl{color:var(--muted);margin-right:2px}
+html.nd .pv-recent .rq{border:1px solid var(--line);background:var(--surface,#fff);border-radius:99px;padding:4px 11px;font:inherit;color:var(--ink,inherit);cursor:pointer}
+html.nd .pv-recent .rq:hover{border-color:var(--green)}
+html.nd .pv-recent .rx{border:0;background:none;color:var(--muted);text-decoration:underline;font:inherit;cursor:pointer;padding:4px}
 html.nd .pv-tabs.fix .search{margin-top:8px}
 @media (min-width:900px){html.nd .pv-tabs .search{max-width:560px}}
 html.nd nav{background:none;border-top:1px solid var(--line)}
@@ -2885,8 +2891,21 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
    const goRes=()=>{if(!qi.value.trim())return;requestAnimationFrame(()=>requestAnimationFrame(()=>{
      const g=document.getElementById("grid");if(!g)return;let n=0;
      const fix=()=>{pin();const d=g.getBoundingClientRect().top-tabs.offsetHeight-10;if(Math.abs(d)>3)window.scrollBy(0,d);if(++n<8)setTimeout(fix,60)};fix()}))};
-   qi.addEventListener("input",()=>{clearTimeout(st);st=setTimeout(goRes,700)});
-   qi.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(st);qi.blur();goRes()}});}
+   /* 最近搜索：只存在客人自己的手机/电脑上 */
+   const RK="dd-recent-q";let RQ=[];try{RQ=JSON.parse(localStorage.getItem(RK)||"[]")||[]}catch(e){RQ=[]}
+   const rbox=document.createElement("div");rbox.className="pv-recent";rbox.hidden=true;qi.closest("label").after(rbox);
+   const saveRQ=()=>{try{localStorage.setItem(RK,JSON.stringify(RQ))}catch(e){}};
+   let svT=null;const remember=()=>{clearTimeout(svT);svT=setTimeout(()=>{const v=qi.value.trim();if(v.length<1)return;if(!document.querySelector("#grid .card"))return;RQ=[v,...RQ.filter(x=>x!==v)].slice(0,8);saveRQ()},1500)};
+   const drawRQ=()=>{if(!RQ.length||qi.value.trim()){rbox.hidden=true;return}
+     rbox.innerHTML='<span class="rl"><span class="lz">最近搜索</span><span class="lb"> · </span><span class="le">Recent</span></span>'+RQ.map(q=>'<button type="button" class="rq"></button>').join("")+'<button type="button" class="rx"><span class="lz">清除</span><span class="lb"> </span><span class="le">Clear</span></button>';
+     rbox.querySelectorAll(".rq").forEach((b,i)=>b.textContent=RQ[i]);rbox.hidden=false};
+   rbox.addEventListener("mousedown",e=>e.preventDefault());
+   rbox.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+     if(b.classList.contains("rx")){RQ=[];saveRQ();rbox.hidden=true;return}
+     qi.value=b.textContent;qi.dispatchEvent(new Event("input",{bubbles:true}));rbox.hidden=true;clearTimeout(st);qi.blur();goRes();remember()});
+   qi.addEventListener("focus",drawRQ);qi.addEventListener("blur",()=>setTimeout(()=>{rbox.hidden=true},150));
+   qi.addEventListener("input",()=>{clearTimeout(st);st=setTimeout(goRes,700);drawRQ();remember()});
+   qi.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();clearTimeout(st);qi.blur();goRes();remember()}});}
   /* 中英并排时英文在前：把每组「中文 + 英文」调成「英文 + 中文」 */
   const swap=root=>{root.querySelectorAll(".lz").forEach(z=>{if(z.closest(".zones b"))return;let n=z.nextSibling,lb=null;
       while(n&&(n.nodeType===3&&!n.textContent.trim()||n.nodeType===1&&n.classList.contains("lb"))){if(n.nodeType===1)lb=n;n=n.nextSibling}
