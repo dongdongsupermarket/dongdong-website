@@ -2569,7 +2569,7 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
     "珠江桥牌生抽王","珠江桥牌老抽王"];
   const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
   const qe=q.replace(/chili/g,"chilli");const ew=p=>{const z=String(p.zh||"").replace(/（[^）]*）|\([^)]*\)/g,"").trim().toLowerCase(),e=String(p.en||"").replace(/\([^)]*\)/g,"").trim().toLowerCase();return (z.endsWith(q)||e.endsWith(q)||e.endsWith(qe))?1:0};
-  const QC={"rice":"rice","大米":"rice","米":"rice","香米":"rice","noodle":"noodle","noodles":"noodle","面条":"noodle","dumpling":"dumpling","dumplings":"dumpling","水饺":"dumpling","饺子":"dumpling","tofu":"tofufresh","豆腐":"tofufresh","vinegar":"vinegar","醋":"vinegar","oil":"oil","tea":"tea","茶":"tea"}[q];const cb=p=>QC&&p.c===QC?1:0;
+  const QC={"kimchi":"kimchi","泡菜":"kimchi","rice noodle":"vermicelli","rice noodles":"vermicelli","rice vermicelli":"vermicelli","米粉":"vermicelli","河粉":"vermicelli","vermicelli":"vermicelli","粉丝":"vermicelli","rice":"rice","大米":"rice","米":"rice","香米":"rice","noodle":"noodle","noodles":"noodle","面条":"noodle","dumpling":"dumpling","dumplings":"dumpling","水饺":"dumpling","饺子":"dumpling","tofu":"tofufresh","豆腐":"tofufresh","vinegar":"vinegar","醋":"vinegar","oil":"oil","tea":"tea","茶":"tea"}[q];const cb=p=>QC&&p.c===QC?1:0;
   const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;const ca=cb(a.p),cb2=cb(b.p);if(ca!==cb2)return cb2-ca;const ea=ew(a.p),eb=ew(b.p);if(ea!==eb)return eb-ea;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
   window.__fullHits=full.length;
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
