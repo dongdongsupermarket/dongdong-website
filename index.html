@@ -2881,6 +2881,10 @@ $("sendWa").addEventListener("click",e=>{const p=problem();if(p){e.preventDefaul
 $("openCart").addEventListener("click",()=>{$("drawer").hidden=false;$("closeCart").focus();});
 $("closeCart").addEventListener("click",()=>{$("drawer").hidden=true;});
 document.addEventListener("click",e=>{if(e.target.closest(".helplink")){$("help").open=true;}if(e.target.closest(".tlink")){$("drawer").hidden=true;$("terms").open=true;}});
+/* 链接直达：?item=商品中文名（可加 |规格）打开该商品大图；?q=关键词 直接搜索 */
+setTimeout(()=>{try{const u=new URLSearchParams(location.search);const it=u.get("item"),qq=u.get("q");
+  if(it){const[zh,spc]=it.split("|");const i=PRODUCTS.findIndex(p=>p.zh===zh&&(!spc||String(p.spec).replace(/<[^>]*>/g,"")===spc));if(i>=0){$("q").value=zh;$("q").dispatchEvent(new Event("input",{bubbles:true}));setTimeout(()=>openZoom(i),400);}}
+  else if(qq){$("q").value=qq;$("q").dispatchEvent(new Event("input",{bubbles:true}));}}catch(e){}},300);
 if(location.hash==="#terms")$("terms").open=true;addEventListener("hashchange",()=>{if(location.hash==="#terms")$("terms").open=true;});
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").hidden=true;});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("drawer").hidden=true;});
