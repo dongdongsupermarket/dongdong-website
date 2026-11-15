@@ -2948,7 +2948,7 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
    const RK="dd-recent-q";let RQ=[];try{RQ=JSON.parse(localStorage.getItem(RK)||"[]")||[]}catch(e){RQ=[]}
    const rbox=document.createElement("div");rbox.className="pv-recent";rbox.hidden=true;qi.closest("label").after(rbox);
    const saveRQ=()=>{try{localStorage.setItem(RK,JSON.stringify(RQ))}catch(e){}};
-   const GCQ=new Set();const gcq=(v,hit)=>{const k=(hit?"s:":"m:")+v.toLowerCase();if(GCQ.has(k))return;GCQ.add(k);try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:(hit?"搜索/":"搜不到/")+v.toLowerCase(),title:v,event:true})}catch(e){}};
+   const GCQ=new Set();const gcq=(v,hit)=>{const k=(hit?"s:":"m:")+v.toLowerCase();if(GCQ.has(k))return;GCQ.add(k);try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:(hit?"/搜索/":"/搜不到/")+v.toLowerCase(),title:(hit?"搜索：":"搜不到：")+v,referrer:location.href})}catch(e){}};
    let svT=null;const remember=()=>{clearTimeout(svT);svT=setTimeout(()=>{const v=qi.value.trim();if(v.length<1)return;const hit=!!document.querySelector("#grid .card");if(v.length>=2)gcq(v,hit);if(!hit)return;RQ=[v,...RQ.filter(x=>x!==v)].slice(0,8);saveRQ()},1500)};
    const drawRQ=()=>{if(!RQ.length||qi.value.trim()){rbox.hidden=true;return}
      rbox.innerHTML='<span class="rl"><span class="lz">最近搜索</span><span class="lb"> · </span><span class="le">Recent</span></span>'+RQ.map(q=>'<button type="button" class="rq"></button>').join("")+'<button type="button" class="rx"><span class="lz">清除</span><span class="lb"> </span><span class="le">Clear</span></button>';
