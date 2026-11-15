@@ -2489,6 +2489,7 @@ function priceTag(p){const u=sp(p.unit||defUnit(p));
   return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${pct(p)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
 const ALIAS={
+ "zha suan":["炸蒜"],"zhasuan":["炸蒜"],"suan":["蒜"],"nian gao":["年糕"],"niangao":["年糕"],
  "玉米蓉":["粟米蓉"],"玉米羹":["粟米蓉"],"粟米羹":["粟米蓉"],"玉米浓汤":["粟米蓉"],"玉米糊":["粟米蓉"],"creamed":["cream style"],"creamedcorn":["cream style sweetcorn"],"creamcorn":["cream style sweetcorn"],"corn soup":["粟米蓉"],
  "甜辣酱":["甜辣"],"sweet chilli":["sweet chilli"],"sweet chili":["sweet chilli"],"菲律宾":["datu puti"],"filipino":["datu puti"],
  "泰国咖喱":["咖喱酱"],"泰式咖喱":["咖喱酱"],"thai curry":["curry paste"],"绿咖喱":["青咖喱"],"椰浆":["椰奶","椰浆"],"coconut cream":["coconut"],"玛沙曼":["玛莎曼"],"马莎曼":["玛莎曼"],"tomyum":["冬阴功"],
@@ -2567,7 +2568,9 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
     "海天酱油 阳光美味（生抽）","海天招牌酱油（老抽）","海天上等鲜蚝油","海天招牌鲜蚝油","海天陈醋",
     "珠江桥牌生抽王","珠江桥牌老抽王"];
   const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
-  const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
+  const qe=q.replace(/chili/g,"chilli");const ew=p=>{const z=String(p.zh||"").replace(/（[^）]*）|\([^)]*\)/g,"").trim().toLowerCase(),e=String(p.en||"").replace(/\([^)]*\)/g,"").trim().toLowerCase();return (z.endsWith(q)||e.endsWith(q)||e.endsWith(qe))?1:0};
+  const QC={"rice":"rice","大米":"rice","米":"rice","香米":"rice","noodle":"noodle","noodles":"noodle","面条":"noodle","dumpling":"dumpling","dumplings":"dumpling","水饺":"dumpling","饺子":"dumpling","tofu":"tofufresh","豆腐":"tofufresh","vinegar":"vinegar","醋":"vinegar","oil":"oil","tea":"tea","茶":"tea"}[q];const cb=p=>QC&&p.c===QC?1:0;
+  const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;const ca=cb(a.p),cb2=cb(b.p);if(ca!==cb2)return cb2-ca;const ea=ew(a.p),eb=ew(b.p);if(ea!==eb)return eb-ea;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
   window.__fullHits=full.length;
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
