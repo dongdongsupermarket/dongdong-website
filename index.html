@@ -2770,7 +2770,8 @@ function render(){
   const agroup=!q&&zone==="arr";const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new");
   $("grid").classList.toggle("grouped",grouped);
   if(grouped){
-    const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
+    const AGR=g=>g.items.some(p=>!p.arrHide)?0:g.c.id==="inst5"?1:g.c.id==="seacracker"?9:5;
+    const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length).sort((x,y)=>AGR(x)-AGR(y)):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
     $("grid").innerHTML=groups.map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
       <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GN(g.c.id))).map(cardHTML).join("")}</div>
       ${g.items.length>GN(g.c.id)?(openGroups.has(g.c.id)
