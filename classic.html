@@ -2568,6 +2568,7 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
     "珠江桥牌生抽王","珠江桥牌老抽王"];
   const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
   const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
+  window.__fullHits=full.length;
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
 const openGroups=new Set(); // 已展开的小类

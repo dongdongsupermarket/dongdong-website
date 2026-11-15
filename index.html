@@ -2749,6 +2749,7 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
     "珠江桥牌生抽王","珠江桥牌老抽王"];
   const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
   const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
+  window.__fullHits=full.length;
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
 const openGroups=new Set(); // 已展开的小类
@@ -3004,7 +3005,7 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
    const rbox=document.createElement("div");rbox.className="pv-recent";rbox.hidden=true;qi.closest("label").after(rbox);
    const saveRQ=()=>{try{localStorage.setItem(RK,JSON.stringify(RQ))}catch(e){}};
    const GCQ=new Set();const gcq=(v,hit)=>{const k=(hit?"s:":"m:")+v.toLowerCase();if(GCQ.has(k))return;GCQ.add(k);try{window.goatcounter&&window.goatcounter.count&&window.goatcounter.count({path:(hit?"搜索/":"搜不到/")+v.toLowerCase(),title:v,event:true})}catch(e){}};
-   let svT=null;const remember=()=>{clearTimeout(svT);svT=setTimeout(()=>{const v=qi.value.trim();if(v.length<1)return;const hit=!!document.querySelector("#grid .card");if(v.length>=2)gcq(v,hit);if(!hit)return;RQ=[v,...RQ.filter(x=>x!==v)].slice(0,8);saveRQ()},1500)};
+   let svT=null;const remember=()=>{clearTimeout(svT);svT=setTimeout(()=>{const v=qi.value.trim();if(v.length<1)return;const hit=!!document.querySelector("#grid .card")&&(window.__fullHits===undefined||window.__fullHits>0);if(v.length>=2)gcq(v,hit);if(!hit)return;RQ=[v,...RQ.filter(x=>x!==v)].slice(0,8);saveRQ()},1500)};
    const drawRQ=()=>{if(!RQ.length||qi.value.trim()){rbox.hidden=true;return}
      rbox.innerHTML='<span class="rl"><span class="lz">最近搜索</span><span class="lb"> · </span><span class="le">Recent</span></span>'+RQ.map(q=>'<button type="button" class="rq"></button>').join("")+'<button type="button" class="rx"><span class="lz">清除</span><span class="lb"> </span><span class="le">Clear</span></button>';
      rbox.querySelectorAll(".rq").forEach((b,i)=>b.textContent=RQ[i]);rbox.hidden=false};
