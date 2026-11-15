@@ -2925,6 +2925,10 @@ $("copyTel").addEventListener("click",()=>{const el=$("tel");
   const ph=document.createElement("div");tabs.before(ph);
   const pin=()=>{const on=ph.getBoundingClientRect().top<=0;if(on!==tabs.classList.contains("fix")){ph.style.height=on?tabs.offsetHeight+"px":"0";tabs.classList.toggle("fix",on)}};
   addEventListener("scroll",pin,{passive:true});addEventListener("resize",pin);pin();
+  /* iPhone 键盘弹出时，固定在顶部的栏会被推到屏幕外（第一次点搜索最明显）：跟着可见区域往下挪，搜索栏一直看得到 */
+  {const vv=window.visualViewport;if(vv){const adj=()=>{const t=tabs.classList.contains("fix")?Math.max(0,vv.offsetTop):0;tabs.style.top=t?t+"px":""};
+    vv.addEventListener("resize",adj);vv.addEventListener("scroll",adj);addEventListener("scroll",adj,{passive:true});
+    const q=document.getElementById("q");q.addEventListener("focus",()=>{let n=0;const k=()=>{pin();adj();if(++n<12)setTimeout(k,80)};k()});q.addEventListener("blur",()=>setTimeout(adj,300));}}
   const hero=document.querySelector(".hero");tabs.after(hero);
   const web=document.getElementById("webdeals");hero.after(web);const arr=document.getElementById("arrivals");hero.after(arr);
   const info=document.createElement("div");info.className="wrap pv-info";[".dbar",".ukbar",".betabar"].forEach(q=>{const e=document.querySelector(q);if(e)info.appendChild(e)});web.after(info);
