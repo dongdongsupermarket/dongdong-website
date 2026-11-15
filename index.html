@@ -2730,7 +2730,8 @@ function tokScore(p,t){const n=nameOf(p),h=hayOf(p);
   if(al.some(a=>n.includes(a.toLowerCase())))return 2.4;
   if(t.length>=4&&t.endsWith("s")&&W.some(w=>w.startsWith(t.slice(0,-1))))return 2.4;
   if(t.length>=3&&n.includes(t))return 1.5;
-  if(t.length>=5){const mx=t.length>=8?2:1;if(W.some(w=>lev1(t,w,mx)||(w.length>t.length&&lev1(t,w.slice(0,t.length),mx))))return 1.8;}
+  if(t.length>=4&&W.some(w=>{if(w.length<t.length)return false;const v=w.slice(0,t.length);if(v===t)return false;let d=[];for(let k=0;k<t.length;k++)if(t[k]!==v[k])d.push(k);return d.length===2&&d[1]===d[0]+1&&t[d[0]]===v[d[1]]&&t[d[1]]===v[d[0]];}))return 1.8;
+  if(t.length>=5){const mx=t.length>=8?2:1;if(W.some(w=>w[0]===t[0]&&(lev1(t,w,mx)||(w.length>t.length&&lev1(t,w.slice(0,t.length),mx)))))return 1.8;}
   return 0;}
 function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").trim();
   const toks=q.split(/\s+/).filter(Boolean),N=PRODUCTS.length;
