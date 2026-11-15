@@ -1016,18 +1016,18 @@ const PRODUCTS_RAW=[
  {"c": "ready", "zh": "张力生红糖糍粑", "en": "Chang Li Sheng Brown Sugar Ciba", "spec": "290g", "price": 2.29, "img": "img/nw_p14_09.jpg"},
  {"c": "ready", "zh": "康乐香卤肥肠", "en": "Honor Soya Pig Intestines", "spec": "200g", "price": 4.09, "img": "img/nw_p14_10.jpg"},
  {"c": "ready", "zh": "五香猪耳朵", "en": "Spiced Pork Ear", "spec": "270g", "price": 4.95, "img": "img/nw_p14_11.jpg"},
+ {"c": "soy", "zh": "海天酱油 阳光美味（生抽）", "en": "Haday Sunshine Light Soy Sauce", "spec": "500ml", "price": 1.39, "img": "img/ph_hd_light.jpg"},
+ {"c": "soy", "zh": "海天招牌酱油（老抽）", "en": "Haday Signature Dark Soy Sauce", "spec": "500ml", "price": 2.39, "img": "img/ph_hd_dark.jpg"},
+ {"c": "soy", "zh": "李锦记特级鲜味生抽", "en": "Lee Kum Kee Premium Light Soy Sauce", "spec": "500ml", "price": 1.79, "img": "img/ph_lkk_light.jpg"},
+ {"c": "soy", "zh": "李锦记特级老抽", "en": "Lee Kum Kee Premium Dark Soy Sauce", "spec": "500ml", "price": 1.99, "img": "img/ph_lkk_dark.jpg"},
  {"c": "soy", "zh": "珠江桥牌生抽王", "en": "Pearl River Bridge Superior Light Soy Sauce", "spec": "500ml", "price": 1.99, "img": "img/ph_ppb_light.jpg"},
  {"c": "soy", "zh": "珠江桥牌老抽王", "en": "Pearl River Bridge Superior Dark Soy Sauce", "spec": "500ml", "price": 1.99, "img": "img/ph_ppb_dark.jpg"},
  {"c": "soy", "zh": "珠江桥牌草菇老抽", "en": "Pearl River Bridge Mushroom Dark Soy Sauce", "spec": "500ml", "price": 2.19, "img": "img/ph_ppb_mushroom.jpg"},
- {"c": "soy", "zh": "李锦记特级鲜味生抽", "en": "Lee Kum Kee Premium Light Soy Sauce", "spec": "500ml", "price": 1.79, "img": "img/ph_lkk_light.jpg"},
- {"c": "soy", "zh": "李锦记特级老抽", "en": "Lee Kum Kee Premium Dark Soy Sauce", "spec": "500ml", "price": 1.99, "img": "img/ph_lkk_dark.jpg"},
  {"c": "soy", "zh": "李锦记至尊草菇老抽", "en": "Lee Kum Kee Supreme Mushroom Dark Soy Sauce", "spec": "500ml", "price": 3.39, "img": "img/ph_lkk_mushroom.jpg"},
  {"c": "soy", "zh": "六月鲜红烧酱油", "en": "Shinho Braising Soy Sauce", "spec": "500ml", "price": 2.69, "img": "img/ph_sh_red.jpg"},
  {"c": "soy", "zh": "六月鲜特级酱油", "en": "Shinho Premium Soy Sauce", "spec": "500ml", "price": 3.49, "img": "img/ph_sh_500.jpg"},
  {"c": "soy", "zh": "六月鲜特级酱油", "en": "Shinho Premium Soy Sauce", "spec": "1L", "price": 4.79, "img": "img/ph_sh_1l.jpg"},
  {"c": "soy", "zh": "海天海鲜酱油", "en": "Haday Seafood Soy Sauce", "spec": "500ml", "price": 1.99, "img": "img/nw_ph_hd_seafood.jpg"},
- {"c": "soy", "zh": "海天酱油 阳光美味（生抽）", "en": "Haday Sunshine Light Soy Sauce", "spec": "500ml", "price": 1.39, "img": "img/ph_hd_light.jpg"},
- {"c": "soy", "zh": "海天招牌酱油（老抽）", "en": "Haday Signature Dark Soy Sauce", "spec": "500ml", "price": 2.39, "img": "img/ph_hd_dark.jpg"},
  {"c": "soy", "zh": "海天招牌草菇老抽", "en": "Haday Mushroom Dark Soy Sauce", "spec": "500ml", "price": 2.05, "img": "img/ph_hd_mush.jpg"},
  {"c": "soy", "zh": "海天鲜的白灼汁", "en": "Haday Poaching Soy Sauce", "spec": "450ml", "price": 1.69, "img": "img/nw_q1_14.jpg"},
  {"c": "soy", "zh": "海天招牌味极鲜", "en": "Haday Weijixian Soy Sauce", "spec": "380ml", "price": 1.65, "img": "img/nw_q1_15.jpg"},
@@ -2513,6 +2513,8 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
 // 分区首页每个小类先显示几样
 const openGroups=new Set(); // 已展开的小类
 const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
+const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：海天生抽/老抽、李锦记生抽/老抽、珠江桥生抽/老抽）
+const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
 function render(){
   const list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
@@ -2526,8 +2528,8 @@ function render(){
   if(grouped){
     const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
     $("grid").innerHTML=groups.map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
-      <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GROUP_N)).map(cardHTML).join("")}</div>
-      ${g.items.length>GROUP_N?(openGroups.has(g.c.id)
+      <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GN(g.c.id))).map(cardHTML).join("")}</div>
+      ${g.items.length>GN(g.c.id)?(openGroups.has(g.c.id)
         ?`<button type="button" class="more" data-fold="${g.c.id}">${B("收起","Show less")} ⌃</button>`
         :`<button type="button" class="more" data-fold="${g.c.id}">${B(`展开全部 ${g.items.length} 样`,`Show all ${g.items.length}`)} ⌄</button>`):""}</section>`).join("");
     spy();
