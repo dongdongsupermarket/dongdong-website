@@ -2701,7 +2701,12 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
     if(nameOf(p).includes(q))sc+=20;else if(ALIAS[q]&&ALIAS[q].some(a=>nameOf(p).includes(a.toLowerCase())))sc+=15;
     if(r.every(v=>v>0)||nameOf(p).includes(q))full.push({p,i,sc});
     else if(toks.length>1&&r.some((v,j)=>v>=1.8&&toks[j].length>=3))part.push({p,i,sc});});
-  const by=(a,b)=>b.sc-a.sc||a.i-b.i;full.sort(by);part.sort(by);
+  /* 热卖商品搜索时排最前：李锦记 → 海天 → 珠江桥（只排这几样主打货，其他照常按相关度） */
+  const HOT=["李锦记特级鲜味生抽","李锦记特级老抽","李锦记熊猫牌鲜味蚝油","李锦记旧庄特级蚝油","李锦记陈醋",
+    "海天酱油 阳光美味（生抽）","海天招牌酱油（老抽）","海天上等鲜蚝油","海天招牌鲜蚝油","海天陈醋",
+    "珠江桥牌生抽王","珠江桥牌老抽王"];
+  const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
+  const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
 const openGroups=new Set(); // 已展开的小类
