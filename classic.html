@@ -399,6 +399,11 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .zbox{background:var(--surface);color:var(--ink);border-radius:8px;border:2px solid var(--gold);width:min(480px,100%);max-height:100%;overflow-y:auto;display:grid}
 .zbox img{width:100%;height:auto;background:#fff;display:block;cursor:zoom-out}
 .zinfo{padding:14px 16px 16px;display:grid;gap:8px}
+.zgal{position:relative}
+.zarr{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#1f2e26;box-shadow:0 2px 8px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.zarr.l{left:8px}.zarr.r{right:8px}
+.zdots{position:absolute;left:0;right:0;bottom:10px;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.zdots i{width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,.25)}.zdots i.on{background:var(--gold);box-shadow:0 0 0 2px #fff}
 .zinfo .name{font-size:17px}
 .zrow{display:flex;gap:12px;align-items:center;justify-content:space-between}
 .zrow .tag{margin:0;flex:none}
@@ -2567,12 +2572,21 @@ function ctrl(i,style){const n=cart[i]||0;
 function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];else cart[i]=n;try{localStorage.setItem("dd-cart4",JSON.stringify(cart))}catch(e){}render();renderCart();if(!$("zoom").hidden)renderZoom();}
 let zi=-1;
 function renderZoom(){const p=PRODUCTS[zi];if(!p)return;
-  $("zbox").innerHTML=`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" id="zimg"><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}<div class="zrow">${priceTag(p)}${ctrl(zi,"add")}</div></div>`;}
-function openZoom(i){zi=i;renderZoom();$("zoom").hidden=false;$("zclose").focus();}
+  const G=[p.img,...(p.imgs||[])].filter(Boolean);if(zk>=G.length)zk=0;const many=G.length>1;
+  $("zbox").innerHTML=`<div class="zgal"><img src="${src(G[zk]||p.img)}" alt="${p.zh} ${p.en}${many?` (${zk+1}/${G.length})`:""}" id="zimg">${many?`<button type="button" class="zarr l" id="zprev" aria-label="上一张 Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="zarr r" id="znext" aria-label="下一张 Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><div class="zdots" aria-hidden="true">${G.map((_,j)=>`<i${j===zk?' class="on"':""}></i>`).join("")}</div>`:""}</div><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}<div class="zrow">${priceTag(p)}${ctrl(zi,"add")}</div></div>`;}
+let zk=0,zsw=false;
+function zstep(d){const p=PRODUCTS[zi];const n=1+((p&&p.imgs)||[]).length;if(n<2)return;zk=(zk+d+n)%n;renderZoom();}
+function openZoom(i){zi=i;zk=0;renderZoom();$("zoom").hidden=false;$("zclose").focus();}
 function closeZoom(){$("zoom").hidden=true;}
 document.addEventListener("click",e=>{const z=e.target.closest("[data-zoom]");if(z){openZoom(+z.dataset.zoom);return;}
+  if(e.target.closest("#zprev")){zstep(-1);return;}if(e.target.closest("#znext")){zstep(1);return;}
+  if(e.target.id==="zimg"&&zsw){zsw=false;return;}
   if(e.target.closest("#zclose")||e.target.id==="zimg"||e.target===$("zoom"))closeZoom();});
-document.addEventListener("keydown",e=>{const z=e.target.closest&&e.target.closest("[data-zoom]");if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openZoom(+z.dataset.zoom);}if(e.key==="Escape")closeZoom();});
+(function(){let x0=null,y0=0;const z=document.getElementById("zoom");
+z.addEventListener("touchstart",e=>{if(!e.target.closest(".zgal")){x0=null;return;}x0=e.touches[0].clientX;y0=e.touches[0].clientY;},{passive:true});
+z.addEventListener("touchend",e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+ if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.3){zsw=true;setTimeout(()=>zsw=false,400);zstep(dx<0?1:-1);}},{passive:true});})();
+document.addEventListener("keydown",e=>{const z=e.target.closest&&e.target.closest("[data-zoom]");if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openZoom(+z.dataset.zoom);}if(e.key==="Escape")closeZoom();if(!$("zoom").hidden&&e.key==="ArrowLeft")zstep(-1);if(!$("zoom").hidden&&e.key==="ArrowRight")zstep(1);});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-add],[data-inc],[data-dec]");if(!b)return;
   const i=+(b.dataset.add??b.dataset.inc??b.dataset.dec),kg=PRODUCTS[i]&&PRODUCTS[i].kg,cur=cart[i]||0,dec=b.dataset.dec!==undefined;
   // 按公斤：1 公斤起订，每次加减 0.5 公斤
