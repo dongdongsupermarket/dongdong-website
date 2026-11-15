@@ -582,6 +582,9 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .zbox{background:var(--surface);color:var(--ink);border-radius:8px;border:2px solid var(--gold);width:min(480px,100%);max-height:100%;overflow-y:auto;display:grid}
 .zbox img{width:100%;height:auto;background:#fff;display:block;cursor:zoom-out}
 .zinfo{padding:14px 16px 16px;display:grid;gap:8px}
+html.nd .add.oosbtn.notify,.add.oosbtn.notify{cursor:pointer;color:#1d5b3a;border-color:#25a35a;background:#eefaf2}
+.oosbtn.notify{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;text-decoration:none;cursor:pointer;opacity:1}
+.oosbtn.notify .ns{font-size:11px;opacity:.75}.oosbtn.notify .nn{font-weight:700}
 .zgal{position:relative}
 .zing{border:1px solid var(--line,#ddd);border-radius:8px;padding:8px 12px;background:var(--sunk,#f6f3ea)}
 .zing summary{cursor:pointer;font-weight:700;min-height:28px;display:flex;align-items:center}
@@ -2751,7 +2754,9 @@ function money(n){n=Math.round(n*100)/100;return n<1?Math.round(n*100)+"p":"£"+
 // 售罄：商品加 "oos": true（或 "oos": "回货说明"，如 "周二"），网站显示"售罄"，不能加入购物车
 const isOOS=p=>!!(p&&p.oos);
 function ctrl(i,style){const n=cart[i]||0;
-  if(isOOS(PRODUCTS[i]))return `<button type="button" class="add oosbtn" disabled>${B("售罄","Sold out")}</button>`;
+  if(isOOS(PRODUCTS[i])){const p=PRODUCTS[i],sp2=p.spec?" "+String(p.spec).replace(/<[^>]*>/g,""):"";
+    const t=`你好，「${p.zh}${sp2}」到货了麻烦通知我，谢谢！\nHi, please let me know when ${p.en}${sp2} is back in stock. Thanks!`;
+    return `<a class="add oosbtn notify" href="https://wa.me/447546185999?text=${encodeURIComponent(t)}" target="_blank" rel="noopener"><span class="nn">${B("到货通知我","Notify me")}</span></a>`;}
   if(!n&&style==="add")return isPre(PRODUCTS[i])?`<button type="button" class="add preadd" data-add="${i}">${B("加入预订","Pre-order")}</button>`:`<button type="button" class="add" data-add="${i}">${B("加入购物车","Add")}</button>`;
   return `<div class="step"><button type="button" data-dec="${i}" aria-label="减少 Remove one">−</button><span>${n}${PRODUCTS[i]&&PRODUCTS[i].kg?" kg":""}</span><button type="button" data-inc="${i}" aria-label="增加 Add one">+</button></div>`;}
 function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];else cart[i]=n;try{localStorage.setItem("dd-cart4",JSON.stringify(cart))}catch(e){}render();renderCart();if(!$("zoom").hidden)renderZoom();}
