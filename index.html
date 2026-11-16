@@ -451,6 +451,11 @@ html[data-lang="both"] .hero .since .le{display:block;font-size:13px;font-weight
 .bbd{margin-top:4px;font-size:12.5px;color:var(--muted)}
 .bbd b{color:var(--ink);font-variant-numeric:tabular-nums}
 .kgnote{color:var(--muted);margin-bottom:3px}
+.kgtag .price small{font-size:.62em;font-weight:700;margin-left:1px}
+.kgpick{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.kgpick button{font:inherit;font-size:12px;font-weight:600;border:1px solid var(--line,#d8d0bd);background:transparent;color:inherit;border-radius:999px;padding:3px 8px;min-height:28px;cursor:pointer}
+.kgpick button[aria-pressed="true"]{background:var(--green,#233d30);border-color:var(--green,#233d30);color:#fff}
+.kgest{padding-top:3px;font-size:12px;color:var(--muted)}.kgest b{color:inherit}
 .tag.mptag{background:var(--surface);border-color:var(--red)}
 .tag .price.mp{font-family:var(--body);font-size:17px;color:var(--red);font-weight:700}
 html[data-lang="both"] .tag .price.mp .le{font-size:12px}
@@ -2209,10 +2214,10 @@ const PRODUCTS_RAW=[
  {"c": "veg", "zh": "菠菜", "en": "Spinach", "oos": true, "price": 1.6, "unit": "/捆 bunch", "img": "img/nw_veg_v02.jpg"},
 {"c": "veg", "zh": "小葱", "en": "Spring Onion", "price": 0.69, "unit": "/捆 bunch", "img": "img/nw_veg_spring_onion.jpg"},
  {"c": "veg", "zh": "豆芽", "en": "Bean Sprouts", "spec": "400–500g", "price": 0.89, "unit": "/包 bag", "img": "img/nw_veg_beansprout.jpg"},
- {"c": "veg", "zh": "菜心", "en": "Choy Sum", "price": 2.41, "unit": "/包 bag", "approx": true, "perkg": 6.9, "img": "img/nw_veg_choysum.jpg"},
- {"c": "veg", "zh": "冬瓜", "en": "Winter Melon", "oos": true, "price": 2.75, "unit": "/块 piece", "approx": true, "perkg": 3.7, "img": "img/nw_veg_wintermelon.jpg"},
+ {"c": "veg", "zh": "菜心", "en": "Choy Sum", "price": 6.9, "unit": "/kg", "kg": true, "img": "img/nw_veg_choysum.jpg"},
+ {"c": "veg", "zh": "冬瓜", "en": "Winter Melon", "oos": true, "price": 3.7, "unit": "/kg", "kg": true, "img": "img/nw_veg_wintermelon.jpg"},
  {"c": "veg", "zh": "大白菜", "en": "Chinese Cabbage", "price": 1.59, "unit": "/颗 each", "img": "img/nw_veg_cabbage.jpg"},
- {"c": "veg", "zh": "芥菜", "en": "Mustard Greens", "oos": true, "price": 3.66, "unit": "/包 bag", "approx": true, "perkg": 6.2, "img": "img/nw_veg_v07.jpg"},
+ {"c": "veg", "zh": "芥菜", "en": "Mustard Greens", "oos": true, "price": 6.2, "unit": "/kg", "kg": true, "img": "img/nw_veg_v07.jpg"},
 {"c": "veg", "zh": "茼蒿", "en": "Crown Daisy (Tong Ho)", "price": 0, "mp": true, "unit": "/包 bag", "oos": true, "img": "img/nw_veg_tonghao.jpg"},
 {"c": "veg", "zh": "莴笋", "en": "Celtuce (Stem Lettuce)", "price": 0, "mp": true, "unit": "/根 each", "oos": true, "img": "img/nw_veg_celtuce.jpg"},
  {"c": "veg", "zh": "韭菜", "en": "Garlic Chives", "spec": "200g", "price": 2.85, "unit": "/包 bag", "img": "img/nw_veg_chive.jpg"},
@@ -2225,7 +2230,7 @@ const PRODUCTS_RAW=[
  {"c": "veg", "zh": "藕", "en": "Lotus Root", "oos": true, "price": 4.5, "unit": "/根 each", "approx": true, "img": "img/nw_veg_v15.jpg"},
  {"c": "veg", "zh": "金针菇", "en": "Enoki Mushroom", "spec": "200g", "price": 2.29, "unit": "/包 bag", "img": "img/nw_veg_v16.jpg"},
  {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 1.2, "unit": "/根 each", "approx": true, "img": "img/nw_veg_f01.jpg"},
- {"c": "veg", "zh": "中国长茄子", "en": "Chinese Long Aubergine", "price": 2.8, "unit": "/包 bag", "approx": true, "perkg": 7.5, "img": "img/nw_veg_f02.jpg"},
+ {"c": "veg", "zh": "中国长茄子", "en": "Chinese Long Aubergine", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/nw_veg_f02.jpg"},
 {"c": "veg", "zh": "泰国青圆茄", "en": "Thai Green Eggplant", "price": 13.0, "unit": "/kg", "kg": true, "img": "img/nw_veg_thai_eggplant.jpg"},
 {"c": "veg", "zh": "青木瓜", "en": "Green Papaya", "per": "每个约 500g approx. 500g each", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/veg_green_papaya.jpg"},
  {"c": "veg", "zh": "红薯", "en": "Sweet Potato", "price": 2.1, "unit": "/3个 3 pcs", "img": "img/nw_veg_f03.jpg"},
@@ -2647,7 +2652,7 @@ function preDays(p){return p.pre.days.slice().sort((a,b)=>((a+6)%7)-((b+6)%7));}
 function preLine(p){const ds=preDays(p),na=nextArrival(p),lead=p.pre.lead??1;
   const zh=`周${ds.map(i=>DAYS[i][0].slice(1)).join("、")}到货 · 提前 ${lead} 天订`,en=`Arrives ${ds.map(i=>DAYS[i][1]).join(" & ")} · order ${lead} day${lead>1?"s":""} ahead`;
   const nz=na?`最早 ${DAYS[na.getDay()][0]} ${dm(na)}`:"",ne=na?`Earliest ${DAYS[na.getDay()][1]} ${dm(na)}`:"";
-  return `<div class="preline">${p.kg?`<span class="kgnote">${BB("1 公斤起订 · 可加 0.5 公斤 · 按实际重量计价","From 1 kg, in 0.5 kg steps · priced by weight")}</span>`:""}<span>🗓 ${B(zh,en)}</span>${na?`<b class="prenext">${BB(nz,ne)}</b>`:""}</div>`;}
+  return `<div class="preline">${p.kg?`<span class="kgnote">${BB("按公斤计价 · 选大概重量 · 按实际重量收费","Priced per kg · pick an approx. weight · charged by actual weight")}</span>`:""}<span>🗓 ${B(zh,en)}</span>${na?`<b class="prenext">${BB(nz,ne)}</b>`:""}</div>`;}
 // 默认价格单位：按商品类型自动判断（商品里写了 "unit" 的以商品为准）
 function defUnit(p){const n=p.zh+" "+p.en,s=p.spec||"",ml=(s.match(/(\d+)\s*ml/i)||[])[1];
   if(p.case||/^case/.test(p.c))return "/箱 case";
@@ -2678,6 +2683,7 @@ function incLine(p){if(!p.inc)return "";return `<div class="incl">${p.blurb?`<di
 function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"英国本地制作",en:"Made in the UK"};return `<div class="ukline">${B(t.zh,t.en)}</div>`;}
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
+  if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span></div>`;
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
   return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${pct(p)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
@@ -2802,7 +2808,7 @@ function render(){
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
      <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${!isNew(p)&&isArr(p)?`<span class="newbadge arrbadge"><span class="lz">新货</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
-     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}</div>
+     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}${kgPick(PRODUCTS.indexOf(p))}</div>
      ${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
    </article>`}
@@ -2818,12 +2824,18 @@ try{cart=JSON.parse(localStorage.getItem("dd-cart4")||"{}")||{}}catch(e){cart={}
 function money(n){n=Math.round(n*100)/100;return n<1?Math.round(n*100)+"p":"£"+n.toFixed(2);}
 // 售罄：商品加 "oos": true（或 "oos": "回货说明"，如 "周二"），网站显示"售罄"，不能加入购物车
 const isOOS=p=>!!(p&&p.oos);
+/* 按公斤：客人选大概重量，显示约价 */
+const KGS=[0.25,0.5,0.75,1,1.5,2,2.5,3,4,5];
+const kgDef=p=>p.kgdef||(["veg","fruit"].includes(p.c)?0.5:1);
+const kgFmt=n=>String(+n.toFixed(2));
+function kgPick(i){const p=PRODUCTS[i];if(!p||!p.kg||isOOS(p))return "";const n=cart[i]||0;
+  return `<div class="kgpick" role="group" aria-label="选重量 Choose weight">${[0.25,0.5,1,1.5,2].map(w=>`<button type="button" data-kg="${i}" data-w="${w}"${n===w?' aria-pressed="true"':""}>${kgFmt(w)} kg</button>`).join("")}</div><div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${kgFmt(n)} kg`:B("选大概重量，按实际重量计价","Pick an approx. weight · priced by actual weight")}</div>`;}
 function ctrl(i,style){const n=cart[i]||0;
   if(isOOS(PRODUCTS[i])){const p=PRODUCTS[i],sp2=p.spec?" "+String(p.spec).replace(/<[^>]*>/g,""):"";
     const t=`你好，「${p.zh}${sp2}」到货了麻烦通知我，谢谢！\nHi, please let me know when ${p.en}${sp2} is back in stock. Thanks!`;
     return `<a class="add oosbtn notify" href="https://wa.me/447546185999?text=${encodeURIComponent(t)}" target="_blank" rel="noopener"><span class="nn">${B("到货通知我","Notify me")}</span></a>`;}
   if(!n&&style==="add")return isPre(PRODUCTS[i])?`<button type="button" class="add preadd" data-add="${i}">${B("加入预订","Pre-order")}</button>`:`<button type="button" class="add" data-add="${i}">${B("加入购物车","Add")}</button>`;
-  return `<div class="step"><button type="button" data-dec="${i}" aria-label="减少 Remove one">−</button><span>${n}${PRODUCTS[i]&&PRODUCTS[i].kg?" kg":""}</span><button type="button" data-inc="${i}" aria-label="增加 Add one">+</button></div>`;}
+  return `<div class="step"><button type="button" data-dec="${i}" aria-label="减少 Remove one">−</button><span>${PRODUCTS[i]&&PRODUCTS[i].kg?kgFmt(n)+" kg":n}</span><button type="button" data-inc="${i}" aria-label="增加 Add one">+</button></div>`;}
 function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];else cart[i]=n;try{localStorage.setItem("dd-cart4",JSON.stringify(cart))}catch(e){}render();renderCart();if(!$("zoom").hidden)renderZoom();}
 let zi=-1;
 function renderZoom(){const p=PRODUCTS[zi];if(!p)return;
@@ -2848,9 +2860,11 @@ z.addEventListener("touchend",e=>{if(x0===null)return;const t=e.changedTouches[0
 document.addEventListener("keydown",e=>{const z=e.target.closest&&e.target.closest("[data-zoom]");if(z&&(e.key==="Enter"||e.key===" ")){e.preventDefault();openZoom(+z.dataset.zoom);}if(e.key==="Escape")closeZoom();if(!$("zoom").hidden&&e.key==="ArrowLeft")zstep(-1);if(!$("zoom").hidden&&e.key==="ArrowRight")zstep(1);});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-add],[data-inc],[data-dec]");if(!b)return;
   const i=+(b.dataset.add??b.dataset.inc??b.dataset.dec),kg=PRODUCTS[i]&&PRODUCTS[i].kg,cur=cart[i]||0,dec=b.dataset.dec!==undefined;
-  // 按公斤：1 公斤起订，每次加减 0.5 公斤
-  let n=kg?(dec?(cur-0.5<1?0:cur-0.5):(cur<1?1:cur+0.5)):cur+(dec?-1:1);
-  setQty(i,Math.round(n*10)/10);});
+  // 按公斤：加入时用默认重量（蔬菜 0.5 kg、肉 1 kg），加减按 0.25 / 0.5 / 0.75 / 1 / 1.5 / 2 … 走
+  let n;if(kg){const p=PRODUCTS[i];if(!cur)n=dec?0:kgDef(p);else if(dec){const lo=KGS.filter(w=>w<cur-1e-9);n=lo.length?lo[lo.length-1]:0}else{const hi=KGS.find(w=>w>cur+1e-9);n=hi||cur+1}}
+  else n=cur+(dec?-1:1);
+  setQty(i,Math.round(n*100)/100);});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-kg]");if(!b)return;const i=+b.dataset.kg,w=+b.dataset.w;setQty(i,(cart[i]||0)===w?0:w);});
 function items(){return Object.keys(cart).map(i=>({p:PRODUCTS[i],i:+i,n:cart[i]})).filter(x=>x.p&&!isOOS(x.p));}
 function renderCart(){
   const it=items(),count=it.reduce((s,x)=>s+(x.p.kg?1:x.n),0),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);
@@ -2872,7 +2886,7 @@ const mode=()=>$("modeDelivery").checked?"delivery":"pickup";
 function buildMessage(){
   const it=items(),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it),d=mode()==="delivery";
   const L=["東東超市 新订单 New order",`订单编号 Order no.: ${orderNo()}`,""];
-  it.forEach(x=>L.push(`${x.p.kg?`约 ${x.n} kg ×`:`${x.n} ×`} ${x.p.web?"【网上专享 Online exclusive】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 approx. ${money(x.n*x.p.price)}（${money(x.p.price)}/kg，按实际重量计价 priced by actual weight）`:money(x.n*x.p.price)}${onSale(x.p)&&!x.p.web?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}${x.p.inc?"\n"+x.p.inc.map(c=>"    · "+c[0]).join("\n"):""}`));
+  it.forEach(x=>L.push(`${x.p.kg?`约 ${kgFmt(x.n)} kg ×`:`${x.n} ×`} ${x.p.web?"【网上专享 Online exclusive】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 ${money(x.n*x.p.price)}（${money(x.p.price)}/kg，按实际重量计价 priced by actual weight）`:money(x.n*x.p.price)}${onSale(x.p)&&!x.p.web?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}${x.p.inc?"\n"+x.p.inc.map(c=>"    · "+c[0]).join("\n"):""}`));
   if(deals.length){L.push("");deals.forEach(dd=>L.push(`优惠 Deal: ${dd.zh} ${dd.en}（${dd.names.map(p=>p.zh).join("/")}）−${money(dd.save)}`));}
   L.push("",`商品合计 Subtotal: ${it.some(x=>x.p.kg||x.p.approx)?"约 approx. ":""}${money(total)}${it.some(x=>x.p.mp)?" + 时价商品 market-price items":""}`,"");
   if(it.some(x=>isAlc(x.p)))L.push("含须年满18岁商品（酒类/刀具/燃气罐），本人已年满18岁 Contains age-restricted items, I am 18 or over","");
