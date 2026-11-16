@@ -2957,6 +2957,32 @@ setTimeout(()=>{try{const u=new URLSearchParams(location.search);const it=u.get(
   else if(qq){$("q").value=qq;$("q").dispatchEvent(new Event("input",{bubbles:true}));}}catch(e){}},300);
 if(location.hash==="#terms")$("terms").open=true;addEventListener("hashchange",()=>{if(location.hash==="#terms")$("terms").open=true;});
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").hidden=true;});
+/* 手机返回/前进：分区、小类、搜索、大图、购物车都记进浏览历史；右滑上一步，左滑下一步 */
+(function(){
+  const key=()=>JSON.stringify([zone,cat,q]);let last=key(),qTyping=false,restoring=false,qt=null;
+  try{history.replaceState({dd:1,z:zone,c:cat,q:q,ex:expanded},"")}catch(e){}
+  const _render=render;
+  render=function(){_render.apply(this,arguments);if(restoring)return;const k=key();if(k===last)return;
+    const st={dd:1,z:zone,c:cat,q:q,ex:expanded};
+    try{const prevQ=JSON.parse(last)[2];if(q&&prevQ&&qTyping)history.replaceState(st,"");else history.pushState(st,"")}catch(e){}
+    last=k;qTyping=!!q;clearTimeout(qt);if(q)qt=setTimeout(()=>qTyping=false,1500);};
+  const ov=id=>{const el=$(id);new MutationObserver(()=>{if(restoring)return;if(!el.hidden){try{history.pushState({dd:1,z:zone,c:cat,q:q,ex:expanded,ov:id},"")}catch(e){}}else if(history.state&&history.state.ov===id){restoring=true;history.back();setTimeout(()=>restoring=false,50)}}).observe(el,{attributes:true,attributeFilter:["hidden"]});};
+  ov("zoom");ov("drawer");
+  addEventListener("popstate",e=>{const st=e.state;restoring=true;
+    try{["zoom","drawer"].forEach(id=>{if($(id)&&!$(id).hidden&&!(st&&st.ov===id))$(id).hidden=true});
+      if(st&&st.dd){const ch=key()!==JSON.stringify([st.z,st.c,st.q]);zone=st.z;cat=st.c;q=st.q||"";$("q").value=q;expanded=st.ex??zone;
+        if(ch){renderZones();_render();last=key();const pr=$("products");if(pr&&pr.getBoundingClientRect().top<0)pr.scrollIntoView();}}}
+    finally{setTimeout(()=>restoring=false,50)}});
+  /* 手势：在页面中间横向划（离屏幕边缘 25px 以上，避开可以横向滚动的区域、大图、输入框） */
+  let x0=null,y0=0,t0=0;
+  const hscroll=el=>{for(;el&&el!==document.body;el=el.parentElement){const cs=getComputedStyle(el);if((cs.overflowX==="auto"||cs.overflowX==="scroll")&&el.scrollWidth>el.clientWidth+4)return true}return false};
+  document.addEventListener("touchstart",e=>{x0=null;if(e.touches.length!==1)return;const t=e.touches[0];
+    if(t.clientX<25||t.clientX>innerWidth-25)return;if(!$("zoom").hidden)return;if(e.target.closest("input,textarea,select,.zgal,[contenteditable]")||hscroll(e.target))return;
+    x0=t.clientX;y0=t.clientY;t0=Date.now();},{passive:true});
+  document.addEventListener("touchend",e=>{if(x0===null)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;
+    if(Date.now()-t0>700||Math.abs(dx)<90||Math.abs(dx)<Math.abs(dy)*2)return;if(dx>0)history.back();else history.forward();},{passive:true});
+})();
+
 document.addEventListener("keydown",e=>{if(e.key==="Escape")$("drawer").hidden=true;});
 function applyLang(){const h=document.documentElement;h.dataset.lang=LANG;h.lang=LANG==="en"?"en":"zh-Hans";
   $("q").placeholder=T("搜索商品","Search products");
