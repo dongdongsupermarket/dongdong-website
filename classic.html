@@ -2266,6 +2266,7 @@ const PRODUCTS_RAW=[
  {"c": "cake", "zh": "香芋蛋卷", "en": "Taro Flavour Roll", "price": 5.79, "was": 6.49, "short": true, "bbd": "14/11/2026", "until": "14/11/2026", "unit": "/盒 box", "img": "img/lw_k_taro.jpg"},
  {"c": "cake", "zh": "莲蓉蛋黄酥", "en": "Lotus Seed Paste Salted Egg Puff", "price": 3.99, "was": 4.79, "short": true, "bbd": "19/11/2026", "until": "19/11/2026", "unit": "/盒 box", "img": "img/lw_k_lotus.jpg"}];
 const PRODUCTS=CATS.flatMap(c=>PRODUCTS_RAW.filter(p=>p.c===c.id));
+PRODUCTS.forEach(p=>{if(p.per&&!p._per){p._per=1;p.spec=(p.spec?p.spec+" · ":"")+p.per}});  // "per": "每扇约 1.2kg approx. 1.2kg each" 按重量卖的商品每包大概多重
 // 营业时间：0=周日 … 6=周六；null 为休息
 const HOURS=[[11,18],[11,19],[11,19],[11,19],[11,19],[11,19],[11,19]];
 const DAYS=[["周日","Sun"],["周一","Mon"],["周二","Tue"],["周三","Wed"],["周四","Thu"],["周五","Fri"],["周六","Sat"]];
