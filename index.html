@@ -2771,7 +2771,18 @@ function tokScore(p,t){const n=nameOf(p),h=hayOf(p);
   if(t.length>=4&&W.some(w=>{if(w.length<t.length)return false;const v=w.slice(0,t.length);if(v===t)return false;let d=[];for(let k=0;k<t.length;k++)if(t[k]!==v[k])d.push(k);return d.length===2&&d[1]===d[0]+1&&t[d[0]]===v[d[1]]&&t[d[1]]===v[d[0]];}))return 1.8;
   if(t.length>=5){const mx=t.length>=8?2:1;if(W.some(w=>w[0]===t[0]&&(lev1(t,w,mx)||(w.length>t.length&&lev1(t,w.slice(0,t.length),mx)))))return 1.8;}
   return 0;}
-function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").trim();
+/* 连着打的「品牌+品名」（如 香源水饺、海天蚝油）：整句搜不到时，自动拆成两段再搜 */
+const QSYN={"水饺":"饺","饺子":"饺","蒸饺":"饺","煎饺":"饺","汤圆":"汤圆","面条":"面","拉面":"面","米粉":"粉","粉丝":"粉丝","酱油":"抽","耗油":"蚝油"};
+function searchAll(raw){const r0=_searchAll(raw);const q=raw.trim();
+  if((window.__fullHits||0)>0||/\s/.test(q)||!CJK.test(q)||q.length<3)return r0;
+  let best=null;
+  for(let k=q.length-1;k>=2;k--){const L=q.slice(0,k),R0=q.slice(k),R=QSYN[R0]||R0;
+    const n=PRODUCTS.filter(p=>nameOf(p).includes(L)).length;if(!n)continue;
+    for(const RR of [R0,R]){const res=_searchAll(L+" "+RR);const h=window.__fullHits||0;if(h>0&&(!best||h>best.h))best={res,h};if(h>0)break;}
+    if(best)break;}
+  if(best){window.__fullHits=best.h;return best.res;}
+  return r0;}
+function _searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").trim();
   const toks=q.split(/\s+/).filter(Boolean),N=PRODUCTS.length;
   const tsc=(p,t)=>{let s=tokScore(p,t);if(!s&&CJK.test(t)&&t.length>=3){const parts=[];for(let k=0;k<t.length-1;k++)parts.push(t.slice(k,k+2));const m=parts.filter(x=>nameOf(p).includes(x)).length;if(m>=Math.ceil(parts.length/2))s=1+m/parts.length;}return s;};
   const M=PRODUCTS.map(p=>toks.map(t=>tsc(p,t)));
