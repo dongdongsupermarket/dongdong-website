@@ -647,6 +647,10 @@ html.nd .add.oosbtn.notify,.add.oosbtn.notify{cursor:pointer;color:#1d5b3a;borde
 .pit .pimg .glyph{display:grid;place-items:center;height:100%;font-family:var(--cn-display);font-size:40px;color:var(--green)}
 .pit .pn{font-size:13px;font-weight:500;line-height:1.3;padding:6px 8px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .pit .pp{padding:2px 8px 8px;font-family:var(--num);font-weight:700;font-size:18px;color:var(--green);font-variant-numeric:tabular-nums}
+.pit .pp .ppkg{font-size:13px;font-weight:600;margin-left:1px}
+.pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
+.zkg{margin-top:10px}
+.kgtag .kgper{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 .pit .pp s{font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted);margin-left:4px}
 .s-sale .pit .pp{color:var(--red)}
 .plist{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:15px}
@@ -2568,7 +2572,7 @@ if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new"
 if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper">${p.per?sp(p.per):B("按公斤 · 选 250g 起","Per kg · from 250g")}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
@@ -2701,7 +2705,7 @@ function incLine(p){if(!p.inc)return "";return `<div class="incl">${p.blurb?`<di
 function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"英国本地制作",en:"Made in the UK"};return `<div class="ukline">${B(t.zh,t.en)}</div>`;}
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
-  if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span></div>`;
+  if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span>${p.per?`<span class="unit kgper">${sp(p.per)}</span>`:`<span class="unit kgper">${B("按公斤卖","per kg")}</span>`}</div>`;
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
   return `<div class="tag saletag"><span class="price">${money(p.price)}</span><span class="was">was ${money(p.was)}</span><span class="save">Save ${pct(p)}%${p.bbd?` · BBD ${p.bbd}`:p.until?` · until ${p.until}`:""}</span></div>`;}
 // 搜索别名：拼音、英文常用叫法 → 商品名里的字
@@ -2869,7 +2873,7 @@ function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];el
 let zi=-1;
 function renderZoom(){const p=PRODUCTS[zi];if(!p)return;
   const G=[p.img,...(p.imgs||[])].filter(Boolean);if(zk>=G.length)zk=0;const many=G.length>1;
-  $("zbox").innerHTML=`<div class="zgal"><img src="${src(G[zk]||p.img)}" alt="${p.zh} ${p.en}${many?` (${zk+1}/${G.length})`:""}" id="zimg">${many?`<button type="button" class="zarr l" id="zprev" aria-label="上一张 Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="zarr r" id="znext" aria-label="下一张 Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><div class="zdots" aria-hidden="true">${G.map((_,j)=>`<i${j===zk?' class="on"':""}></i>`).join("")}</div>`:""}</div><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}${ingLine(p)}<div class="zrow">${priceTag(p)}${ctrl(zi,"add")}</div></div>`;}
+  $("zbox").innerHTML=`<div class="zgal"><img src="${src(G[zk]||p.img)}" alt="${p.zh} ${p.en}${many?` (${zk+1}/${G.length})`:""}" id="zimg">${many?`<button type="button" class="zarr l" id="zprev" aria-label="上一张 Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="zarr r" id="znext" aria-label="下一张 Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><div class="zdots" aria-hidden="true">${G.map((_,j)=>`<i${j===zk?' class="on"':""}></i>`).join("")}</div>`:""}</div><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${bbdLine(p)}${ingLine(p)}<div class="zrow">${priceTag(p)}${p.kg&&!isOOS(p)?"":ctrl(zi,"add")}</div>${p.kg&&!isOOS(p)?`<div class="zkg">${kgPick(zi)}</div>`:""}</div>`;}
 let zk=0,zsw=false;
 function zstep(d){const p=PRODUCTS[zi];const n=1+((p&&p.imgs)||[]).length;if(n<2)return;zk=(zk+d+n)%n;renderZoom();}
 /* 配料表：商品可写 "ingZh"、"ingEn"（过敏原用 **粗体**）、"contains"（如 "Soya, Wheat"）、"containsZh"（如 "大豆、小麦"） */
