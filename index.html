@@ -1437,7 +1437,7 @@ const PRODUCTS_RAW=[
  {"c": "soup", "zh": "云香汤料", "en": "Wonton Mix", "spec": "43g", "price": 1.99, "img": "img2/q12_06.jpg"},
  {"c": "soup", "zh": "味好美 McCormick 麻婆豆腐调料", "en": "McCormick 味好美 Mapo Tofu Seasoning", "oos": true, "price": 0.95, "img": "img2/q12_07.jpg"},
  {"c": "soup", "zh": "白家酸汤肥牛调料", "en": "Baijia Sour Beef Stew Seasoning", "spec": "160g", "price": 1.55, "img": "img/sw_bj_feiniu.jpg"},
- {"c": "soup", "zh": "白家麻婆豆腐调料", "en": "Baijia Mapo Tofu Seasoning", "oos": true, "price": 1.15, "img": "img2/q12_09.jpg"},
+ {"c": "soup", "zh": "白家 Baijia 麻婆豆腐调料", "en": "Baijia 白家 Mapo Tofu Seasoning", "oos": true, "off": true, "price": 1.15, "img": "img2/q12_09.jpg"},
  {"c": "soup", "zh": "白家 Baijia 酸菜鱼烹饪料", "en": "Baijia 白家 Pickled Fish Seasoning", "oos": true, "price": 1.69, "img": "img2/q12_10.jpg"},
  {"c": "soup", "zh": "白家香辣水煮鱼调料", "en": "Baijia Spicy Hot Fish Seasoning", "spec": "200g", "price": 1.89, "img": "img/sw_bj_shuizhuyu.jpg"},
  {"c": "soup", "zh": "桥头红烧肉调料（香甜）", "en": "Qiaotou Braised Pork Seasoning (Sweet)", "spec": "120g", "price": 1.99, "img": "img/ph_qt_hongshao2.jpg"},
@@ -2484,7 +2484,7 @@ const PRODUCTS_RAW=[
  {"c": "cake", "zh": "芒果班戟", "en": "Mango Pancake", "price": 4.79, "unit": "/盒 box", "img": "img/lw_k_mango.jpg", "oos": true},
  {"c": "cake", "zh": "香芋蛋卷", "en": "Taro Flavour Roll", "price": 5.79, "was": 6.49, "short": true, "bbd": "14/11/2026", "until": "14/11/2026", "unit": "/盒 box", "img": "img/lw_k_taro.jpg", "oos": true},
  {"c": "cake", "zh": "莲蓉蛋黄酥", "en": "Lotus Seed Paste Salted Egg Puff", "price": 3.99, "was": 4.79, "short": true, "bbd": "19/11/2026", "until": "19/11/2026", "unit": "/盒 box", "img": "img/lw_k_lotus.jpg", "oos": true}];
-const PRODUCTS=CATS.flatMap(c=>PRODUCTS_RAW.filter(p=>p.c===c.id));
+const PRODUCTS=CATS.flatMap(c=>PRODUCTS_RAW.filter(p=>p.c===c.id&&!p.off)) /* off:true = 暂时下架，网站不显示 */;
 PRODUCTS.forEach(p=>{if(p.per&&!p._per){p._per=1;p.spec=(p.spec?p.spec+" · ":"")+p.per}});  // "per": "每扇约 1.2kg approx. 1.2kg each" 按重量卖的商品每包大概多重
 // 营业时间：0=周日 … 6=周六；null 为休息
 const HOURS=[[11,18],[11,19],[11,19],[11,19],[11,19],[11,19],[11,19]];
