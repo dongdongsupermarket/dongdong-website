@@ -2792,19 +2792,22 @@ if(location.hash==="#terms")$("terms").open=true;addEventListener("hashchange",(
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").hidden=true;});
 /* 手机返回/前进：分区、小类、搜索、大图、购物车都记进浏览历史；右滑上一步，左滑下一步 */
 (function(){
+  const _render=render;const _renderInit=()=>_render();
   const key=()=>JSON.stringify([zone,cat,q]);let last=key(),qTyping=false,restoring=false,qt=null;
+  const DZ=zone;/* 地址栏记住当前搜索 / 分区 / 小类，刷新后不会跳回首页 */
+  const U=()=>{try{const u=new URL(location.href);["q","z","c","item"].forEach(k=>u.searchParams.delete(k));if(q)u.searchParams.set("q",q);else{if(zone&&zone!==DZ)u.searchParams.set("z",zone);if(cat&&cat!=="all")u.searchParams.set("c",cat);}return u.pathname+u.search+u.hash}catch(e){return location.href}};
+  try{const u=new URLSearchParams(location.search),z0=u.get("z"),c0=u.get("c");if(!u.get("q")&&!u.get("item")&&z0&&liveZones.some(x=>x.id===z0)){zone=z0;expanded=z0;if(c0&&CATS.some(x=>x.id===c0))cat=c0;renderZones();_renderInit();last=key();}}catch(e){}
   try{history.replaceState({dd:1,z:zone,c:cat,q:q,ex:expanded},"")}catch(e){}
-  const _render=render;
   render=function(){_render.apply(this,arguments);if(restoring)return;const k=key();if(k===last)return;
     const st={dd:1,z:zone,c:cat,q:q,ex:expanded};
-    try{const prevQ=JSON.parse(last)[2];if(q&&prevQ&&qTyping)history.replaceState(st,"");else history.pushState(st,"")}catch(e){}
+    try{const prevQ=JSON.parse(last)[2];if(q&&prevQ&&qTyping)history.replaceState(st,"",U());else history.pushState(st,"",U())}catch(e){}
     last=k;qTyping=!!q;clearTimeout(qt);if(q)qt=setTimeout(()=>qTyping=false,1500);};
   const ov=id=>{const el=$(id);new MutationObserver(()=>{if(restoring)return;if(!el.hidden){try{history.pushState({dd:1,z:zone,c:cat,q:q,ex:expanded,ov:id},"")}catch(e){}}else if(history.state&&history.state.ov===id){restoring=true;history.back();setTimeout(()=>restoring=false,50)}}).observe(el,{attributes:true,attributeFilter:["hidden"]});};
   ov("zoom");ov("drawer");
   addEventListener("popstate",e=>{const st=e.state;restoring=true;
     try{["zoom","drawer"].forEach(id=>{if($(id)&&!$(id).hidden&&!(st&&st.ov===id))$(id).hidden=true});
       if(st&&st.dd){const ch=key()!==JSON.stringify([st.z,st.c,st.q]);zone=st.z;cat=st.c;q=st.q||"";$("q").value=q;expanded=st.ex??zone;
-        if(ch){renderZones();_render();last=key();const pr=$("products");if(pr&&pr.getBoundingClientRect().top<0)pr.scrollIntoView();}}}
+        if(ch){renderZones();_render();last=key();try{history.replaceState(st,"",U())}catch(e){}const pr=$("products");if(pr&&pr.getBoundingClientRect().top<0)pr.scrollIntoView();}}}
     finally{setTimeout(()=>restoring=false,50)}});
   /* 手势：在页面中间横向划（离屏幕边缘 25px 以上，避开可以横向滚动的区域、大图、输入框） */
   let x0=null,y0=0,t0=0;
