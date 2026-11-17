@@ -464,7 +464,7 @@ html.nd .add.oosbtn.notify,.add.oosbtn.notify{cursor:pointer;color:#1d5b3a;borde
 .pit .pimg .glyph{display:grid;place-items:center;height:100%;font-family:var(--cn-display);font-size:40px;color:var(--green)}
 .pit .pn{font-size:13px;font-weight:500;line-height:1.3;padding:6px 8px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .pit .pp{padding:2px 8px 8px;font-family:var(--num);font-weight:700;font-size:18px;color:var(--green);font-variant-numeric:tabular-nums}
-.pit .pp .ppkg{font-size:13px;font-weight:600;margin-left:1px}
+.pit .pp .ppkg{font-size:12px;font-weight:600;margin-left:1px;white-space:nowrap}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
 .zkg{margin-top:10px}
 .kgtag .kgper{display:block;font-size:12px;color:var(--muted);margin-top:2px}
@@ -2061,7 +2061,7 @@ const PRODUCTS_RAW=[
 {"c": "veg", "zh": "茼蒿", "en": "Crown Daisy (Tong Ho)", "price": 9.95, "unit": "/kg", "img": "img/nw_veg_tonghao.jpg", "arr": "17/11/2026", "kg": true},
 {"c": "veg", "zh": "莴笋", "en": "Celtuce (Stem Lettuce)", "price": 0, "mp": true, "unit": "/根 each", "oos": true, "img": "img/nw_veg_celtuce.jpg"},
  {"c": "veg", "zh": "韭菜", "en": "Garlic Chives", "spec": "200g", "price": 2.85, "unit": "/包 bag", "img": "img/nw_veg_chive.jpg"},
- {"c": "veg", "zh": "香菜", "en": "Coriander", "price": 1.5, "unit": "/包 bag", "img": "img/nw_veg_v09.jpg", "arr": "17/11/2026", "spec": "约 160g approx. 160g"},
+ {"c": "veg", "zh": "香菜", "en": "Coriander", "price": 1.5, "unit": "/捆 bunch", "img": "img/nw_veg_v09.jpg", "arr": "17/11/2026", "spec": "约 160g"},
  {"c": "veg", "zh": "空心菜", "en": "Water Spinach", "spec": "200g", "price": 2.5, "unit": "/包 bag", "img": "img/nw_veg_morning_glory.jpg"},
  {"c": "veg", "zh": "中国芹菜", "en": "Chinese Celery", "oos": true, "price": 2.76, "unit": "/包 bag", "approx": true, "img": "img/nw_veg_v11.jpg"},
  {"c": "veg", "zh": "苦瓜", "en": "Bitter Melon", "oos": true, "price": 1.52, "unit": "/根 each", "approx": true, "img": "img/nw_veg_v12.jpg"},
@@ -2069,7 +2069,7 @@ const PRODUCTS_RAW=[
  {"c": "veg", "zh": "铁棍山药", "en": "Chinese Yam", "price": 2.6, "unit": "/3根 3 pcs", "img": "img/nw_veg_v14.jpg"},
  {"c": "veg", "zh": "藕", "en": "Lotus Root", "oos": true, "price": 4.5, "unit": "/根 each", "approx": true, "img": "img/nw_veg_v15.jpg"},
  {"c": "veg", "zh": "金针菇", "en": "Enoki Mushroom", "spec": "200g", "price": 2.29, "unit": "/包 bag", "img": "img/nw_veg_v16.jpg"},
- {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/nw_veg_f01.jpg", "arr": "17/11/2026", "per": "按根卖，每根约 500–700g · 按实际重量计价 Sold by the piece, approx. 500–700g each · priced by actual weight", "pc": 0.6},
+ {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/nw_veg_f01.jpg", "arr": "17/11/2026", "per": "按根卖，每根约 500–700g · Sold per piece, approx. 500–700g", "pc": 0.6},
  {"c": "veg", "zh": "中国长茄子", "en": "Chinese Long Aubergine", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/nw_veg_f02.jpg"},
 {"c": "veg", "zh": "泰国青圆茄", "en": "Thai Green Eggplant", "price": 13.0, "unit": "/kg", "kg": true, "img": "img/nw_veg_thai_eggplant.jpg"},
 {"c": "veg", "zh": "青木瓜", "en": "Green Papaya", "per": "每个约 500g approx. 500g each", "price": 12.95, "unit": "/kg", "kg": true, "img": "img/veg_green_papaya.jpg"},
@@ -2391,7 +2391,7 @@ if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new"
 if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper">${p.per?sp(p.per):B("按公斤 · 选 250g 起","Per kg · from 250g")}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper">${p.per?sp(p.per):B("按公斤 · 选 250g 起","Per kg · from 250g")}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
