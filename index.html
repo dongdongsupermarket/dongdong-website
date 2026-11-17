@@ -2781,10 +2781,10 @@ function searchAll(raw){const q=raw.toLowerCase().replace(/chilli/g,"chili").tri
   const HOT=["李锦记特级鲜味生抽","李锦记特级老抽","李锦记熊猫牌鲜味蚝油","李锦记旧庄特级蚝油","李锦记陈醋",
     "海天酱油 阳光美味（生抽）","海天招牌酱油（老抽）","海天上等鲜蚝油","海天招牌鲜蚝油","海天陈醋",
     "珠江桥牌生抽王","珠江桥牌老抽王"];
-  const hr=p=>{const k=HOT.indexOf(p.zh);return k<0?999:k};
-  const qe=q.replace(/chili/g,"chilli");const ew=p=>{const z=String(p.zh||"").replace(/（[^）]*）|\([^)]*\)/g,"").trim().toLowerCase(),e=String(p.en||"").replace(/\([^)]*\)/g,"").trim().toLowerCase();return (z.endsWith(q)||e.endsWith(q)||e.endsWith(qe))?1:0};
+  const nz=x=>String(x||"").replace(/（[^）]*）|\([^)]*\)/g,"").replace(/[A-Za-z&'.\s]+/g,"");const HOTN=HOT.map(nz);const hr=p=>{const k=HOTN.indexOf(nz(p.zh));return k<0?999:k};
+  const qe=q.replace(/chili/g,"chilli");const QX={"豆腐":["鱼豆腐","豆腐鱼","豆腐包","豆腐福袋","海鲜豆腐","海藻豆腐","鱼饼","煎饺"],"tofu":["fish tofu","seafood tofu","fish"]}[q]||[];const xr=p=>QX.some(x=>nameOf(p).includes(x))?1:0;const ew=p=>{if(xr(p))return 0;const z=String(p.zh||"").replace(/（[^）]*）|\([^)]*\)/g,"").trim().toLowerCase(),e=String(p.en||"").replace(/\([^)]*\)/g,"").trim().toLowerCase();return (z.endsWith(q)||e.endsWith(q)||e.endsWith(qe))?1:0};
   const QC={"kimchi":"kimchi","泡菜":"kimchi","rice noodle":"vermicelli","rice noodles":"vermicelli","rice vermicelli":"vermicelli","米粉":"vermicelli","河粉":"vermicelli","vermicelli":"vermicelli","粉丝":"vermicelli","rice":"rice","大米":"rice","米":"rice","香米":"rice","noodle":"noodle","noodles":"noodle","面条":"noodle","dumpling":"dumpling","dumplings":"dumpling","水饺":"dumpling","饺子":"dumpling","tofu":"tofufresh","豆腐":"tofufresh","vinegar":"vinegar","醋":"vinegar","oil":"oil","tea":"tea","茶":"tea"}[q];const cb=p=>QC&&p.c===QC?1:0;
-  const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;const ca=cb(a.p),cb2=cb(b.p);if(ca!==cb2)return cb2-ca;const ea=ew(a.p),eb=ew(b.p);if(ea!==eb)return eb-ea;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
+  const by=(a,b)=>{const ha=hr(a.p),hb=hr(b.p);if(ha!==hb)return ha-hb;if(ha<999)return a.i-b.i;const ca=cb(a.p),cb2=cb(b.p);const tr=p=>xr(p)?3:isOOS(p)?2:cb(p)?0:1;const ta=tr(a.p),tb=tr(b.p);if(ta!==tb)return ta-tb;if(ca!==cb2)return cb2-ca;const ea=ew(a.p),eb=ew(b.p);if(ea!==eb)return eb-ea;return b.sc-a.sc||a.i-b.i};full.sort(by);part.sort((a,b)=>b.sc-a.sc||a.i-b.i);
   window.__fullHits=full.length;
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
@@ -2797,7 +2797,7 @@ function render(){
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :zone==="arr"?PRODUCTS.filter(isArr)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>((a.oos?1:0)-(b.oos?1:0))||((isArr(b)?1:0)-(isArr(a)?1:0))); /* 售罄排到最后 */
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:(((a.oos?1:0)-(b.oos?1:0))||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
   const agroup=!q&&zone==="arr";const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new");
