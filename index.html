@@ -2231,7 +2231,7 @@ const PRODUCTS_RAW=[
  {"c": "kimchi", "zh": "必品阁 Bibigo 白菜泡菜（韩国辣白菜）", "en": "Bibigo 必品阁 Korean Cabbage Kimchi", "spec": "300g", "price": 3.29, "unit": "/盒 tub", "also": ["jkfresh"], "img": "img/ns_p6_kimbibigo.jpg"},
  {"c": "kimchi", "zh": "BLUE VILLE 白菜泡菜（韩国辣白菜）", "en": "Blue Ville Korean Cabbage Kimchi", "spec": "400g", "price": 3.89, "unit": "/罐 jar", "also": ["jkfresh"], "img": "img/hd_d17_bv400.jpg"},
  {"c": "kimchi", "zh": "BLUE VILLE 首尔式切块泡菜（韩国辣白菜）", "en": "Blue Ville Seoul-style Cut Cabbage Kimchi", "spec": "453g", "price": 3.29, "unit": "/罐 jar", "also": ["jkfresh"], "img": "img/hd_d17_bv453.jpg"},
- {"c": "veg", "zh": "新鲜上海青", "en": "Green Pai Choi", "spec": "200g", "price": 1.35, "unit": "/2颗 2 pcs", "img": "img/nw_veg_pakchoi.jpg", "arr": "17/11/2026"},
+ {"c": "veg", "zh": "新鲜上海青", "en": "Green Pai Choi", "price": 4.5, "unit": "/kg", "img": "img/nw_veg_pakchoi.jpg", "arr": "17/11/2026", "kg": true},
  {"c": "veg", "zh": "菠菜", "en": "Spinach", "oos": true, "price": 1.6, "unit": "/捆 bunch", "img": "img/nw_veg_v02.jpg"},
 {"c": "veg", "zh": "小葱", "en": "Spring Onion", "price": 0.69, "unit": "/捆 bunch", "img": "img/nw_veg_spring_onion.jpg"},
  {"c": "veg", "zh": "豆芽", "en": "Bean Sprouts", "spec": "400–500g", "price": 0.89, "unit": "/包 bag", "img": "img/nw_veg_beansprout.jpg"},
@@ -2250,7 +2250,7 @@ const PRODUCTS_RAW=[
  {"c": "veg", "zh": "铁棍山药", "en": "Chinese Yam", "price": 2.6, "unit": "/3根 3 pcs", "img": "img/nw_veg_v14.jpg"},
  {"c": "veg", "zh": "藕", "en": "Lotus Root", "oos": true, "price": 4.5, "unit": "/根 each", "approx": true, "img": "img/nw_veg_v15.jpg"},
  {"c": "veg", "zh": "金针菇", "en": "Enoki Mushroom", "spec": "200g", "price": 2.29, "unit": "/包 bag", "img": "img/nw_veg_v16.jpg"},
- {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/nw_veg_f01.jpg", "arr": "17/11/2026"},
+ {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/nw_veg_f01.jpg", "arr": "17/11/2026", "per": "按根卖，按实际重量计价 Sold by the piece · priced by actual weight"},
  {"c": "veg", "zh": "中国长茄子", "en": "Chinese Long Aubergine", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/nw_veg_f02.jpg"},
 {"c": "veg", "zh": "泰国青圆茄", "en": "Thai Green Eggplant", "price": 13.0, "unit": "/kg", "kg": true, "img": "img/nw_veg_thai_eggplant.jpg"},
 {"c": "veg", "zh": "青木瓜", "en": "Green Papaya", "per": "每个约 500g approx. 500g each", "price": 12.95, "unit": "/kg", "kg": true, "img": "img/veg_green_papaya.jpg"},
@@ -2862,7 +2862,8 @@ const KGS=[0.25,0.5,0.75,1,1.5,2,2.5,3,4,5];
 const kgDef=p=>p.kgdef||(["veg","fruit"].includes(p.c)?0.5:1);
 const kgFmt=n=>String(+n.toFixed(2));
 function kgPick(i){const p=PRODUCTS[i];if(!p||!p.kg||isOOS(p))return "";const n=cart[i]||0;
-  return `<div class="kgpick" role="group" aria-label="选重量 Choose weight">${[0.25,0.5,1,1.5,2].map(w=>`<button type="button" data-kg="${i}" data-w="${w}"${n===w?' aria-pressed="true"':""}>${kgFmt(w)} kg</button>`).join("")}</div><div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${kgFmt(n)} kg`:B("选大概重量，按实际重量计价","Pick an approx. weight · priced by actual weight")}</div>`;}
+  const PC=p.pc?[1,2,3,4].map(k=>[+(k*p.pc).toFixed(3),`${k} ${B("根","pc")}`]):null; /* pc：按根/个卖，每根约多少 kg */
+  return `<div class="kgpick" role="group" aria-label="选重量 Choose weight">${(PC||[0.25,0.5,1,1.5,2].map(w=>[w,kgFmt(w)+" kg"])).map(([w,l])=>`<button type="button" data-kg="${i}" data-w="${w}"${n===w?' aria-pressed="true"':""}>${l}</button>`).join("")}</div><div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${kgFmt(n)} kg`:B("选大概重量，按实际重量计价","Pick an approx. weight · priced by actual weight")}</div>`;}
 function ctrl(i,style){const n=cart[i]||0;
   if(isOOS(PRODUCTS[i])){const p=PRODUCTS[i],sp2=p.spec?" "+String(p.spec).replace(/<[^>]*>/g,""):"";
     const t=`你好，「${p.zh}${sp2}」到货了麻烦通知我，谢谢！\nHi, please let me know when ${p.en}${sp2} is back in stock. Thanks!`;
