@@ -648,6 +648,29 @@ html.nd .add.oosbtn.notify,.add.oosbtn.notify{cursor:pointer;color:#1d5b3a;borde
 .pit .pimg .glyph{display:grid;place-items:center;height:100%;font-family:var(--cn-display);font-size:40px;color:var(--green)}
 .pit .pn{font-size:13px;font-weight:500;line-height:1.3;padding:6px 8px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .pit .pp{padding:2px 8px 8px;font-family:var(--num);font-weight:700;font-size:18px;color:var(--green);font-variant-numeric:tabular-nums}
+/* 全部分类：目录条左边固定按钮 + 整屏目录 */
+.carow{display:flex;align-items:center;gap:8px;min-width:0}
+.carow>:not(.allcat-btn){flex:1 1 auto;min-width:0}
+.allcat-btn{flex:none;display:inline-flex;align-items:center;gap:5px;font:inherit;font-size:13.5px;font-weight:700;background:#1d4a35;color:#fff;border:0;border-radius:999px;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.allcat-btn .ic{font-size:15px;line-height:1}
+html[data-lang="both"] .allcat-btn .le{display:none}
+.catall{position:fixed;inset:0;z-index:9000;background:#fbf8f1;color:#1f2a24;display:flex;flex-direction:column}
+.catall[hidden]{display:none}
+.cahead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e6dfcf;background:#fff}
+.cahead h2{margin:0;font-size:19px;color:#1d4a35}.cahead h2 .le{font-size:.8em;color:#6b6b6b;font-weight:500}
+.caclose{font-size:28px;line-height:1;background:none;border:0;color:#555;cursor:pointer;padding:2px 8px}
+.cabody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 40px;flex:1}
+.caquick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.caquick button{font:inherit;border:0;border-radius:12px;padding:12px 4px;cursor:pointer;color:#fff;font-weight:700;font-size:14px;line-height:1.25;display:flex;flex-direction:column;align-items:center;gap:2px}
+.caquick button small{font-weight:500;font-size:11px;opacity:.9}
+.caquick .q-arr{background:#1d4a35}.caquick .q-sale{background:#b02824}.caquick .q-webonly{background:#a2610a}.caquick .q-preorder{background:#5a3e8a}
+.cazone{background:#fff;border:1px solid #e6dfcf;border-radius:12px;margin-bottom:10px;overflow:hidden}
+.cazone>button{display:flex;align-items:center;gap:12px;width:100%;font:inherit;text-align:left;background:none;border:0;padding:10px 12px;cursor:pointer;color:inherit}
+.cazone img,.cazone .ph{width:52px;height:52px;object-fit:contain;flex:none;border-radius:8px;background:#f4f1ea}
+.cazone .nm{flex:1;min-width:0}.cazone .nm b{display:block;font-size:15.5px}.cazone .nm small{color:#6b6b6b;font-size:12px}
+.cazone .go{color:#1d4a35;font-weight:700;font-size:13px;white-space:nowrap}
+.casubs{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 12px 76px}
+.casubs button{font:inherit;font-size:12.5px;background:#f4f1ea;border:1px solid #e6dfcf;color:#1f2a24;border-radius:999px;padding:5px 10px;cursor:pointer}
 .pit.dcard .pn{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;min-height:0!important}
 .dcard .dmeta{display:flex;flex-wrap:wrap;gap:2px 8px;padding:0 8px 4px;font-size:12px;color:var(--muted)}
 .dcard .dmeta s{color:var(--muted)}
@@ -788,6 +811,10 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
     <button type="button" class="bx" id="betaX" aria-label="关闭 Close">×</button>
   </div></div>
 
+<div class="catall" id="catall" hidden role="dialog" aria-modal="true" aria-label="全部分类 All categories">
+  <div class="cahead"><h2><span class="lz">全部分类</span> <span class="le">All categories</span></h2><button type="button" class="caclose" id="caClose" aria-label="关闭 Close">×</button></div>
+  <div class="cabody" id="caBody"></div>
+</div>
 <section class="info" id="visit"><div class="wrap">
   <h2><span class="lz">到店信息</span> <span class="le en">Visit Us</span></h2>
   <div class="info-grid">
@@ -907,7 +934,7 @@ function sp(s){if(!s||!/[\u4e00-\u9fff]/.test(s))return s||"";
   return m?`<span class="lz">${m[1]+m[2]}</span><span class="lb"> </span><span class="le">${m[1]?`<span class="leo">${m[1]}</span>`:""}${m[3]}</span>`:s;}
 const CATS=[
  {id:"all",zh:"全部",en:"All"},
- {id:"bundle",z:"webonly",zh:"网上专享组合",en:"Online bundles",tone:"--t-sauce",g:"惠"},
+ {id:"bundle",z:"webonly",zh:"网上专享价",en:"Online-only deals",tone:"--t-sauce",g:"惠"},
  {id:"dumpling",z:"frozen",zh:"水饺煎饺",en:"Dumplings & gyoza",tone:"--t-rice",g:"饺"},
  {id:"bun",z:"frozen",zh:"包子馒头",en:"Buns & bao",tone:"--t-tofu",g:"包"},
  {id:"dimsum",z:"frozen",zh:"港式点心",en:"Dim sum",tone:"--t-sauce",g:"点"},
@@ -937,10 +964,10 @@ const CATS=[
  {id:"jkrice",z:"jpkr",zh:"日韩米 · 面条",en:"Japanese & Korean rice & noodles",tone:"--t-rice",g:"米"},
  {id:"jkinst",z:"jpkr",zh:"日韩方便面",en:"Japanese & Korean instant noodles",tone:"--t-sauce",g:"面"},
  {id:"jksnack",z:"jpkr",zh:"日韩零食 · 饮料 · 酒",en:"Japanese & Korean snacks & drinks",tone:"--t-snack",g:"零"},
- {id:"whfood",z:"online",zh:"仓库食品",en:"Warehouse food",tone:"--t-rice",g:"仓"},
- {id:"whfrozen",z:"online",zh:"仓库冷冻",en:"Warehouse frozen",tone:"--t-frozen",g:"冻"},
- {id:"whbulk",z:"online",zh:"仓库整箱",en:"Warehouse cases",tone:"--t-sauce",g:"箱"},
- {id:"whother",z:"online",zh:"仓库其他",en:"Warehouse other",tone:"--t-veg",g:"货"},
+ {id:"whfood",z:"webonly",zh:"只能网上订",en:"Online order only",tone:"--t-rice",g:"仓"},
+ {id:"whfrozen",z:"webonly",zh:"只能网上订 · 冷冻",en:"Online order only · Frozen",tone:"--t-frozen",g:"冻"},
+ {id:"whbulk",z:"webonly",zh:"只能网上订 · 整箱",en:"Online order only · Cases",tone:"--t-sauce",g:"箱"},
+ {id:"whother",z:"webonly",zh:"只能网上订 · 其他",en:"Online order only · Other",tone:"--t-veg",g:"货"},
  {id:"soy",z:"grocery",zh:"酱油",en:"Soy sauce",tone:"--t-sauce",g:"酱"},
  {id:"oyster",z:"grocery",zh:"蚝油",en:"Oyster sauce",tone:"--t-sauce",g:"蚝"},
  {id:"vinegar",z:"grocery",zh:"醋",en:"Vinegar",tone:"--t-tofu",g:"醋"},
@@ -999,7 +1026,6 @@ const CATS=[
 const ZONES=[
  {id:"webonly",zh:"网上专享",en:"Online exclusive"},
  {id:"freshzone",zh:"鲜货区",en:"Fresh &amp; homemade"},
- {id:"online",zh:"网上预订 · 仓库货",en:"Online order only"},
  {id:"grocery",zh:"调料干货区",en:"Seasonings & dry goods"},
  {id:"staples",zh:"米面杂粮区",en:"Rice, noodles & grains"},
  {id:"jpkr",zh:"日韩区",en:"Japanese &amp; Korean"},
@@ -2498,8 +2524,8 @@ const DAYS=[["周日","Sun"],["周一","Mon"],["周二","Tue"],["周三","Wed"],
 
 const zoneOf=p=>(CATS.find(c=>c.id===p.c)||{}).z;
 // 一样商品放在多个分区：商品加 "also": ["分类id", ...]
-const inCat=(p,cid)=>p.c===cid||(p.also||[]).includes(cid);
-const inZone=(p,z)=>zoneOf(p)===z||(p.also||[]).some(cid=>(CATS.find(c=>c.id===cid)||{}).z===z);
+const inCat=(p,cid)=>p.c===cid||(cid==="whfood"&&!!p.wh&&!String(p.c).startsWith("wh"))||(p.also||[]).includes(cid);
+const inZone=(p,z)=>zoneOf(p)===z||(z==="webonly"&&!!p.wh)||(p.also||[]).some(cid=>(CATS.find(c=>c.id===cid)||{}).z===z);
 // 过了 BBD（第二天起）：临期商品和面包蛋糕自动显示售罄，并去掉特价
 (function(){const now=new Date();PRODUCTS.forEach(p=>{if(!p.bbd||!(p.short||p.c==="bread"||p.c==="cake"))return;
   const [d,m,y]=p.bbd.split("/").map(Number);if(now>new Date(y,m-1,d,23,59,59)){p.oos=true;if(p.was){p.price=Math.max(p.price,p.was);delete p.was;delete p.until;}delete p.short;delete p.bbd;}});})();
@@ -2999,6 +3025,25 @@ setTimeout(()=>{try{const u=new URLSearchParams(location.search);const it=u.get(
   else if(qq){$("q").value=qq;$("q").dispatchEvent(new Event("input",{bubbles:true}));}}catch(e){}},300);
 if(location.hash==="#terms")$("terms").open=true;addEventListener("hashchange",()=>{if(location.hash==="#terms")$("terms").open=true;});
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").hidden=true;});
+
+/* ---------- 全部分类 ---------- */
+function allCatsHTML(){
+  const Q=[["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["preorder","预订","Pre-order"]].filter(([id])=>liveZones.some(z=>z.id===id));
+  const TOP=["grocery","frozen","staples","freshzone"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
+  const thumb=z=>{const L=PRODUCTS.filter(p=>inZone(p,z.id)&&p.img&&!isOOS(p));const p=L.find(x=>/\/hd_/.test(x.img))||L[0];return p?`<img src="${src(p.img)}" alt="" loading="lazy">`:'<span class="ph"></span>';};
+  return `<div class="caquick">${Q.map(([id,zh,en])=>`<button type="button" class="q-${id}" data-gz="${id}">${zh}<small>${en}</small></button>`).join("")}</div>`+
+    rest.map(z=>{const n=PRODUCTS.filter(p=>inZone(p,z.id)).length;const subs=CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id)));
+      return `<div class="cazone"><button type="button" data-gz="${z.id}">${thumb(z)}<span class="nm"><b>${ZO(z.zh,z.en)}</b><small>${z.en} · ${n}</small></span><span class="go">${B("全部","All")} ›</span></button>${subs.length>1?`<div class="casubs">${subs.map(c=>`<button type="button" data-gz="${z.id}" data-gc="${c.id}">${ZO(c.zh,c.en)}</button>`).join("")}</div>`:""}</div>`;}).join("");}
+function openAllCats(){$("caBody").innerHTML=allCatsHTML();$("catall").hidden=false;$("caBody").scrollTop=0;}
+$("caClose").addEventListener("click",()=>{$("catall").hidden=true;});
+$("caBody").addEventListener("click",e=>{const b=e.target.closest("[data-gz]");if(!b)return;const z=b.dataset.gz,c=b.dataset.gc;
+  $("catall").hidden=true;clearSearch();zone=z;expanded=z;cat="all";openGroups.clear();if(c)openGroups.add(c);renderZones();render();
+  setTimeout(()=>{const t=(c&&document.getElementById("grp-"+c))||document.getElementById("products");if(t)t.scrollIntoView({block:"start"});},30);});
+addEventListener("DOMContentLoaded",()=>{const z=$("zones");if(!z||$("allcatBtn"))return;const host=z.closest(".pv-zw")||z;
+  const row=document.createElement("div");row.className="carow";host.before(row);
+  const b=document.createElement("button");b.type="button";b.id="allcatBtn";b.className="allcat-btn";b.setAttribute("aria-haspopup","dialog");
+  b.innerHTML=`<span class="ic" aria-hidden="true">☰</span><span class="lz">全部分类</span><span class="le">All</span>`;b.addEventListener("click",openAllCats);
+  row.appendChild(b);row.appendChild(host);});
 /* 手机返回/前进：分区、小类、搜索、大图、购物车都记进浏览历史；右滑上一步，左滑下一步 */
 (function(){
   const _render=render;const _renderInit=()=>_render();
@@ -3012,9 +3057,9 @@ $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").h
     try{const prevQ=JSON.parse(last)[2];if(q&&prevQ&&qTyping)history.replaceState(st,"",U());else history.pushState(st,"",U())}catch(e){}
     last=k;qTyping=!!q;clearTimeout(qt);if(q)qt=setTimeout(()=>qTyping=false,1500);};
   const ov=id=>{const el=$(id);new MutationObserver(()=>{if(restoring)return;if(!el.hidden){try{history.pushState({dd:1,z:zone,c:cat,q:q,ex:expanded,ov:id},"")}catch(e){}}else if(history.state&&history.state.ov===id){restoring=true;history.back();setTimeout(()=>restoring=false,50)}}).observe(el,{attributes:true,attributeFilter:["hidden"]});};
-  ov("zoom");ov("drawer");
+  ov("zoom");ov("drawer");ov("catall");
   addEventListener("popstate",e=>{const st=e.state;restoring=true;
-    try{["zoom","drawer"].forEach(id=>{if($(id)&&!$(id).hidden&&!(st&&st.ov===id))$(id).hidden=true});
+    try{["zoom","drawer","catall"].forEach(id=>{if($(id)&&!$(id).hidden&&!(st&&st.ov===id))$(id).hidden=true});
       if(st&&st.dd){const ch=key()!==JSON.stringify([st.z,st.c,st.q]);zone=st.z;cat=st.c;q=st.q||"";$("q").value=q;expanded=st.ex??zone;
         if(ch){renderZones();_render();last=key();try{history.replaceState(st,"",U())}catch(e){}const pr=$("products");if(pr&&pr.getBoundingClientRect().top<0)pr.scrollIntoView();}}}
     finally{setTimeout(()=>restoring=false,50)}});
@@ -3028,7 +3073,7 @@ $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").h
     if(Date.now()-t0>700||Math.abs(dx)<90||Math.abs(dx)<Math.abs(dy)*2)return;if(dx>0)history.back();else history.forward();},{passive:true});
 })();
 
-document.addEventListener("keydown",e=>{if(e.key==="Escape")$("drawer").hidden=true;});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){$("drawer").hidden=true;$("catall").hidden=true;}});
 function applyLang(){const h=document.documentElement;h.dataset.lang=LANG;h.lang=LANG==="en"?"en":"zh-Hans";
   $("q").placeholder=T("搜索商品","Search products");
   $("fTime").placeholder=T("例如：明天下午","e.g. tomorrow afternoon");
