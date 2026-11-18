@@ -441,6 +441,7 @@ html[data-lang="both"] .hero .since .le{display:block;font-size:13px;font-weight
 .betabar .bask{flex:none;background:#25d366;color:#fff;font-weight:700;border-radius:16px;padding:5px 12px;text-decoration:none;white-space:nowrap}
 .betabar .bx{flex:none;background:none;border:0;font-size:20px;line-height:1;color:#8a7440;cursor:pointer;padding:2px 4px}
 .betabar[hidden]{display:none}
+.betalow{border-top:1px solid #ecd9a8;margin-top:18px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .betabar{background:#3a2f14;color:#f1e2b8;border-color:#5a4a20}}
 :root[data-theme="dark"] .betabar{background:#3a2f14;color:#f1e2b8;border-color:#5a4a20}
 .apxline{margin-top:4px;font-size:12px;color:var(--muted)}
@@ -711,12 +712,6 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
       <span><span class="lz">不在 Huddersfield 也能买！运费和到货时间请 WhatsApp 咨询我们。</span><span class="lb"> </span><span class="le">Not in Huddersfield? We deliver UK-wide. Message us on WhatsApp for postage and delivery times.</span></span></span>
     <a class="ukbtn" href="https://wa.me/447546185999?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E5%85%A8%E8%8B%B1%E5%BF%AB%E9%80%92%E3%80%82%E6%88%91%E7%9A%84%E9%82%AE%E7%BC%96%E6%98%AF%EF%BC%9A%20Hello%2C%20I%27d%20like%20to%20ask%20about%20UK-wide%20delivery.%20My%20postcode%20is%3A%20" target="_blank" rel="noopener"><span class="lz">WhatsApp 咨询</span><span class="leo">Ask on WhatsApp</span><span class="lb"> Ask on WhatsApp</span></a>
   </div></div>
-  <div class="betabar" id="betabar"><div class="wrap">
-    <span class="btxt"><b><span class="lz">网站新上线，商品和照片正在陆续更新中</span><span class="lb"> · </span><span class="le">Our new website is still growing</span></b>
-    <span><span class="lz">部分商品还没上架，图片仅供参考（高清实拍图持续更新中），价格以店内为准。找不到想要的？发 WhatsApp 问我们。</span><span class="lb"> </span><span class="le">Not every product is listed yet and some photos are for reference only (clear product photos are on the way); in-store prices apply. Can't find something? Ask us on WhatsApp.</span></span></span>
-    <a class="bask" href="https://wa.me/447546185999?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E8%AF%B7%E9%97%AE%E6%9C%89%E6%B2%A1%E6%9C%89%20Hello%2C%20do%20you%20have%20" target="_blank" rel="noopener"><span class="lz">问一问</span><span class="leo">Ask us</span><span class="lb"> Ask us</span></a>
-    <button type="button" class="bx" id="betaX" aria-label="关闭 Close">×</button>
-  </div></div>
 </header>
 
 <section class="promo" aria-roledescription="carousel" aria-label="今日推荐 Today's highlights" id="promo">
@@ -781,6 +776,12 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
   </div>
   <p class="notice"><span class="lz">价格以店内为准。如需了解商品的<b>过敏原信息</b>，请在下单前致电或 WhatsApp 07546 185999。酒类商品仅售予年满 18 岁的顾客。</span><span class="le blk">Prices in store may vary. For allergen information, please contact us before ordering. Alcohol is sold to customers aged 18 or over only.</span></p>
 </main>
+  <div class="betabar betalow" id="betabar"><div class="wrap">
+    <span class="btxt"><b><span class="lz">网站新上线，商品和照片正在陆续更新中</span><span class="lb"> · </span><span class="le">Our new website is still growing</span></b>
+    <span><span class="lz">部分商品还没上架，图片仅供参考（高清实拍图持续更新中），价格以店内为准。找不到想要的？发 WhatsApp 问我们。</span><span class="lb"> </span><span class="le">Not every product is listed yet and some photos are for reference only (clear product photos are on the way); in-store prices apply. Can't find something? Ask us on WhatsApp.</span></span></span>
+    <a class="bask" href="https://wa.me/447546185999?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E8%AF%B7%E9%97%AE%E6%9C%89%E6%B2%A1%E6%9C%89%20Hello%2C%20do%20you%20have%20" target="_blank" rel="noopener"><span class="lz">问一问</span><span class="leo">Ask us</span><span class="lb"> Ask us</span></a>
+    <button type="button" class="bx" id="betaX" aria-label="关闭 Close">×</button>
+  </div></div>
 
 <section class="info" id="visit"><div class="wrap">
   <h2><span class="lz">到店信息</span> <span class="le en">Visit Us</span></h2>
@@ -1576,7 +1577,7 @@ const PRODUCTS_RAW=[
  {"c": "softdrink", "zh": "可口可乐原味 8罐", "en": "Coca-Cola Original 8 Cans", "spec": "8×330ml", "price": 5.99, "img": "img/sw_coke8.jpg"},
  {"c": "softdrink", "zh": "健怡可口可乐 8罐", "en": "Diet Coke 8 Cans", "spec": "8×330ml", "price": 4.5, "img": "img/sw_diet8.jpg"},
  {"c": "softdrink", "zh": "可口可乐零度 8罐", "en": "Coca-Cola Zero Sugar 8 Cans", "spec": "8×330ml", "price": 4.5, "img": "img3/d3_11.jpg"},
- {"c": "softdrink", "zh": "椰树牌椰汁", "en": "Yeshu Coconut Milk Drink", "spec": "1L", "price": 3.99, "img": "img/sw_yeshu1l.jpg", "was": 4.09},
+ {"c": "softdrink", "zh": "椰树牌椰汁", "en": "Yeshu Coconut Milk Drink", "spec": "1L", "price": 4.09, "img": "img/sw_yeshu1l.jpg"},
  {"c": "softdrink", "zh": "康师傅冰红茶", "en": "Master Kong Iced Black Tea", "spec": "2L", "price": 3.99, "img": "img/sw_ksf_icetea_jug.jpg"},
  {"c": "softdrink", "zh": "银鹭牛奶花生 12罐装", "en": "Yinlu Peanut Milk Drink 12 Cans", "spec": "12罐 12 cans", "price": 10.99, "unit": "/箱 case", "img": "img/sw_yinlu12.jpg"},
  {"c": "softdrink", "zh": "Wonderfarm 冬瓜茶", "en": "Wonderfarm Winter Melon Tea", "spec": "310ml", "price": 0.9, "img": "img/sw_wonderfarm.jpg"},
@@ -2614,8 +2615,8 @@ function renderArr(){const L=PRODUCTS.filter(p=>isArr(p)&&!p.arrHide).sort((a,b)
 function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isOOS(p)):[];$("webdeals").hidden=!L.length;if(!L.length)return;
   $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
-const SHOW_DEALS=false;
-function renderDeals(){renderWeb();const L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web):[];
+const SHOW_DEALS=true; /* 特价少于 3 样时自动不显示 */
+function renderDeals(){renderWeb();let L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web):[];if(L.length<3)L=[];
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
   $("dstrip").innerHTML=L.map(miniCard).join("");}
