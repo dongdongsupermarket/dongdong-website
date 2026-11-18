@@ -829,9 +829,9 @@ const CATS=[
  {id:"nuts",z:"snacks",zh:"瓜子坚果果干",en:"Seeds, nuts & dried fruit",tone:"--t-veg",g:"果"},
  {id:"biscuit",z:"snacks",zh:"饼干糕点",en:"Biscuits & cakes",tone:"--t-snack",g:"饼"},
  {id:"sweets",z:"snacks",zh:"糖果果冻",en:"Sweets & jelly",tone:"--t-frozen",g:"糖"},
- {id:"veg",z:"freshzone",zh:"新鲜蔬菜",en:"Fresh vegetables",tone:"--t-veg",g:"菜"},
+ {id:"veg",z:"fresh",zh:"新鲜蔬菜",en:"Fresh vegetables",tone:"--t-veg",g:"菜"},
  {id:"eggs",z:"freshzone",zh:"鸡蛋",en:"Eggs",tone:"--t-rice",g:"蛋"},
- {id:"fruit",z:"freshzone",zh:"新鲜水果",en:"Fresh fruit",tone:"--t-veg",g:"果"},
+ {id:"fruit",z:"fresh",zh:"新鲜水果",en:"Fresh fruit",tone:"--t-veg",g:"果"},
  {id:"tofufresh",z:"freshzone",zh:"豆腐豆制品",en:"Tofu",tone:"--t-tofu",g:"腐"},
  {id:"freshnoodle",z:"freshzone",zh:"鲜面条 · 年糕",en:"Fresh noodles & rice cakes",tone:"--t-rice",g:"面"},
  {id:"kimchi",z:"freshzone",zh:"泡菜",en:"Kimchi",tone:"--t-sauce",g:"泡"},
@@ -851,6 +851,7 @@ const CATS=[
 const ZONES=[
  {id:"webonly",zh:"网上专享",en:"Online exclusive"},
  {id:"freshzone",zh:"鲜货区",en:"Fresh &amp; homemade"},
+ {id:"fresh",zh:"蔬菜水果区",en:"Fruit &amp; vegetables"},
  {id:"grocery",zh:"调料干货区",en:"Seasonings & dry goods"},
  {id:"staples",zh:"米面杂粮区",en:"Rice, noodles & grains"},
  {id:"jpkr",zh:"日韩区",en:"Japanese &amp; Korean"},
@@ -859,7 +860,6 @@ const ZONES=[
  {id:"bakery",zh:"面包蛋糕区",en:"Bakery"},
  {id:"preorder",zh:"预订区",en:"Pre-order"},
  {id:"chilled",zh:"冷藏区",en:"Chilled"},
- {id:"fresh",zh:"新鲜蔬果",en:"Fresh produce"},
  {id:"snacks",zh:"零食区",en:"Snacks"},
  {id:"drinks",zh:"饮品区",en:"Drinks"},
  {id:"household",zh:"生活用品区",en:"Household &amp; kitchen"},
@@ -2860,7 +2860,7 @@ $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").h
 /* ---------- 全部分类 ---------- */
 function allCatsHTML(){
   const Q=[["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["preorder","预订","Pre-order"]].filter(([id])=>liveZones.some(z=>z.id===id));
-  const TOP=["grocery","frozen","staples","freshzone"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
+  const TOP=["grocery","frozen","staples","fresh","freshzone"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
   const thumb=z=>{const L=PRODUCTS.filter(p=>inZone(p,z.id)&&p.img&&!isOOS(p));const p=L.find(x=>/\/hd_/.test(x.img))||L[0];return p?`<img src="${src(p.img)}" alt="" loading="lazy">`:'<span class="ph"></span>';};
   return `<div class="caquick">${Q.map(([id,zh,en])=>`<button type="button" class="q-${id}" data-gz="${id}">${zh}<small>${en}</small></button>`).join("")}</div>`+
     rest.map(z=>{const n=PRODUCTS.filter(p=>inZone(p,z.id)).length;const subs=CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id)));
