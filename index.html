@@ -418,6 +418,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .restock{margin-top:4px;font-size:12.5px;font-weight:700;color:#b5651d}
 .nopill{display:inline-block;border:1.5px solid var(--gold);color:inherit;border-radius:20px;padding:2px 12px;font-weight:600;font-size:12.5px;line-height:1.5}
 .askbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;border:1.5px dashed #25d366;border-radius:10px;background:rgba(37,211,102,.06);font-size:14px;line-height:1.5}
+body.wsmode #cats{display:none!important}html #grid .wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
 .askbox .atxt{flex:1 1 180px;min-width:0}.askbox .atxt b{display:block;font-size:15px;margin-bottom:2px}
 .askbox .abtn{flex:none;max-width:100%;background:#25d366;color:#fff;font-weight:700;border-radius:20px;padding:8px 16px;text-decoration:none;text-align:center}
 @media (max-width:520px){.askbox .abtn{flex:1 1 100%}}
@@ -2600,7 +2601,7 @@ const $=id=>document.getElementById(id);
 const fmt=h=>String(h).padStart(2,"0")+":00";
 function renderZones(){
   $("zones").innerHTML=liveZones.map(z=>{const on=!q&&z.id===zone;
-    const hasSubs=!["sale","new","arr"].includes(z.id);const subs=on&&hasSubs&&expanded===z.id?CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id))):[];
+    const hasSubs=!["sale","new","arr","ws"].includes(z.id);const subs=on&&hasSubs&&expanded===z.id?CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id))):[];
     return `<button type="button" data-z="${z.id}" aria-pressed="${on}"${hasSubs?` aria-expanded="${on&&expanded===z.id}"`:""}${z.sale||z.id==="webonly"?' class="salezone"':z.isnew?' class="newzone"':""}><b>${ZO(z.zh,z.en)}</b><small class="lb">${z.en}</small>${hasSubs?'<i class="chev" aria-hidden="true">›</i>':""}</button>`+
       (subs.length?`<div class="subcats">${subs.map(c=>`<button type="button" data-jump="${c.id}">${ZO(c.zh,c.en)}<small class="lb">${c.en}</small></button>`).join("")}</div>`:"");}).join("");
   $("cats").innerHTML=CATS.filter(c=>c.id==="all"||(c.z===zone&&PRODUCTS.some(p=>inCat(p,c.id)))).map(c=>`<button type="button" data-c="${c.id}" aria-pressed="${!q&&c.id===cat}">${B(c.zh,c.en,"en")}</button>`).join("");}
@@ -2621,7 +2622,7 @@ const ukDate=t=>{const [d,m,y]=t.split("/").map(Number);return new Date(y,m-1,d)
 const today0=new Date(new Date().toDateString());
 const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.new))>=0;
 if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new",zh:"新品",en:"New products",sale:false,isnew:true});
-if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
+if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});{const wi=liveZones.findIndex(z=>z.id==="webonly");liveZones.splice(wi<0?liveZones.length:wi+1,0,{id:"ws",zh:"批发 · 餐饮",en:"Wholesale & catering",isws:true});};
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
   return `<button type="button" class="pit${p.kg?" kgc":""}" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${(p._per&&p.kg?p._sp0:p.spec)?" "+sp(p._per&&p.kg?p._sp0:p.spec):""}</span><span class="pp${p.kg?" kgp":""}">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper pperx">${p.per?sp(p.per):`250g ≈ ${money(p.price/4)}`}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
@@ -2873,6 +2874,7 @@ const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：海天生抽/老抽、李锦记生抽/老抽、珠江桥生抽/老抽）
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
 function render(){
+  $("askbox").hidden=false;document.body.classList.toggle("wsmode",!q&&zone==="ws");if(!q&&zone==="ws"){$("grid").classList.remove("grouped");$("grid").innerHTML=wsHTML();$("zcount").innerHTML="";$("empty").hidden=true;$("askbox").hidden=true;return;}
   const list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
@@ -3055,9 +3057,10 @@ if(location.hash==="#terms")$("terms").open=true;addEventListener("hashchange",(
 $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").hidden=true;});
 
 /* ---------- 全部分类 ---------- */
+function wsHTML(){return `<section class="wsbox"><h3>${B("批发 · 餐饮供货","Wholesale &amp; catering")}</h3><p>${B("为餐馆、外卖店、奶茶店和其他商家供货。东東超市 2007 年开业，货源稳定，品种齐全。","We supply restaurants, takeaways, cafés and other businesses. Dong Dong has been trading in Huddersfield since 2007.")}</p><ul class="wsl"><li>${B("整箱批发价","Wholesale prices by the case")}</li><li>${B("可以定期送货","Regular deliveries available")}</li><li>${B("可开发票","Invoices provided")}</li><li>${B("网站上没有的货也可以问","Ask about items not on the website")}</li></ul><p class="wsq">${B("价格和送货安排请 WhatsApp 咨询，把要的货发给我们就行。","Message us on WhatsApp for prices and delivery. Just send us your list.")}</p><a class="abtn wsbtn" href="https://wa.me/447546185999?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E6%89%B9%E5%8F%91%20/%20%E9%A4%90%E9%A5%AE%E4%BE%9B%E8%B4%A7%E3%80%82%0AHello%2C%20I%27d%20like%20to%20ask%20about%20wholesale%20/%20catering%20supply." target="_blank" rel="noopener">${B("WhatsApp 咨询批发","Ask about wholesale on WhatsApp")}</a><p class="wstel">WhatsApp / Tel: 07546 185999</p></section>`;}
 function allCatsHTML(){
-  const Q=[["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["preorder","预订","Pre-order"]].filter(([id])=>liveZones.some(z=>z.id===id));
-  const TOP=["grocery","frozen","staples","fresh","freshzone"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
+  const Q=[["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["ws","批发 · 餐饮","Wholesale & catering"],["preorder","预订","Pre-order"]].filter(([id])=>liveZones.some(z=>z.id===id));
+  const TOP=["grocery","frozen","staples","fresh","freshzone"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder","ws"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
   const thumb=z=>{const L=PRODUCTS.filter(p=>inZone(p,z.id)&&p.img&&!isOOS(p));const p=L.find(x=>/\/hd_/.test(x.img))||L[0];return p?`<img src="${src(p.img)}" alt="" loading="lazy">`:'<span class="ph"></span>';};
   return `<div class="caquick">${Q.map(([id,zh,en])=>`<button type="button" class="q-${id}" data-gz="${id}">${zh}<small>${en}</small></button>`).join("")}</div>`+
     rest.map(z=>{const n=PRODUCTS.filter(p=>inZone(p,z.id)).length;const subs=CATS.filter(c=>c.z===z.id&&PRODUCTS.some(p=>inCat(p,c.id)));
