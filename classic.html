@@ -489,6 +489,8 @@ html[data-lang="both"] .allcat-btn .le{display:none}
 .casubs{display:flex;flex-wrap:wrap;gap:6px;padding:0 12px 12px 76px}
 .casubs button{font:inherit;font-size:12.5px;background:#f4f1ea;border:1px solid #e6dfcf;color:#1f2a24;border-radius:999px;padding:5px 10px;cursor:pointer}
 .pit.dcard .pn{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;min-height:0!important}
+html .pit.dcard .pp.dpp{color:#c0281f!important;font-size:22px!important;font-weight:800!important;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;padding-bottom:6px}
+html .pit.dcard .dwas{font-size:13px;font-weight:400;color:#8a8a8a;text-decoration:line-through}
 .dcard .dmeta{display:flex;flex-wrap:wrap;gap:2px 8px;padding:0 8px 4px;font-size:12px;color:var(--muted)}
 .dcard .dmeta s{color:var(--muted)}
 .dcard .dsave{color:#b02824;font-weight:700}
@@ -2466,7 +2468,7 @@ function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isO
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_DEALS=true; /* 特价少于 3 样时自动不显示 */
 function dealCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};const sv=onSale(p)?p.was-p.price:0;
-  return `<button type="button" class="pit dcard" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:hasDeal(p)?`<span class="pctbadge">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}</span>${onSale(p)?`<span class="dmeta"><span>${B("原价","Was")} <s>${money(p.was)}</s></span></span>`:hasDeal(p)?`<span class="dmeta"><span class="dsave">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span></span>`:""}${p.bbd?`<span class="dmeta dbbd">BBD ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit dcard" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:hasDeal(p)?`<span class="pctbadge">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp dpp">${money(p.price)}${onSale(p)?`<s class="dwas">${money(p.was)}</s>`:""}</span>${false?``:hasDeal(p)?`<span class="dmeta"><span class="dsave">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span></span>`:""}${p.bbd?`<span class="dmeta dbbd">BBD ${p.bbd}</span>`:""}</button>`;}
 function renderDeals(){renderWeb();let L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web&&!p.nostrip):[]; /* nostrip：特价但不进首页滚动栏，只在「特价」分类里 */if(L.length<3)L=[];
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
