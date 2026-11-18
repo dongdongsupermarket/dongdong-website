@@ -684,6 +684,7 @@ html .pit.dcard .pp.dpp{margin-top:auto}
 .dcard .dbbd{padding-bottom:8px;color:#8a5a00;font-weight:600}
 .pit .pp .ppkg{font-size:12px;font-weight:600;margin-left:1px;white-space:nowrap}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
+html .pit .pp.kgp{font-size:14px;color:var(--muted);font-weight:600;padding-bottom:2px}html .pit .pp.kgp .ppkg{font-size:11px}html .pit .pp.kgp+.pper.pperx{font-size:14px;font-weight:700;color:var(--red);line-height:1.35}
 .zkg{margin-top:10px}
 .kgtag .kgper{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 .pit .pp s{font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted);margin-left:4px}
@@ -1133,7 +1134,7 @@ const PRODUCTS_RAW=[
  {"c": "meat", "zh": "QP Foods 牛百叶", "en": "QP Foods Beef Manifold Tripe", "spec": "454g", "price": 2.79, "img": "img/hd_manifold.jpg"},
  {"c": "meat", "zh": "SNS 鸡胗", "en": "SNS Chicken Gizzards", "price": 5.69, "img": "img/p6_03.jpg"},
  {"c": "meat", "zh": "鸡心", "en": "Chicken Hearts", "oos": true, "price": 5.69, "img": "img/p6_04.jpg"},
- {"c": "meat", "zh": "整扇排骨", "en": "Whole Rack Pork Ribs", "spec": "按重量 by weight", "per": "每扇约 1.2kg approx. 1.2kg per rack", "price": 3.7, "unit": "/kg", "kg": true, "img": "img/p6_05.jpg"},
+ {"c": "meat", "zh": "整扇排骨", "en": "Whole Rack Pork Ribs", "spec": "按重量 by weight", "per": "每扇约1.2kg approx. 1.2kg per rack", "price": 3.7, "unit": "/kg", "kg": true, "img": "img/p6_05.jpg"},
  {"c": "meat", "zh": "QP Foods 大肠", "en": "QP Foods Pork Intestine", "spec": "400g", "price": 3.95, "img": "img/hd_pork_fatend.jpg"},
  {"c": "meat", "zh": "QP Foods 金钱肚", "en": "QP Foods Beef Honeycomb Tripe", "spec": "454g", "price": 2.79, "img": "img/hd_honeycomb.jpg"},
  {"c": "meat", "zh": "冷冻鸡翅中", "en": "Frozen Chicken Mid Wings", "spec": "1kg", "price": 4.95, "unit": "/袋 bag", "img": "img/hd_midwings.jpg", "arr": "18/11/2026"},
@@ -2171,12 +2172,12 @@ const PRODUCTS_RAW=[
  {"c": "roastmeat", "zh": "烧腊三拼", "en": "Three-Meat Combo", "spec": "叉烧 + 烧肉 + 烧鸭 Char siu + roast pork + roast duck", "price": 20.95, "unit": "/份 portion", "img": "img/pre_combo.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "roastmeat", "zh": "烧鸭 半只", "en": "Roast Duck, Half", "spec": "半只 half", "price": 21.95, "unit": "/份 portion", "img": "img/pre_duck.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "roastmeat", "zh": "烧鸭 一只", "en": "Roast Duck, Whole", "spec": "一只 whole", "price": 39.95, "unit": "/只 each", "img": "img/pre_duck.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛腩", "en": "Fresh Beef Brisket", "per": "每块约 1kg approx. 1kg per piece", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_brisket.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛肋条", "en": "Fresh Beef Short Ribs", "per": "每份约 1.2kg approx. 1.2kg per portion", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_shortrib.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛腱子", "en": "Fresh Beef Shank", "per": "每块约 1kg approx. 1kg per piece", "price": 11.99, "unit": "/kg", "kg": true, "img": "img/pre_shank.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜金钱腱", "en": "Golden Coin Beef Shank", "per": "每块约 1kg approx. 1kg per piece", "price": 13.99, "unit": "/kg", "kg": true, "img": "img/hd_goldshank.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜排骨 整条", "en": "Fresh Pork Ribs, Whole", "per": "每份约 1kg approx. 1kg per portion", "spec": "整条 whole", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜排骨 切好", "en": "Fresh Pork Ribs, Cut", "per": "每份约 1kg approx. 1kg per portion", "spec": "切好 cut", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛腩", "en": "Fresh Beef Brisket", "per": "每块约1kg approx. 1kg per piece", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_brisket.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛肋条", "en": "Fresh Beef Short Ribs", "per": "每份约1.2kg approx. 1.2kg per portion", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_shortrib.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛腱子", "en": "Fresh Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 11.99, "unit": "/kg", "kg": true, "img": "img/pre_shank.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜金钱腱", "en": "Golden Coin Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 13.99, "unit": "/kg", "kg": true, "img": "img/hd_goldshank.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜排骨 整条", "en": "Fresh Pork Ribs, Whole", "per": "每份约1kg approx. 1kg per portion", "spec": "整条 whole", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜排骨 切好", "en": "Fresh Pork Ribs, Cut", "per": "每份约1kg approx. 1kg per portion", "spec": "切好 cut", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "freshmeat", "zh": "新鲜猪蹄 整只", "en": "Fresh Pig Trotters, Whole", "spec": "整只 whole", "price": 3.2, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "freshmeat", "zh": "新鲜猪蹄 切好", "en": "Fresh Pig Trotters, Cut", "spec": "切好 cut", "price": 4.1, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "freshmeat", "zh": "新鲜猪肉馅", "en": "Fresh Minced Pork", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/pre_mince.jpg", "pre": {"days": [2, 5], "lead": 1}},
@@ -2289,14 +2290,14 @@ const PRODUCTS_RAW=[
  {"c": "veg", "zh": "中国芹菜", "en": "Chinese Celery", "oos": true, "price": 2.76, "unit": "/包 bag", "approx": true, "img": "img/nw_veg_v11.jpg"},
  {"c": "veg", "zh": "苦瓜", "en": "Bitter Melon", "oos": true, "price": 1.52, "unit": "/根 each", "approx": true, "img": "img/nw_veg_v12.jpg"},
  {"c": "veg", "zh": "泰国小米椒", "en": "Thai Bird Chilli", "spec": "100g", "price": 1.49, "unit": "/包 bag", "img": "img/nw_veg_chilli.jpg"},
-{"c": "veg", "zh": "虎皮青椒", "en": "Green Long Pepper", "price": 9.3, "unit": "/kg", "kg": true, "per": "每包约 £3（约 320g）· approx. £3 per bag", "img": "img/hd_green_long_pepper.jpg", "arr": "17/11/2026"},
+{"c": "veg", "zh": "虎皮青椒", "en": "Green Long Pepper", "price": 9.3, "unit": "/kg", "kg": true, "per": "每包约£3（约320g） approx. £3 per bag (320g)", "img": "img/hd_green_long_pepper.jpg", "arr": "17/11/2026"},
  {"c": "veg", "zh": "铁棍山药", "en": "Chinese Yam", "price": 2.6, "unit": "/3根 3 pcs", "img": "img/nw_veg_v14.jpg"},
- {"c": "veg", "zh": "新鲜莲藕", "en": "Fresh Lotus Root", "price": 6.95, "unit": "/kg", "kg": true, "pc": 0.7, "per": "按根卖，每根约 600–800g · Sold per piece, approx. 600–800g", "img": "img/nw_veg_v15.jpg", "arr": "18/11/2026"},
+ {"c": "veg", "zh": "新鲜莲藕", "en": "Fresh Lotus Root", "price": 6.95, "unit": "/kg", "kg": true, "pc": 0.7, "per": "按根卖，每根约600–800g Sold per piece, approx. 600–800g", "img": "img/nw_veg_v15.jpg", "arr": "18/11/2026"},
  {"c": "veg", "zh": "金针菇", "en": "Enoki Mushroom", "spec": "200g", "price": 2.29, "unit": "/包 bag", "img": "img/nw_veg_v16.jpg"},
- {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/hd_radish_bunch.jpg", "arr": "17/11/2026", "per": "按根卖，每根约 500–700g · Sold per piece, approx. 500–700g", "pc": 0.6},
+ {"c": "veg", "zh": "白萝卜", "en": "White Radish", "price": 2.2, "unit": "/kg", "kg": true, "img": "img/hd_radish_bunch.jpg", "arr": "17/11/2026", "per": "按根卖，每根约500–700g Sold per piece, approx. 500–700g", "pc": 0.6},
  {"c": "veg", "zh": "中国长茄子", "en": "Chinese Long Aubergine", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/nw_veg_f02.jpg"},
 {"c": "veg", "zh": "泰国青圆茄", "en": "Thai Green Eggplant", "price": 13.0, "unit": "/kg", "kg": true, "img": "img/nw_veg_thai_eggplant.jpg"},
-{"c": "veg", "zh": "青木瓜", "en": "Green Papaya", "per": "每个约 500g approx. 500g each", "price": 12.95, "unit": "/kg", "kg": true, "img": "img/hd_green_papaya.jpg"},
+{"c": "veg", "zh": "青木瓜", "en": "Green Papaya", "per": "每个约500g approx. 500g each", "price": 12.95, "unit": "/kg", "kg": true, "img": "img/hd_green_papaya.jpg"},
  {"c": "veg", "zh": "红薯", "en": "Sweet Potato", "price": 2.1, "unit": "/3个 3 pcs", "img": "img/nw_veg_f03.jpg"},
  {"c": "veg", "zh": "蒜", "en": "Garlic", "price": 2.19, "unit": "/包 bag", "img": "img/nw_veg_f04.jpg"},
  {"c": "veg", "zh": "姜", "en": "Ginger", "price": 1.2, "unit": "/包 bag", "approx": true, "img": "img/nw_veg_f05.jpg"},
@@ -2530,7 +2531,7 @@ const PRODUCTS_RAW=[
  {"c": "cake", "zh": "莲蓉蛋黄酥", "en": "Lotus Seed Paste Salted Egg Puff", "price": 3.99, "was": 4.79, "short": true, "bbd": "19/11/2026", "until": "19/11/2026", "unit": "/盒 box", "img": "img/lw_k_lotus.jpg", "oos": true}];
 PRODUCTS_RAW.forEach(p=>{if(p.en&&/[\u3400-\u9fff]/.test(p.en)){const b=(p.en.match(/[\u3400-\u9fff]+/g)||[]).filter(x=>!String(p.zh).includes(x));if(b.length)p.zh=b.join("")+" "+p.zh;p.en=p.en.replace(/\s*[\u3400-\u9fff]+\s*/g," ").replace(/\s+/g," ").trim();}}) /* 英文名不显示中文品牌 */;
 const PRODUCTS=CATS.flatMap(c=>PRODUCTS_RAW.filter(p=>p.c===c.id&&!p.off)) /* off:true = 暂时下架，网站不显示 */;
-PRODUCTS.forEach(p=>{if(p.per&&!p._per){p._per=1;p.spec=(p.spec?p.spec+" · ":"")+p.per}});  // "per": "每扇约 1.2kg approx. 1.2kg each" 按重量卖的商品每包大概多重
+PRODUCTS.forEach(p=>{if(p.per&&!p._per){p._per=1;p._sp0=p.spec;p.spec=(p.spec?p.spec+" · ":"")+p.per}});  // "per": "每扇约1.2kg approx. 1.2kg each" 按重量卖的商品每包大概多重
 // 营业时间：0=周日 … 6=周六；null 为休息
 const HOURS=[[11,18],[11,19],[11,19],[11,19],[11,19],[11,19],[11,19]];
 const DAYS=[["周日","Sun"],["周一","Mon"],["周二","Tue"],["周三","Wed"],["周四","Thu"],["周五","Fri"],["周六","Sat"]];
@@ -2622,7 +2623,7 @@ if(PRODUCTS.some(isNew))liveZones.splice(PRODUCTS.some(hasPromo)?1:0,0,{id:"new"
 if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
-  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper">${p.per?sp(p.per):B("按公斤 · 选 250g 起","Per kg · from 250g")}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&(isArr(p)||isNew(p))?`<span class="pctbadge arrbadge minibadge">${B("新货","NEW")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${(p._per&&p.kg?p._sp0:p.spec)?" "+sp(p._per&&p.kg?p._sp0:p.spec):""}</span><span class="pp${p.kg?" kgp":""}">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper pperx">${p.per?sp(p.per):B(`250g 约 ${money(p.price/4)}`,`250g ≈ ${money(p.price/4)}`)}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
 function buildSlides(){
   const out=[];
   const sale=PRODUCTS.filter(onSale);
