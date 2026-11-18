@@ -2692,7 +2692,7 @@ function render(){
     :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:(((a.oos?1:0)-(b.oos?1:0))||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
-  const agroup=!q&&zone==="arr";const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new");
+  const agroup=false;if(!q&&zone==="arr"){const CZ=c=>(CATS.find(x=>x.id===c)||{}).z;const AR=p=>{const z=CZ(p.c);return (p.oos?100:0)+(p.arrHide?50:0)+(p.c==="veg"?0:p.c==="fruit"?1:["inst5","instnoodle","cupnoodle","jkinst"].includes(p.c)?2:z==="staples"?3:z==="grocery"?4:z==="freshzone"?5:z==="frozen"?9:6)};list.sort((x,y)=>AR(x)-AR(y));} /* 新到货：不分区，蔬菜→方便面→主食→调料…冻货最后 */const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new"&&zone!=="arr");
   $("grid").classList.toggle("grouped",grouped);
   if(grouped){
     const AGR=g=>g.items.some(p=>!p.arrHide)?0:g.c.id==="inst5"?1:g.c.id==="seacracker"?9:5;
