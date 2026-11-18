@@ -2105,9 +2105,9 @@ const PRODUCTS_RAW=[
  {"c": "instnoodle", "zh": "白家酸辣粉", "en": "Baijia Hot & Sour Vermicelli", "spec": "105g", "price": 1.15, "img": "img/sw_bj_suanla1.jpg"},
  {"c": "instnoodle", "zh": "螺霸王柳州螺蛳粉", "en": "Luobawang Liuzhou River Snail Rice Noodles", "spec": "300g", "price": 2.99, "img": "img/ph_lbw_luosifen.jpg", "arr": "14/11/2026", "arrDays": 10},
  {"c": "instnoodle", "zh": "李子柒螺蛳粉（经典原味）", "en": "Li Ziqi River Snail Rice Noodles (Original)", "spec": "320g", "price": 4.29, "img": "img/ph_lzq_luosifen.jpg", "arr": "14/11/2026", "arrDays": 10},
- {"c": "instnoodle", "zh": "好欢螺柳州螺蛳粉（加辣版）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Extra Spicy)", "spec": "400g", "price": 4.29, "img": "img/ph_hhl_jl400.jpg", "arr": "14/11/2026", "arrDays": 10},
- {"c": "instnoodle", "zh": "好欢螺柳州螺蛳粉（原味）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Original)", "spec": "240g", "price": 3.89, "img": "img/ph_hhl_yuanwei.jpg", "arr": "14/11/2026", "arrDays": 10},
- {"c": "instnoodle", "zh": "好欢螺柳州螺蛳粉（紫袋）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Purple Bag)", "spec": "300g", "price": 3.69, "img": "img/hd_hhl_purple.jpg", "arr": "16/11/2026"},
+ {"c": "instnoodle", "zh": "好欢螺 Haohuanluo 柳州螺蛳粉（加辣版）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Extra Spicy)", "spec": "400g", "price": 4.29, "img": "img/ph_hhl_jl400.jpg", "arr": "14/11/2026", "arrDays": 10, "deal": {"type": "pct", "min": 3, "off": 5, "group": "haohuanluo", "label": "好欢螺"}, "web": true, "also": ["bundle"]},
+ {"c": "instnoodle", "zh": "好欢螺 Haohuanluo 柳州螺蛳粉（原味）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Original)", "spec": "240g", "price": 3.89, "img": "img/ph_hhl_yuanwei.jpg", "arr": "14/11/2026", "arrDays": 10, "deal": {"type": "pct", "min": 3, "off": 5, "group": "haohuanluo", "label": "好欢螺"}, "web": true, "also": ["bundle"]},
+ {"c": "instnoodle", "zh": "好欢螺 Haohuanluo 柳州螺蛳粉（紫袋）", "en": "Haohuanluo Liuzhou River Snail Rice Noodles (Purple Bag)", "spec": "300g", "price": 3.69, "img": "img/hd_hhl_purple.jpg", "arr": "16/11/2026", "deal": {"type": "pct", "min": 3, "off": 5, "group": "haohuanluo", "label": "好欢螺"}, "web": true, "also": ["bundle"]},
  {"c": "instnoodle", "zh": "李子柒干拌螺蛳粉（麻酱风味）", "en": "Li Ziqi Dry-Mixed River Snail Noodles (Sesame Sauce)", "spec": "260g", "price": 3.99, "img": "img/ph_lzq_ganban.jpg", "arr": "14/11/2026", "arrDays": 10},
  {"c": "instnoodle", "zh": "臭宝柳州螺蛳粉（爆爆浓汤）", "en": "Choubao Liuzhou River Snail Rice Noodles (Rich Broth)", "spec": "320g", "price": 2.99, "img": "img/ph_choubao.jpg", "arr": "14/11/2026", "arrDays": 10},
  {"c": "instnoodle", "zh": "妈妈牌清汤米粉", "en": "MAMA Clear Soup Vermicelli", "spec": "55g", "price": 0.55, "img": "img/sw_mama_ricev.jpg"},
@@ -2554,9 +2554,11 @@ function dealText(d){
   if(d.type==="nfor")return [d.tiers.map(t=>`${t.n} 个 ${money(t.price)}`).join("、"),d.tiers.map(t=>`${t.n} for ${money(t.price)}`).join(", ")];
   if(d.type==="bxgy")return [`买${CN_NUM[d.buy]||d.buy}送${CN_NUM[d.free]||d.free}`,`Buy ${d.buy} get ${d.free} free`];
   if(d.type==="half")return ["第二件半价","Second one half price"];
+  if(d.type==="pct"){const r=100-d.off,zk=r%10===0?r/10:r;return [`任选 ${d.min} 件 ${zk} 折`,`${d.off}% off any ${d.min}+`];}
   return ["",""];}
 function dealLine(p){if(!hasDeal(p))return "";const [z,e]=dealText(p.deal);
   return `<div class="dealline">${B(z,e)}${p.deal.group?`<span class="mix">${B("同类可混搭","Mix & match")}</span>`:""}</div>`;}
+//  {"type":"pct","min":3,"off":5}  → 任选 3 件 95 折（off=打掉的百分比）
 // 算优惠：同组（或同一商品）的件数按价格从高到低排，再按规则扣减
 function dealSavings(it){const G={};
   it.forEach(x=>{if(!hasDeal(x.p))return;const k=x.p.deal.group?"g:"+x.p.deal.group:"i:"+x.i;
@@ -2568,10 +2570,13 @@ function dealSavings(it){const G={};
       save=u.reduce((a,b)=>a+b,0)-dp[u.length];}
     else if(d.type==="bxgy"){const k=d.buy+d.free;for(let i=0;i+k<=u.length;i+=k)for(let j=i+d.buy;j<i+k;j++)save+=u[j];}
     else if(d.type==="half"){for(let i=1;i<u.length;i+=2)save+=u[i]/2;}
+    else if(d.type==="pct"){if(u.length>=d.min)save=u.reduce((a,b)=>a+b,0)*d.off/100;}
     save=Math.round(save*100)/100;
     if(save>0){const [z,e]=dealText(d);out.push({zh:z,en:e,save,names:g.names});}});
   return out;}
 const dealTotal=it=>dealSavings(it).reduce((s,x)=>s+x.save,0);
+function dealNeed(it){const G={};it.forEach(x=>{if(!hasDeal(x.p)||x.p.deal.type!=="pct")return;const k=x.p.deal.group||("i:"+x.i);(G[k]=G[k]||{d:x.p.deal,n:0,p:x.p}).n+=x.n;});
+  return Object.values(G).filter(g=>g.n<g.d.min).map(g=>({need:g.d.min-g.n,d:g.d,p:g.p}));}
 const liveZones=[...(PRODUCTS.some(p=>hasPromo(p)&&!p.web)?[{id:"sale",zh:"特价",en:"Special offer",sale:true}]:[]),...ZONES.filter(z=>PRODUCTS.some(p=>inZone(p,z.id)))];
 // 部分图片打包在一个文件里，按需加载
 const BUNDLES={};const IMGS={};const loading={};
@@ -2653,7 +2658,7 @@ function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isO
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_DEALS=true; /* 特价少于 3 样时自动不显示 */
 function dealCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};const sv=onSale(p)?p.was-p.price:0;
-  return `<button type="button" class="pit dcard" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:hasDeal(p)?`<span class="pctbadge">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span>${p.web?`<span class="dweb">${`<span class="lz">网上专享</span><span class="lb"><br></span><span class="le">Online exclusive</span>`}</span>`:""}<span class="pp dpp">${money(p.price)}</span>${onSale(p)?`<span class="dmeta dwasline">${B("原价","Was")} <s>${money(p.was)}</s></span>`:hasDeal(p)?`<span class="dmeta"><span class="dsave">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span></span>`:""}${p.bbd?`<span class="dmeta dbbd">BBD ${p.bbd}</span>`:""}</button>`;}
+  return `<button type="button" class="pit dcard" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:hasDeal(p)?`<span class="pctbadge">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span>${p.web?`<span class="dweb">${`<span class="lz">网上专享</span><span class="lb"><br></span><span class="le">Online exclusive</span>`}</span>`:""}<span class="pp dpp">${money(p.price)}</span>${onSale(p)?`<span class="dmeta dwasline">${B("原价","Was")} <s>${money(p.was)}</s></span>`:""}${p.bbd?`<span class="dmeta dbbd">BBD ${p.bbd}</span>`:""}</button>`;}
 function renderDeals(){renderWeb();let L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!(p.web&&p.c==="bundle")&&!p.nostrip):[]; /* nostrip：特价但不进首页滚动栏，只在「特价」分类里 */if(L.length<3)L=[];
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
@@ -2945,7 +2950,7 @@ function renderCart(){
   if(typeof deliveryMsg==="function")deliveryMsg();
   $("cartbar").hidden=!count;document.body.classList.toggle("has-cart",!!count);
   $("cartCount").textContent=count;$("cartTotal").textContent=money(total);$("cartHint").textContent=count?cartHint(total):"";$("panelTotal").textContent=money(total);
-  $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*x.p.price)}</span>${ctrl(x.i)}</div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
+  $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*x.p.price)}</span>${ctrl(x.i)}</div>`).join("")+dealNeed(it).map(g=>`<div class="line dealrow dealneed"><span class="nm">${B(`再选 ${g.need} 件${g.d.label?g.d.label:""}，享${dealText(g.d)[0]}`,`Add ${g.need} more for ${dealText(g.d)[1]}`)}</span></div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
     :`<p class="note">${BB("购物车是空的。","Your basket is empty.")}</p>`;
   {const cb=$("clearCart");if(cb){cb.hidden=!it.length;if(!it.length)resetClear()}}
   updateLink();
