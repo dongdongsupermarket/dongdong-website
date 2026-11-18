@@ -3050,7 +3050,10 @@ addEventListener("DOMContentLoaded",()=>{const z=$("zones");if(!z||$("allcatBtn"
   const key=()=>JSON.stringify([zone,cat,q]);let last=key(),qTyping=false,restoring=false,qt=null;
   const DZ=zone;/* 地址栏记住当前搜索 / 分区 / 小类，刷新后不会跳回首页 */
   const U=()=>{try{const u=new URL(location.href);["q","z","c","item"].forEach(k=>u.searchParams.delete(k));if(q)u.searchParams.set("q",q);else{if(zone&&zone!==DZ)u.searchParams.set("z",zone);if(cat&&cat!=="all")u.searchParams.set("c",cat);}return u.pathname+u.search+u.hash}catch(e){return location.href}};
-  try{const u=new URLSearchParams(location.search),z0=u.get("z"),c0=u.get("c");if(!u.get("q")&&!u.get("item")&&z0&&liveZones.some(x=>x.id===z0)){zone=z0;expanded=z0;if(c0&&CATS.some(x=>x.id===c0))cat=c0;renderZones();_renderInit();last=key();}}catch(e){}
+  let fresh=false;try{fresh=!sessionStorage.getItem("dd-seen");sessionStorage.setItem("dd-seen","1")}catch(e){}
+  /* 新打开网站（不是刷新）一律从「调料干货区 · 全部」开始；刷新才记住上次的分区 */
+  if(fresh){try{const u=new URL(location.href);if(u.searchParams.has("z")||u.searchParams.has("c")){u.searchParams.delete("z");u.searchParams.delete("c");history.replaceState(history.state,"",u.pathname+u.search+u.hash)}}catch(e){}}
+  try{const u=new URLSearchParams(location.search),z0=u.get("z"),c0=u.get("c");if(!fresh&&!u.get("q")&&!u.get("item")&&z0&&liveZones.some(x=>x.id===z0)){zone=z0;expanded=z0;if(c0&&CATS.some(x=>x.id===c0))cat=c0;renderZones();_renderInit();last=key();}}catch(e){}
   try{history.replaceState({dd:1,z:zone,c:cat,q:q,ex:expanded},"")}catch(e){}
   render=function(){_render.apply(this,arguments);if(restoring)return;const k=key();if(k===last)return;
     const st={dd:1,z:zone,c:cat,q:q,ex:expanded};
