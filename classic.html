@@ -465,6 +465,11 @@ html.nd .add.oosbtn.notify,.add.oosbtn.notify{cursor:pointer;color:#1d5b3a;borde
 .pit .pimg .glyph{display:grid;place-items:center;height:100%;font-family:var(--cn-display);font-size:40px;color:var(--green)}
 .pit .pn{font-size:13px;font-weight:500;line-height:1.3;padding:6px 8px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.6em}
 .pit .pp{padding:2px 8px 8px;font-family:var(--num);font-weight:700;font-size:18px;color:var(--green);font-variant-numeric:tabular-nums}
+.pit.dcard .pn{display:block!important;-webkit-line-clamp:unset!important;overflow:visible!important;min-height:0!important}
+.dcard .dmeta{display:flex;flex-wrap:wrap;gap:2px 8px;padding:0 8px 4px;font-size:12px;color:var(--muted)}
+.dcard .dmeta s{color:var(--muted)}
+.dcard .dsave{color:#b02824;font-weight:700}
+.dcard .dbbd{padding-bottom:8px;color:#8a5a00;font-weight:600}
 .pit .pp .ppkg{font-size:12px;font-weight:600;margin-left:1px;white-space:nowrap}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
 .zkg{margin-top:10px}
@@ -538,6 +543,12 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
   </div>
 </section>
 
+<section class="deals" id="deals" aria-label="特价 Deals" hidden>
+  <div class="wrap"><div class="dbox">
+    <div class="dhead"><h2 id="dtitle"></h2><button type="button" class="pbtn" data-go="sale"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
+    <div class="dstrip" id="dstrip"></div>
+  </div></div>
+</section>
 <section class="deals" id="arrivals" aria-label="新到货 Just in" hidden>
   <div class="wrap"><div class="dbox">
     <div class="dhead"><h2 id="atitle"></h2><button type="button" class="pbtn" id="ago"><span class="lz">去看看</span> <span class="le">Take a look</span></button></div>
@@ -550,12 +561,6 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
     <div class="dhead"><h2 id="wtitle"></h2><button type="button" class="pbtn" data-go="webonly"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
     <p class="wnote"><span class="lz">只限网上下单 · 到店直接购买按原价</span><span class="lb"> · </span><span class="le">Online orders only</span></p>
     <div class="dstrip" id="wstrip"></div>
-  </div></div>
-</section>
-<section class="deals" id="deals" aria-label="特价 Deals" hidden>
-  <div class="wrap"><div class="dbox">
-    <div class="dhead"><h2 id="dtitle"></h2><button type="button" class="pbtn" data-go="sale"><span class="lz">查看全部</span> <span class="le">See all</span></button></div>
-    <div class="dstrip" id="dstrip"></div>
   </div></div>
 </section>
 
@@ -2400,11 +2405,10 @@ function buildSlides(){
   const nw=PRODUCTS.filter(isNew).sort((a,b)=>ukDate(b.new)-ukDate(a.new));
   if(false&&nw.length)out.push({cls:"s-new",eye:B("新到","NEW IN"),title:ZO("新到货品","New arrivals"),sub:BS(`最近到店 ${nw.length} 样`,"Just arrived"),items:nw.slice(0,8),go:"new",btn:B("查看全部新货","See all new")});
   NOTICES.filter(n=>!n.until||today0<=ukDate(n.until)).forEach(n=>out.push({cls:"s-text s-new",eye:n.tag||B("到货通知","NOTICE"),title:ZO(n.zh,n.en||n.zh),sub:n.en?`<span class="lb">${n.en}</span>`:""}));
-  out.push({cls:"s-text",eye:B("网上下单","ORDER ONLINE"),title:ZO("网上选好，一键下单","Choose online, order in one tap"),list:[["1",BS("选商品加入购物车","Add items to your basket")],["2",BS("选到店自取或送货上门","Collect or delivery")],["3",BS("一键下单，订单自动填好，我们回复确认","One tap to order, we'll confirm")]],go:"order",btn:B("开始选购","Start shopping")});
-  out.push({cls:"s-text",eye:B("营业时间","HOURS"),title:BS("每天营业","Open 7 days"),list:[["",`${B("周一至周六","Mon–Sat")}  11:00 – 19:00`],["",`${B("周日","Sun")}  11:00 – 18:00`],["",`${B("电话","Phone")} / WhatsApp  07546 185999`]],go:"visit",btn:B("到店信息","Visit us")});
+  /* 「网上下单」说明只留商品区上方那条（无需注册·无需下载App）；营业时间在顶部「营业中」和底部「到店信息」 */
   return out;}
 function renderPromo(){
-  slides=buildSlides(); if(si>=slides.length)si=0;
+  slides=buildSlides(); if(si>=slides.length)si=0;$("promo").hidden=!slides.length;if(!slides.length)return;
   $("ptrack").innerHTML=slides.map((s,k)=>`<div class="slide ${s.cls}" role="group" aria-roledescription="slide" aria-label="${k+1} / ${slides.length}">
     <div class="ptxt"><span class="peye">${s.eye}</span><h2 class="ptitle">${s.title}</h2>${s.sub?`<p class="psub">${s.sub}</p>`:""}${s.list?`<ul class="plist">${s.list.map(([n,t])=>`<li>${n?`<b>${n}</b>`:""}<span>${t}</span></li>`).join("")}</ul>`:""}${s.btn?`<button type="button" class="pbtn" data-go="${s.go}">${s.btn}</button>`:""}</div>
     ${s.items?`<div class="pitems">${s.items.map(miniCard).join("")}</div>`:""}</div>`).join("");
@@ -2435,10 +2439,12 @@ function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isO
   $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_DEALS=true; /* 特价少于 3 样时自动不显示 */
+function dealCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};const sv=onSale(p)?p.was-p.price:0;
+  return `<button type="button" class="pit dcard" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:hasDeal(p)?`<span class="pctbadge">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${p.spec?" "+sp(p.spec):""}</span><span class="pp">${money(p.price)}</span>${onSale(p)?`<span class="dmeta"><span>${B("原价","Was")} <s>${money(p.was)}</s></span><span class="dsave">${B("省","Save")} ${money(sv)}</span></span>`:hasDeal(p)?`<span class="dmeta"><span class="dsave">${B(dealText(p.deal)[0],dealText(p.deal)[1])}</span></span>`:""}${p.bbd?`<span class="dmeta dbbd">BBD ${p.bbd}</span>`:""}</button>`;}
 function renderDeals(){renderWeb();let L=SHOW_DEALS?PRODUCTS.filter(hasPromo).filter(p=>!isOOS(p)&&!p.web):[];if(L.length<3)L=[];
   $("deals").hidden=!L.length;if(!L.length)return;
   $("dtitle").innerHTML=BS("特价","Special offer"," ");
-  $("dstrip").innerHTML=L.map(miniCard).join("");}
+  $("dstrip").innerHTML=L.map(dealCard).join("");}
 let dtimer=null,dpaused=false;
 let atimer=null,apaused=false;
 function startArr(){clearInterval(atimer);if(reduce)return;atimer=setInterval(()=>{const el=$("astrip");if(apaused||document.hidden||$("arrivals").hidden||el.scrollWidth<=el.clientWidth+4)return;
