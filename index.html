@@ -683,6 +683,7 @@ html .pit.dcard .pp.dpp{margin-top:auto}
 .dcard .dsave{color:#b02824;font-weight:700}
 .dcard .dbbd{padding-bottom:8px;color:#8a5a00;font-weight:600}
 .pit .pp .ppkg{font-size:12px;font-weight:600;margin-left:1px;white-space:nowrap}
+.swrap{position:relative;min-width:0;width:100%;max-width:100%}.sarr{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;padding:0}.sarr.l{left:-6px}.sarr.r{right:-6px}.sarr:hover{background:#fff}.sarr[hidden]{display:none}@media(max-width:600px){.sarr{width:34px;height:34px}}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
 html #arrivals .pit .pp,html #arrivals .pit .pp .ppkg{color:var(--ink)}html .pit.kgc{display:flex;flex-direction:column;align-items:stretch;text-align:left}html .pit.kgc .pper.pperx{order:3;font-size:14px;font-weight:700;color:var(--ink,#1d1d1b);line-height:1.35;padding:2px 8px 2px}html .pit.kgc .pp.kgp{order:4;margin-top:auto;font-size:12px;font-weight:500;color:var(--ink,#1d1d1b);padding:2px 8px 8px}html .pit.kgc .pp.kgp .ppkg{font-size:11px;font-weight:500}html .pit.kgc .pshort{order:5}
 .zkg{margin-top:10px}
@@ -2687,6 +2688,12 @@ $("arrivals").addEventListener("click",e=>{const ag=e.target.closest("[data-ag]"
 function startDeals(){clearInterval(dtimer);if(reduce)return;dtimer=setInterval(()=>{const el=$("dstrip");if(dpaused||document.hidden||$("deals").hidden||el.scrollWidth<=el.clientWidth+4)return;
   const step=(el.firstElementChild?el.firstElementChild.offsetWidth:130)+12;
   if(el.scrollLeft+el.clientWidth>=el.scrollWidth-4)el.scrollTo({left:0,behavior:"smooth"});else el.scrollBy({left:step,behavior:"smooth"});},1500);}
+(function(){["dstrip","astrip"].forEach(id=>{const el=$(id);if(!el||el.parentNode.classList.contains("swrap"))return;const w=document.createElement("div");w.className="swrap";el.parentNode.insertBefore(w,el);w.appendChild(el);
+  const mk=(d,lab)=>{const b=document.createElement("button");b.type="button";b.className="sarr "+d;b.setAttribute("aria-label",lab);b.innerHTML=`<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d==="l"?"M15 5l-7 7 7 7":"M9 5l7 7-7 7"}"/></svg>`;
+    b.addEventListener("click",e=>{e.stopPropagation();const st=Math.max(160,el.clientWidth*0.8);if(id==="astrip")apaused=true;else dpaused=true;clearTimeout(b._t);b._t=setTimeout(()=>{if(id==="astrip")apaused=false;else dpaused=false},6000);
+      if(d==="r"&&el.scrollLeft+el.clientWidth>=el.scrollWidth-4)el.scrollTo({left:0,behavior:"smooth"});else el.scrollBy({left:d==="l"?-st:st,behavior:"smooth"});});w.appendChild(b);return b;};
+  const L=mk("l","向左 Previous"),R=mk("r","向右 Next");
+  const upd=()=>{const can=el.scrollWidth>el.clientWidth+4;L.hidden=!can||el.scrollLeft<4;R.hidden=!can;};el.addEventListener("scroll",upd,{passive:true});window.addEventListener("resize",upd);new MutationObserver(upd).observe(el,{childList:true});if(window.ResizeObserver)new ResizeObserver(upd).observe(el);setTimeout(upd,300);});})(); /* 滚动栏左右箭头 */
 ["mouseenter","focusin","touchstart"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=true,{passive:true}));
 ["mouseleave","focusout"].forEach(ev=>$("deals").addEventListener(ev,()=>dpaused=false));
 $("deals").addEventListener("touchend",()=>setTimeout(()=>dpaused=false,4000),{passive:true});
