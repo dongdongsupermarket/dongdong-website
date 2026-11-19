@@ -2375,7 +2375,7 @@ const PRODUCTS_RAW=[
  {"c": "cake", "zh": "蛋挞", "en": "Egg Tart", "price": 2.79, "oos": true, "unit": "/盒 box", "img": "img/lw_k_eggtart.jpg"},
  {"c": "cake", "zh": "芒果班戟", "en": "Mango Pancake", "price": 4.79, "unit": "/盒 box", "img": "img/lw_k_mango.jpg", "oos": true},
  {"c": "cake", "zh": "香芋蛋卷", "en": "Taro Flavour Roll", "price": 5.79, "was": 6.49, "short": true, "bbd": "14/11/2026", "until": "14/11/2026", "unit": "/盒 box", "img": "img/lw_k_taro.jpg", "oos": true},
- {"c": "cake", "zh": "莲蓉蛋黄酥", "en": "Lotus Seed Paste Salted Egg Puff", "price": 3.99, "was": 4.79, "short": true, "bbd": "19/11/2026", "until": "19/11/2026", "unit": "/盒 box", "img": "img/lw_k_lotus.jpg", "oos": true}];
+ {"c": "cake", "zh": "莲蓉蛋黄酥", "en": "Lotus Seed Paste Salted Egg Puff", "price": 4.79, "unit": "/盒 box", "img": "img/lw_k_lotus.jpg", "oos": true}];
 PRODUCTS_RAW.forEach(p=>{if(p.en&&/[\u3400-\u9fff]/.test(p.en)){const b=(p.en.match(/[\u3400-\u9fff]+/g)||[]).filter(x=>!String(p.zh).includes(x));if(b.length)p.zh=b.join("")+" "+p.zh;p.en=p.en.replace(/\s*[\u3400-\u9fff]+\s*/g," ").replace(/\s+/g," ").trim();}}) /* 英文名不显示中文品牌 */;
 const PRODUCTS=CATS.flatMap(c=>PRODUCTS_RAW.filter(p=>p.c===c.id&&!p.off)) /* off:true = 暂时下架，网站不显示 */;
 PRODUCTS.forEach(p=>{if(p.per&&!p._per){p._per=1;p._sp0=p.spec;p.spec=(p.spec?p.spec+" · ":"")+p.per}});  // "per": "每扇约1.2kg approx. 1.2kg each" 按重量卖的商品每包大概多重
