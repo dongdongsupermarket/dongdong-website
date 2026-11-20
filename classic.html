@@ -2375,9 +2375,9 @@ const PRODUCTS_RAW=[
 {"c": "bread", "zh": "咖喱鸡包", "en": "Chicken Curry Bun", "spec": "2个 2 pcs", "price": 3.49, "unit": "/盒 box", "img": "img/nw_br_curry.jpg", "oos": true},
 {"c": "bread", "zh": "烤鸡包", "en": "Roasted Chicken Bun", "spec": "2个 2 pcs", "price": 3.49, "unit": "/盒 box", "img": "img/nw_br_roastchicken.jpg", "oos": true},
  {"c": "cake", "zh": "原味蛋卷", "en": "Original Flavour Roll", "price": 6.49, "unit": "/盒 box", "img": "img/hd_ss_originalroll.jpg", "arr": "20/11/2026"},
- {"c": "cake", "zh": "山峰椰丝米糍", "en": "Sun Fung Onde-Onde Coconut Mochi", "spec": "250g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_coconut_mochi.jpg"},
- {"c": "cake", "zh": "山峰绿茶米糍", "en": "Sun Fung Green Tea Matcha Mochi", "spec": "270g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_matcha_mochi.jpg"},
- {"c": "cake", "zh": "山峰黑芝麻米糍", "en": "Sun Fung Black Sesame Mochi", "spec": "250g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_sesame_mochi.jpg"},
+ {"c": "cake", "zh": "山峰椰丝米糍", "en": "Sun Fung Onde-Onde Coconut Mochi", "spec": "250g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_coconut_mochi.jpg", "new": "20/11/2026"},
+ {"c": "cake", "zh": "山峰绿茶米糍", "en": "Sun Fung Green Tea Matcha Mochi", "spec": "270g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_matcha_mochi.jpg", "new": "20/11/2026"},
+ {"c": "cake", "zh": "山峰黑芝麻米糍", "en": "Sun Fung Black Sesame Mochi", "spec": "250g (8个 8 pcs)", "price": 3.99, "unit": "/盒 box", "img": "img/hd_sf_sesame_mochi.jpg", "new": "20/11/2026"},
  {"c": "cake", "zh": "栗子蛋卷", "en": "Chestnut Flavour Roll", "price": 6.49, "unit": "/盒 box", "img": "img/lw_k_chestnut.jpg", "oos": true},
  {"c": "cake", "zh": "抹茶蛋卷", "en": "Matcha Flavour Roll", "price": 6.49, "unit": "/盒 box", "img": "img/lw_k_matcha.jpg", "oos": true},
  {"c": "cake", "zh": "虎皮蛋卷", "en": "Tiger Skin Roll", "price": 6.49, "unit": "/盒 box", "img": "img/hd_ss_tigerroll.jpg", "arr": "20/11/2026"},
@@ -2538,7 +2538,7 @@ let tx=null;$("pv").addEventListener("touchstart",e=>{tx=e.touches[0].clientX;pp
 $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){showSlide(si+(dx<0?1:-1));}}tx=null;ppaused=false;startAuto();});
 // 首页"网上专享"那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_WEB=false;
-function renderArr(){const L=PRODUCTS.filter(p=>isArr(p)&&!p.arrHide).sort((a,b)=>ukDate(b.arr||b.new)-ukDate(a.arr||a.new));$("arrivals").hidden=!L.length;if(!L.length)return;
+function renderArr(){const L=PRODUCTS.filter(p=>isArr(p)&&!p.arrHide).sort((a,b)=>((isNew(b)?1:0)-(isNew(a)?1:0))||(ukDate(b.arr||b.new)-ukDate(a.arr||a.new)));$("arrivals").hidden=!L.length;if(!L.length)return;
   $("ago").dataset.go="arr";
   $("atitle").innerHTML=BS("新到货","Just in"," ");
   const G=CATS.filter(c=>c.id!=="all").map(c=>({c,items:L.filter(p=>p.c===c.id)})).filter(g=>g.items.length);
@@ -2770,10 +2770,10 @@ function render(){
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :zone==="arr"?PRODUCTS.filter(isArr)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:(((a.oos?1:0)-(b.oos?1:0))||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:(((a.oos?1:0)-(b.oos?1:0))||(zone==="arr"?((isNew(b)?1:0)-(isNew(a)?1:0)):0)||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 新到货区：新品排前，回货排后 */ /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
   const z=liveZones.find(x=>x.id===zone);
   $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
-  const agroup=false;if(!q&&zone==="arr"){const CZ=c=>(CATS.find(x=>x.id===c)||{}).z;const AR=p=>{const z=CZ(p.c);return (p.oos?100:0)+(p.arrHide?50:0)+(p.c==="veg"?0:p.c==="fruit"?1:["inst5","instnoodle","cupnoodle","jkinst"].includes(p.c)?2:z==="staples"?3:z==="grocery"?4:z==="freshzone"?5:z==="frozen"?9:6)};list.sort((x,y)=>AR(x)-AR(y));} /* 新到货：不分区，蔬菜→方便面→主食→调料…冻货最后 */const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new"&&zone!=="arr");
+  const agroup=false;if(!q&&zone==="arr"){const CZ=c=>(CATS.find(x=>x.id===c)||{}).z;const AR=p=>{const z=CZ(p.c);return (p.oos?100:0)+(p.arrHide?50:0)+(isNew(p)?-1:p.c==="veg"?0:p.c==="fruit"?1:["inst5","instnoodle","cupnoodle","jkinst"].includes(p.c)?2:z==="staples"?3:z==="grocery"?4:z==="freshzone"?5:z==="frozen"?9:6)};list.sort((x,y)=>AR(x)-AR(y));} /* 新到货：不分区，蔬菜→方便面→主食→调料…冻货最后 */const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new"&&zone!=="arr");
   $("grid").classList.toggle("grouped",grouped);
   if(grouped){
     const AGR=g=>g.items.some(p=>!p.arrHide)?0:g.c.id==="inst5"?1:g.c.id==="seacracker"?9:5;
@@ -2801,7 +2801,7 @@ function render(){
 }
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
-     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${!isNew(p)&&isArr(p)?`<span class="newbadge arrbadge"><span class="lz">新货</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
+     <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${!isNew(p)&&isArr(p)?`<span class="newbadge arrbadge"><span class="lz">回货</span><span class="lb"><br></span><span class="le">BACK</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上专享":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE":"OFFER"}</span>${onSale(p)&&!p.web?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
      <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${bbdLine(p)}${kgPick(PRODUCTS.indexOf(p))}</div>
      ${zhNote(p)}${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
