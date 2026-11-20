@@ -395,7 +395,7 @@ legend{font-family:var(--en-display);font-size:13px;letter-spacing:.1em;text-tra
 .altbtn:hover{border-color:var(--green)}
 .contact .qrs{display:flex!important;flex-direction:row!important;gap:12px;flex-wrap:wrap;margin-top:6px;grid-template-columns:none}
 .contact .qr{display:grid;justify-items:center;flex:0 0 auto;gap:2px;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;width:150px;text-align:center}
-.qr img{width:130px;height:130px}.qr b{font-size:14px;color:#222}.qr small{font-size:11px;color:#666}
+.qr img{width:130px;height:130px}.qr img,.wxqr,.qrlb img{-webkit-touch-callout:default!important;-webkit-user-select:auto;user-select:auto;pointer-events:auto;cursor:zoom-in}.qrbtn{margin-top:6px;display:block;width:100%;border:0;border-radius:8px;background:#25d366;color:#fff;font:inherit;font-size:12px;font-weight:700;padding:7px 4px;text-decoration:none;cursor:pointer}.qr:last-child .qrbtn{background:#07c160}@media(max-width:760px){.contact .qrs{flex-wrap:nowrap;gap:8px}.contact .qr{flex:1 1 0;width:auto;min-width:0;padding:7px}.contact .qr img{width:100%;height:auto;aspect-ratio:1}.qrbtn{font-size:12px;padding:7px 2px}}.qrlb{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.82);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:20px}.qrlb[hidden]{display:none!important}.qrlb img{width:min(78vw,340px);height:auto;background:#fff;border-radius:12px;padding:10px;cursor:default}.qrlb p{color:#fff;text-align:center;margin:0;font-size:14px;line-height:1.5;max-width:340px}.qrlb .qrx{background:#fff;color:#222;border:0;border-radius:20px;padding:9px 22px;font:inherit;font-weight:700}.listmore{grid-column:1/-1;display:flex;justify-content:center;margin:14px 0 4px}.listmore .more{width:100%;max-width:420px;padding:12px;font-size:15px}.qr b{font-size:14px;color:#222}.qr small{font-size:11px;color:#666}
 .wxbox{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0;background:var(--surface);font-size:14px}
 .wxbox ol{margin:6px 0 8px;padding-left:20px}.wxbox li{margin:4px 0}
 .wxok{margin:0;font-weight:700;color:#07a35a}
@@ -654,9 +654,9 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
       <div><strong><span class="lz">地址</span> <span class="le">Address</span></strong><span>29–37 Beast Market<br>Huddersfield<br>HD1 1QF</span><span class="since2"><span class="lz">自 2007 年起在 Beast Market 营业</span><span class="lb"> · </span><span class="le">On Beast Market since 2007</span></span><a class="copy" href="https://www.google.com/maps/search/?api=1&query=29-37+Beast+Market+Huddersfield+HD1+1QF" target="_blank" rel="noopener" style="text-decoration:none"><span class="lz">在地图中打开</span> <span class="le">Open in Maps</span></a></div>
       <div><strong><span class="lz">邮箱</span> <span class="le">Email</span></strong><span>info@dongdong.co.uk</span></div>
       <div class="qrs">
-        <a class="qr" href="https://wa.me/447546185999" target="_blank" rel="noopener"><img src="img/whatsapp_qr.png" alt="WhatsApp 二维码 WhatsApp QR code" width="140" height="140" loading="lazy"><b>WhatsApp</b><small><span class="lz">扫码或点击聊天</span><span class="lb"> · </span><span class="le">Scan or tap to chat</span></small></a>
-        <a class="qr" href="https://whatsapp.com/channel/0029VbEYhPw0AgW9nWthc21L" target="_blank" rel="noopener"><img src="img/wa_channel_qr.png" alt="WhatsApp 频道二维码 WhatsApp Channel QR code" width="140" height="140" loading="lazy"><b><span class="lz">频道</span><span class="lb"> </span><span class="le">Channel</span></b><small><span class="lz">关注看新货、特价</span><span class="lb"> · </span><span class="le">New in &amp; offers</span></small></a>
-        <a class="qr" href="img/wechat_qr.png" download="东东超市微信二维码.png"><img src="img/wechat_qr.png" alt="微信二维码 WeChat QR code" width="140" height="140" loading="lazy"><b><span class="lz">微信</span><span class="lb"> </span><span class="le">WeChat</span></b><small><span class="lz">扫码加好友 · 点击保存</span><span class="lb"> · </span><span class="le">Scan to add · tap to save</span></small></a>
+        <div class="qr"><img src="img/whatsapp_qr.png" alt="WhatsApp 二维码 WhatsApp QR code" width="140" height="140" loading="lazy" data-qrbig="whatsapp"><b>WhatsApp</b><a class="qrbtn" href="https://wa.me/447546185999" target="_blank" rel="noopener"><span class="lz">点击聊天</span><span class="lb"> </span><span class="le">Chat</span></a></div>
+        <div class="qr"><img src="img/wa_channel_qr.png" alt="WhatsApp 频道二维码 WhatsApp Channel QR code" width="140" height="140" loading="lazy" data-qrbig="channel"><b><span class="lz">频道</span><span class="lb"> </span><span class="le">Channel</span></b><a class="qrbtn" href="https://whatsapp.com/channel/0029VbEYhPw0AgW9nWthc21L" target="_blank" rel="noopener"><span class="lz">点击关注</span><span class="lb"> </span><span class="le">Follow</span></a></div>
+        <div class="qr"><img src="img/wechat_qr.png" alt="微信二维码 WeChat QR code" width="140" height="140" loading="lazy" data-qrbig="wechat"><b><span class="lz">微信</span><span class="lb"> </span><span class="le">WeChat</span></b><button type="button" class="qrbtn" data-saveqr="img/wechat_qr.png"><span class="lz">保存图片</span><span class="lb"> </span><span class="le">Save</span></button></div>
       </div>
     </div>
     <div style="display:grid;gap:18px;align-content:start"><div><h3><span class="lz">付款方式</span><span class="lb"> · </span><span class="le">Payment</span></h3><p style="margin:0"><span class="lz">到店：现金、刷卡、非接触支付、银行转账、人民币付款<br>送货：现金、银行转账、人民币付款</span><span class="le blk en">In store: cash, card, contactless, bank transfer<br>Delivery: cash, bank transfer</span></p></div>
@@ -737,8 +737,8 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
         <li><span class="lz">加东東微信：扫下面的二维码。用这部手机的话，先长按二维码保存图片，再在微信"扫一扫"里点右下角"相册"选这张图。</span><span class="le blk">Add Dong Dong on WeChat: scan the QR code. On this phone, save the image first, then use WeChat Scan → Album.</span></li>
         <li><span class="lz">在和东東的对话里长按输入框，点"粘贴"，发送。</span><span class="le blk">In the chat, long-press the text box, paste and send.</span></li>
       </ol>
-      <img src="img/wechat_qr.png" alt="东東超市微信二维码 Dong Dong WeChat QR code" class="wxqr" width="220" height="220">
-      <div class="wxbtns"><a class="altbtn" href="img/wechat_qr.png" download="东东超市微信二维码.png"><span class="lz">保存二维码</span> <span class="le">Save QR</span></a><a class="altbtn" href="weixin://"><span class="lz">打开微信</span> <span class="le">Open WeChat</span></a></div>
+      <img src="img/wechat_qr.png" alt="东東超市微信二维码 Dong Dong WeChat QR code" class="wxqr" data-qrbig="wechat" width="220" height="220">
+      <div class="wxbtns"><button type="button" class="altbtn" data-saveqr="img/wechat_qr.png"><span class="lz">保存二维码</span> <span class="le">Save QR</span></button><a class="altbtn" href="weixin://"><span class="lz">打开微信</span> <span class="le">Open WeChat</span></a></div>
     </div>
     <p class="note" id="copyNote" hidden><span class="lz">订单已复制，可以粘贴到短信、微信或其他 App 发给我们（07546 185999）。</span><span class="le blk">Order copied. Paste it into a text message or any app and send it to 07546 185999.</span></p>
     <p class="note sendnote" data-for="wa"><span class="lz">订单会自动填好，在打开的 WhatsApp 里点一下发送 ➤ 就行。订单以我们回复确认为准，价格以店内为准。</span><span class="le blk">Your order is filled in for you. Just tap send ➤ in WhatsApp. Your order is confirmed once we reply.</span></p>
@@ -2716,6 +2716,7 @@ function _searchAll(raw){raw=toSimp(raw);const q=raw.toLowerCase().replace(/chil
   return full.length>=8?full.map(r=>r.p):full.concat(part.slice(0,40)).map(r=>r.p);}
 // 分区首页每个小类先显示几样
 const openGroups=new Set(); // 已展开的小类
+const MOB=matchMedia("(max-width:760px)").matches,GRP_SHOW=3,FLAT_SHOW=24;let listAll=false,listKey=""; /* 手机版：先只显示前几个小类/前24样，底部"显示全部"按钮，方便往下看到联系方式和二维码 */
 const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：海天生抽/老抽、李锦记生抽/老抽、珠江桥生抽/老抽）
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
@@ -2735,13 +2736,18 @@ function render(){
     const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length).sort((x,y)=>AGR(x)-AGR(y)):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
     const foldable=groups.filter(g=>g.items.length>GN(g.c.id)),allOpen=foldable.length&&foldable.every(g=>openGroups.has(g.c.id));
     const allBtn=foldable.length>1?`<div class="allfold"><button type="button" class="more allbtn" data-foldall="${allOpen?0:1}">${allOpen?B("全部收起","Collapse all")+" ⌃":B(`全部展开（${groups.reduce((n,g)=>n+g.items.length,0)} 样）`,`Show everything (${groups.reduce((n,g)=>n+g.items.length,0)})`)+" ⌄"}</button></div>`:"";
-    $("grid").innerHTML=allBtn+groups.map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
+    const gk=zone+"|"+q;if(gk!==listKey){listKey=gk;listAll=false;}
+    let gShow=groups.length;if(MOB&&!listAll&&groups.length>GRP_SHOW){let last=-1;groups.forEach((g,i)=>{if(openGroups.has(g.c.id))last=i;});gShow=Math.max(GRP_SHOW,last+1);}
+    const restN=groups.slice(gShow).reduce((n,g)=>n+g.items.length,0);
+    const moreBtn=gShow<groups.length?`<div class="listmore"><button type="button" class="more allbtn" data-listall="1">${B(`显示全部 ${groups.length} 个小类（还有 ${restN} 样）`,`Show all ${groups.length} sections (${restN} more)`)} ⌄</button></div>`:"";
+    $("grid").innerHTML=allBtn+groups.slice(0,gShow).map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
       <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GN(g.c.id))).map(cardHTML).join("")}</div>
       ${g.items.length>GN(g.c.id)?(openGroups.has(g.c.id)
         ?`<button type="button" class="more" data-fold="${g.c.id}">${B("收起","Show less")} ⌃</button>`
-        :`<button type="button" class="more" data-fold="${g.c.id}">${B(`展开全部 ${g.items.length} 样`,`Show all ${g.items.length}`)} ⌄</button>`):""}</section>`).join("");
+        :`<button type="button" class="more" data-fold="${g.c.id}">${B(`展开全部 ${g.items.length} 样`,`Show all ${g.items.length}`)} ⌄</button>`):""}</section>`).join("")+moreBtn;
     spy();
-  }else $("grid").innerHTML=list.map(cardHTML).join("");
+  }else{const gk=zone+"|"+q;if(gk!==listKey){listKey=gk;listAll=false;}const n=(MOB&&!listAll&&list.length>FLAT_SHOW+6)?FLAT_SHOW:list.length;
+    $("grid").innerHTML=list.slice(0,n).map(cardHTML).join("")+(n<list.length?`<div class="listmore"><button type="button" class="more allbtn" data-listall="1">${B(`显示全部 ${list.length} 样（还有 ${list.length-n} 样）`,`Show all ${list.length} items (${list.length-n} more)`)} ⌄</button></div>`:"");}
   $("empty").hidden=true;
   {const box=$("askbox");if(box){const qq=q?String(q).trim():"";box.classList.toggle("big",!!qq&&!list.length);
     $("askZ").textContent=qq?(list.length?`没找到想要的“${qq}”？`:`网站上暂时没有“${qq}”`):"找不到想要的商品？";
@@ -2965,7 +2971,7 @@ function applyLang(){const h=document.documentElement;h.dataset.lang=LANG;h.lang
   document.querySelectorAll(".langsw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));}
 document.querySelector(".langsw").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   LANG=b.dataset.lang;try{localStorage.setItem("dd-lang",LANG)}catch(err){}applyLang();renderCart();});
-$("grid").addEventListener("click",e=>{const fa=e.target.closest("[data-foldall]");if(fa){const on=fa.dataset.foldall==="1";[...document.querySelectorAll("#grid [data-fold]")].forEach(x=>on?openGroups.add(x.dataset.fold):openGroups.delete(x.dataset.fold));render();if(!on)window.scrollTo({top:document.getElementById("grid").getBoundingClientRect().top+scrollY-120});return;}const b=e.target.closest("[data-fold]");if(!b)return;
+$("grid").addEventListener("click",e=>{if(e.target.closest("[data-listall]")){listAll=true;const y=scrollY;render();scrollTo(0,y);return;}const fa=e.target.closest("[data-foldall]");if(fa){const on=fa.dataset.foldall==="1";[...document.querySelectorAll("#grid [data-fold]")].forEach(x=>on?openGroups.add(x.dataset.fold):openGroups.delete(x.dataset.fold));render();if(!on)window.scrollTo({top:document.getElementById("grid").getBoundingClientRect().top+scrollY-120});return;}const b=e.target.closest("[data-fold]");if(!b)return;
   const id=b.dataset.fold,was=openGroups.has(id);was?openGroups.delete(id):openGroups.add(id);render();
   if(was){const g=document.getElementById("grp-"+id);if(g&&g.getBoundingClientRect().top<0)g.scrollIntoView({block:"start"});}});
 // 左边小类跟随滚动高亮
@@ -2989,6 +2995,16 @@ $("dot").classList.toggle("closed",!open);
 $("copyTel").addEventListener("click",()=>{const el=$("tel");
   navigator.clipboard?.writeText(el.textContent).then(()=>{$("copyTel").innerHTML=B("已复制","Copied")}).catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);});});
 </script>
+
+<div class="qrlb" id="qrlb" hidden role="dialog" aria-modal="true"><img id="qrlbImg" alt=""><p id="qrlbTip"></p><button type="button" class="qrx" id="qrlbX"><span class="lz">关闭</span> <span class="le">Close</span></button></div>
+<script>(function(){const T={wechat:["东東超市微信 · WeChat","长按二维码可以保存图片；在微信里打开网站时，长按可直接“识别图中二维码”。别的手机可以直接扫这张大图。","Long-press to save the image. Or scan this with another phone."],whatsapp:["WhatsApp","用另一部手机扫这个二维码，或直接点绿色按钮聊天。","Scan with another phone, or tap the green button to chat."],channel:["WhatsApp Channel","用另一部手机扫这个二维码，或点绿色按钮关注。","Scan with another phone, or tap the green button to follow."]};
+const lb=document.getElementById("qrlb"),im=document.getElementById("qrlbImg"),tp=document.getElementById("qrlbTip");
+function show(u,k,alt){const t=T[k]||T.wechat;im.src=u;im.alt=alt||t[0];tp.innerHTML="<b>"+t[0]+"</b><br><span class=\"lz\">"+t[1]+"</span><span class=\"le blk\">"+t[2]+"</span>";lb.hidden=false;}
+document.addEventListener("click",e=>{const i=e.target.closest("img[data-qrbig]");if(i&&!lb.contains(i)){show(i.getAttribute("src"),i.dataset.qrbig,i.alt);return;}
+  if(e.target===lb||e.target.closest("#qrlbX")){lb.hidden=true;return;}
+  const sv=e.target.closest("[data-saveqr]");if(sv){e.preventDefault();const u=sv.dataset.saveqr,name="dongdong-wechat-qr.png";
+    fetch(u).then(r=>r.blob()).then(b=>{const f=new File([b],name,{type:"image/png"});if(navigator.canShare&&navigator.canShare({files:[f]}))return navigator.share({files:[f]}).catch(()=>{});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000);}).catch(()=>show(u,"wechat"));}});
+addEventListener("keydown",e=>{if(e.key==="Escape")lb.hidden=true;});})();</script>
 
 </body>
 </html>
