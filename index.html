@@ -419,7 +419,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .nopill{display:inline-block;border:1.5px solid var(--gold);color:inherit;border-radius:20px;padding:2px 12px;font-weight:600;font-size:12.5px;line-height:1.5}
 .askbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;border:1.5px dashed #25d366;border-radius:10px;background:rgba(37,211,102,.06);font-size:14px;line-height:1.5}
 body.wsmode #cats{display:none!important}html #grid .allfold{grid-column:1/-1;display:flex;justify-content:flex-end;margin:0 0 4px}.allfold .allbtn{width:auto;padding:8px 16px;font-weight:700}
-.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
+.wsph{grid-column:1/-1;margin:18px 0 4px;font-size:18px;color:var(--green)}.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
 .askbox .atxt{flex:1 1 180px;min-width:0}.askbox .atxt b{display:block;font-size:15px;margin-bottom:2px}
 .askbox .abtn{flex:none;max-width:100%;background:#25d366;color:#fff;font-weight:700;border-radius:20px;padding:8px 16px;text-decoration:none;text-align:center}
 @media (max-width:520px){.askbox .abtn{flex:1 1 100%}}
@@ -1025,6 +1025,7 @@ const CATS=[
  {id:"casedrink",z:"bulk",zh:"整箱饮料",en:"Drinks by the case",tone:"--t-frozen",g:"箱"},
  {id:"casenoodle",z:"bulk",zh:"整箱面条",en:"Noodles by the case",tone:"--t-sauce",g:"箱"},
  {id:"casefrozen",z:"bulk",zh:"整箱冻货",en:"Frozen by the case",tone:"--t-frozen",g:"箱"},
+ {id:"wscater",z:"ws",zh:"餐饮用品",en:"Catering supplies",tone:"--t-rice",g:"盒"},
  {id:"caseother",z:"bulk",zh:"其他整箱",en:"Other bulk buys",tone:"--t-rice",g:"箱"},
  {id:"bread",z:"bakery",zh:"新鲜面包",en:"Fresh bread",tone:"--t-rice",g:"包"},
  {id:"cake",z:"bakery",zh:"蛋糕",en:"Cakes",tone:"--t-snack",g:"糕"},
@@ -1802,6 +1803,7 @@ const PRODUCTS_RAW=[
  {"c": "noodle", "zh": "寿桃 Sau Tao 厦门面线", "en": "Sau Tao 寿桃 Xiamen Vermicelli", "spec": "300g", "price": 1.39, "img": "img/hd_n3f07.jpg"},
  {"c": "casenoodle", "zh": "Lucky Boat 帆船面 1号 什水面 整箱", "en": "Lucky Boat No.1 Thick Noodles (Case)", "spec": "9kg", "price": 25.95, "unit": "/箱 case", "also": ["noodle"], "img": "img/sw_luckyboat1_case.jpg", "local": true},
 {"c": "casenoodle", "zh": "Lucky Boat 帆船面 2号 炒底面 整箱", "en": "Lucky Boat No.2 Fine Noodles (Case)", "spec": "7.7kg", "price": 26.95, "unit": "/箱 case", "also": ["noodle"], "img": "img/sw_luckyboat2_case.jpg", "local": true},
+ {"c": "caseother", "zh": "Tiger Plastics 500ml 微波炉塑料餐盒（带盖）", "en": "Tiger Plastics 500ml Microwave Plastic Containers with Lids (Heavy Duty)", "spec": "250套 250 pcs", "price": 33.95, "unit": "/箱 case", "img": "img/hd_tiger_500ml.jpg", "also": ["wscater"]},
 {"c": "noodle", "zh": "Lucky Boat 帆船鸡蛋面（1号 宽）", "en": "Lucky Boat No.1 Egg Noodles (Flat)", "spec": "450g", "price": 2.29, "img": "img/hd_nd127.jpg"},
  {"c": "noodle", "zh": "Lucky Boat 帆船鸡蛋面（2号 细）", "en": "Lucky Boat No.2 Egg Noodles (Thin)", "spec": "450g", "price": 2.29, "img": "img/hd_nd128.jpg"},
  {"c": "rice", "zh": "老虎牌特级糯米", "en": "Tiger Premium Glutinous Rice", "spec": "10kg", "price": 21.5, "img": "img4/f7_01.jpg", "oos": true, "local": true},
@@ -2936,7 +2938,7 @@ const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：海天生抽/老抽、李锦记生抽/老抽、珠江桥生抽/老抽）
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
 function render(){
-  $("askbox").hidden=false;document.body.classList.toggle("wsmode",!q&&zone==="ws");if(!q&&zone==="ws"){$("grid").classList.remove("grouped");$("grid").innerHTML=wsHTML();$("zcount").innerHTML="";$("empty").hidden=true;$("askbox").hidden=true;return;}
+  $("askbox").hidden=false;document.body.classList.toggle("wsmode",!q&&zone==="ws");if(!q&&zone==="ws"){$("grid").classList.remove("grouped");{const wl=PRODUCTS.filter(p=>inZone(p,"ws")).sort((a,b)=>(a.oos?1:0)-(b.oos?1:0));$("grid").innerHTML=wsHTML()+(wl.length?`<h3 class="wsph">${B("餐饮用品 · 现货","Catering supplies · in store")}</h3>`+wl.map(cardHTML).join(""):"");}$("zcount").innerHTML="";$("empty").hidden=true;$("askbox").hidden=true;return;}
   const list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
