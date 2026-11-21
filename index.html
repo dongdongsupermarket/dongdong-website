@@ -447,6 +447,8 @@ html[data-lang="both"] .hero .since .le{display:block;font-size:13px;font-weight
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .betabar{background:#3a2f14;color:#f1e2b8;border-color:#5a4a20}}
 :root[data-theme="dark"] .betabar{background:#3a2f14;color:#f1e2b8;border-color:#5a4a20}
 .apxline{margin-top:4px;font-size:12px;color:var(--muted)}
+.hlline{margin-top:4px;font-size:12px;font-weight:700;color:#00796b;display:block}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .hlline{color:#7fd3c6}}:root[data-theme="dark"] .hlline{color:#7fd3c6}
 .vgline{margin-top:4px;font-size:12px;font-weight:700;color:#2e7d32;display:block}.vgline.v2{color:#5b7f1e}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .vgline{color:#8fd08f}}:root[data-theme="dark"] .vgline{color:#8fd08f}
 .ukline{margin-top:4px;font-size:12px;font-weight:600;color:#1f4e8c;display:block}
@@ -1389,9 +1391,9 @@ const PRODUCTS_RAW=[
  {"c": "chilli", "zh": "李锦记潮州辣椒油", "en": "Lee Kum Kee Chiu Chow Chilli Oil", "spec": "335g", "price": 4.99, "img": "img/hd_lkk_chiuchow335.jpg"},
  {"c": "chilli", "zh": "李锦记潮州虾味辣椒油", "en": "Lee Kum Kee Chiu Chow Shrimp Chilli Oil", "spec": "180g", "price": 2.99, "img": "img2/q6_13.jpg"},
  {"c": "chilli", "zh": "李锦记潮州香脆辣椒油", "en": "Lee Kum Kee Chiu Chow Chilli Crisp", "spec": "198g", "price": 4.19, "img": "img/hd_lkk_crisp.jpg"},
- {"c": "chilli", "zh": "杨协成叁巴辣椒酱", "en": "Yeo's Sambal Oeleck", "spec": "285g", "price": 2.09, "img": "img/hd_yeo_sambal.jpg"},
-{"c": "chilli", "zh": "杨协成娘惹多巴酱（印尼炒饭酱）", "en": "Yeo's Nasi Goreng Paste (Indonesian Style)", "spec": "190g", "price": 2.39, "img": "img/hd_yeo_nasigoreng.jpg"},
- {"c": "sauce", "zh": "杨协成炒饭酱", "en": "Yeo's Nasi Goreng Paste", "spec": "190g", "price": 2.39, "img": "img/sw_yeo_nasi.jpg"},
+ {"c": "chilli", "zh": "杨协成叁巴辣椒酱", "en": "Yeo's Sambal Oeleck", "spec": "285g", "price": 2.09, "img": "img/hd_yeo_sambal.jpg", "halal": true},
+{"c": "chilli", "zh": "杨协成娘惹多巴酱（印尼炒饭酱）", "en": "Yeo's Nasi Goreng Paste (Indonesian Style)", "spec": "190g", "price": 2.39, "img": "img/hd_yeo_nasigoreng.jpg", "halal": true},
+ {"c": "sauce", "zh": "杨协成炒饭酱", "en": "Yeo's Nasi Goreng Paste", "spec": "190g", "price": 2.39, "img": "img/sw_yeo_nasi.jpg", "halal": true},
  {"c": "chilli", "zh": "李锦记蒜蓉辣椒酱", "en": "Lee Kum Kee Chilli Garlic Sauce", "spec": "368g", "price": 2.55, "img": "img/hd_lkk_chilligarlic.jpg"},
  {"c": "sauce", "zh": "李锦记蒜蓉酱", "en": "Lee Kum Kee Minced Garlic Sauce", "spec": "326g", "price": 3.29, "img": "img/hd_lkk_garlic.jpg"},
  {"c": "sauce", "zh": "李锦记姜蓉酱", "en": "Lee Kum Kee Minced Ginger Sauce", "spec": "326g", "price": 4.35, "img": "img/hd_lkk_ginger.jpg"},
@@ -1696,11 +1698,11 @@ const PRODUCTS_RAW=[
 {"c": "tea", "zh": "三九 999 感冒灵颗粒", "en": "999 三九 Ganmaoling Granules", "spec": "9袋 9 sachets", "price": 2.75, "img": "img/hd_999_ganmaoling.jpg"},
 {"c": "tea", "zh": "双益堂 Shuangyitang 草本清润糖（无糖）", "en": "Shuangyitang 双益堂 Herbal Throat Candy (Sugar Free)", "spec": "32g", "price": 3.29, "img": "img/hd_shuangyitang_candy.jpg"},
  {"c": "tea", "zh": "东亚胎菊王", "en": "East Asia Dried Chrysanthemum Buds", "spec": "50g", "price": 2.39, "img": "img/hd_taiju.jpg"},
- {"c": "instant", "zh": "故乡浓 Home's Café 怡保三合一白咖啡", "en": "Home's Café 故乡浓 Ipoh 3-in-1 White Coffee", "spec": "600g", "price": 5.99, "img": "img/hd_homescafe_whitecoffee.jpg"},
- {"c": "instant", "zh": "故乡浓 Home's Café 拉茶（少糖）", "en": "Home's Café 故乡浓 Premix Teh Tarik (Less Sugar)", "spec": "360g", "price": 5.99, "img": "img/hd_homescafe_tehtarik.jpg"},
+ {"c": "instant", "zh": "故乡浓 Home's Café 怡保三合一白咖啡", "en": "Home's Café 故乡浓 Ipoh 3-in-1 White Coffee", "spec": "600g", "price": 5.99, "img": "img/hd_homescafe_whitecoffee.jpg", "halal": true},
+ {"c": "instant", "zh": "故乡浓 Home's Café 拉茶（少糖）", "en": "Home's Café 故乡浓 Premix Teh Tarik (Less Sugar)", "spec": "360g", "price": 5.99, "img": "img/hd_homescafe_tehtarik.jpg", "halal": true},
  {"c": "instant", "zh": "永和 Yon Ho 经典原味豆浆粉", "en": "Yon Ho Original Soybean Powder", "spec": "350g", "price": 2.99, "img": "img/hd_yonho_powder.jpg"},
- {"c": "instant", "zh": "金麒麟 Gold Kili 原味麦片", "en": "Gold Kili Original Cereal", "spec": "600g", "price": 5.49, "img": "img/hd_goldkili_cereal.jpg"},
- {"c": "instant", "zh": "金麒麟 Gold Kili 速溶姜茶", "en": "Gold Kili Instant Ginger Drink", "spec": "360g", "price": 5.25, "img": "img/hd_goldkili_ginger.jpg"},
+ {"c": "instant", "zh": "金麒麟 Gold Kili 原味麦片", "en": "Gold Kili Original Cereal", "spec": "600g", "price": 5.49, "img": "img/hd_goldkili_cereal.jpg", "halal": true},
+ {"c": "instant", "zh": "金麒麟 Gold Kili 速溶姜茶", "en": "Gold Kili Instant Ginger Drink", "spec": "360g", "price": 5.25, "img": "img/hd_goldkili_ginger.jpg", "halal": true},
  {"c": "instant", "zh": "中原 G7 三合一速溶咖啡（袋装 20 条）", "en": "Trung Nguyen G7 3-in-1 Instant Coffee (Bag, 20 sticks)", "spec": "320g", "price": 3.95, "img": "img/hd_g7_bag320.jpg"},
  {"c": "instant", "zh": "Slinmy 纤体草本茶", "en": "Slinmy Herbal Tea Drink Original (20 Teabags)", "spec": "40g", "price": 2.99, "unit": "/盒 box", "img": "img/hd_slinmy_herbal.jpg"},
  {"c": "instant", "zh": "Slinmy 纤体绿茶", "en": "Slinmy Green Herbal Tea (20 Teabags)", "spec": "40g", "price": 2.89, "unit": "/盒 box", "img": "img/hd_slinmy_green.jpg"},
@@ -1859,7 +1861,7 @@ const PRODUCTS_RAW=[
  {"c": "vermicelli", "zh": "细米粉", "en": "Fine Rice Vermicelli", "price": 1.35, "img": "img4/f9_12.jpg", "vg": "vegan"},
  {"c": "vermicelli", "zh": "江西米粉", "en": "Jiangxi Rice Vermicelli", "spec": "400g", "price": 1.29, "img": "img4/f9_13.jpg", "vg": "vegan"},
  {"c": "vermicelli", "zh": "越南河粉", "en": "Vietnamese Pho Noodles", "oos": true, "price": 2.39, "img": "img4/f9_14.jpg", "vg": "vegan"},
- {"c": "vermicelli", "zh": "杨协成米粉", "en": "Yeo's Rice Vermicelli", "oos": true, "price": 2.29, "img": "img4/f9_15.jpg", "vg": "vegan"},
+ {"c": "vermicelli", "zh": "杨协成米粉", "en": "Yeo's Rice Vermicelli", "oos": true, "price": 2.29, "img": "img4/f9_15.jpg", "vg": "vegan", "halal": true},
  {"c": "vermicelli", "zh": "Oriental Food 泰国米粉 3mm", "en": "Oriental Food Thai Rice Noodles 3mm", "price": 2.05, "img": "img/hd_orientalfood_3mm.jpg", "vg": "vegan"},
  {"c": "vermicelli", "zh": "麒麟 Kirin 米粉（中 3mm）", "en": "Kirin 麒麟 Rice Sticks (Medium 3mm)", "spec": "400g", "price": 1.99, "img": "img/hd_kirin_3mm.jpg", "vg": "vegan"},
 {"c": "vermicelli", "zh": "麒麟 Kirin 米粉（细 1mm）", "en": "Kirin 麒麟 Rice Sticks (Small 1mm)", "spec": "400g", "price": 1.99, "img": "img/hd_kirin_1mm.jpg", "vg": "vegan"},
@@ -2101,16 +2103,16 @@ const PRODUCTS_RAW=[
  {"c": "inst5", "zh": "白象奶油火鸡味拌面", "en": "Baixiang Creamy Hot Chicken Noodles", "spec": "5连包 5 pack", "price": 5.09, "img": "img7/n2_08.jpg", "unit": "/提 pack"},
  {"c": "instnoodle", "zh": "农心辛拉面 甜辣泡菜炒面", "en": "Nongshim Shin Ramyun Sweet & Spicy Kimchi Stir Fry", "spec": "137g", "price": 1.19, "also": ["jkinst"], "img": "img/hd_n3873.jpg"},
  {"c": "instnoodle", "zh": "农心辛拉面 BLACK", "en": "Nongshim Shin Ramyun Black", "spec": "130g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_n3875.jpg"},
- {"c": "inst5", "zh": "三养奶油火鸡面", "en": "Samyang Buldak Carbonara Hot Chicken Ramen", "spec": "5连包 650g (130g×5)", "price": 5.5, "also": ["jkinst"], "img": "img/hd_buldak_carb5.jpg", "unit": "/提 pack"},
- {"c": "inst5", "zh": "三养原味火鸡面", "en": "Samyang Buldak Hot Chicken Flavour Ramen (Original)", "spec": "5连包 700g (140g×5)", "price": 5.49, "also": ["jkinst"], "img": "img/hd_buldak_orig5.jpg", "unit": "/提 pack"},
- {"c": "inst5", "zh": "三养芝士火鸡面", "en": "Samyang Buldak Cheese Hot Chicken Ramen", "spec": "5连包 700g (140g×5)", "price": 6.25, "also": ["jkinst"], "img": "img/hd_buldak_cheese5.jpg", "unit": "/提 pack"},
+ {"c": "inst5", "zh": "三养奶油火鸡面", "en": "Samyang Buldak Carbonara Hot Chicken Ramen", "spec": "5连包 650g (130g×5)", "price": 5.5, "also": ["jkinst"], "img": "img/hd_buldak_carb5.jpg", "unit": "/提 pack", "halal": true},
+ {"c": "inst5", "zh": "三养原味火鸡面", "en": "Samyang Buldak Hot Chicken Flavour Ramen (Original)", "spec": "5连包 700g (140g×5)", "price": 5.49, "also": ["jkinst"], "img": "img/hd_buldak_orig5.jpg", "unit": "/提 pack", "halal": true},
+ {"c": "inst5", "zh": "三养芝士火鸡面", "en": "Samyang Buldak Cheese Hot Chicken Ramen", "spec": "5连包 700g (140g×5)", "price": 6.25, "also": ["jkinst"], "img": "img/hd_buldak_cheese5.jpg", "unit": "/提 pack", "halal": true},
  {"c": "inst5", "zh": "农心辛拉面", "en": "Nongshim Shin Ramyun", "spec": "5连包 600g (120g×5)", "price": 3.99, "was": 4.99, "bbd": "07/01/2027", "also": ["jkinst"], "img": "img/hd_shin5.jpg", "unit": "/提 pack"},
  {"c": "inst5", "zh": "农心辛拉面 Toomba 奶油辣拌面", "en": "Nongshim Shin Ramyun Toomba Spicy Cream Noodles", "spec": "5连包 685g (137g×5)", "price": 4.99, "also": ["jkinst"], "img": "img/hd_shin_toomba5.jpg", "unit": "/提 pack"},
  {"c": "inst5", "zh": "农心辛拉面 甜辣泡菜炒面", "en": "Nongshim Shin Ramyun Sweet & Spicy Kimchi Stir Fry", "spec": "5连包 685g (137g×5)", "price": 5.79, "also": ["jkinst"], "img": "img/hd_shin_kimchifry5.jpg", "unit": "/提 pack"},
  {"c": "inst5", "zh": "不倒翁 Ottogi 北京炸酱面", "en": "Ottogi 不倒翁 Beijing Jjajang Ramen (Stir Fried Black Bean)", "spec": "5连包 675g (135g×5)", "price": 4.99, "also": ["jkinst"], "img": "img/hd_ottogi_jjajang5.jpg", "unit": "/提 pack"},
  {"c": "inst5", "zh": "不倒翁泡菜拉面", "en": "Ottogi Kimchi Ramen", "spec": "5连包 5 pack", "price": 3.8, "also": ["jkinst"], "img": "img7/n2_18.jpg", "unit": "/提 pack"},
- {"c": "cupnoodle", "zh": "三养原味火鸡面 杯装", "en": "Samyang Buldak Hot Chicken Ramen Cup", "spec": "70g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_ne483.jpg"},
- {"c": "cupnoodle", "zh": "三养奶油火鸡面 杯装", "en": "Samyang Buldak Carbonara Cup", "spec": "80g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_ne484.jpg"},
+ {"c": "cupnoodle", "zh": "三养原味火鸡面 杯装", "en": "Samyang Buldak Hot Chicken Ramen Cup", "spec": "70g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_ne483.jpg", "halal": true},
+ {"c": "cupnoodle", "zh": "三养奶油火鸡面 杯装", "en": "Samyang Buldak Carbonara Cup", "spec": "80g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_ne484.jpg", "halal": true},
  {"c": "cupnoodle", "zh": "优波奇 Yopokki 炸酱年糕杯", "en": "Yopokki 优波奇 Jjajang Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img7/n3_01.jpg"},
  {"c": "cupnoodle", "zh": "优波奇 Yopokki 甜辣年糕杯", "en": "Yopokki 优波奇 Sweet Spicy Topokki", "spec": "140g", "price": 1.99, "also": ["jkinst"], "img": "img7/n3_02.jpg"},
  {"c": "cupnoodle", "zh": "农心辛拉面 大杯", "en": "Nongshim Shin Ramyun Big Bowl", "spec": "114g", "price": 1.75, "also": ["jkinst"], "img": "img/hd_ne486.jpg"},
@@ -2119,10 +2121,10 @@ const PRODUCTS_RAW=[
  {"c": "cupnoodle", "zh": "必品阁 Bibigo 泡菜拉面杯", "en": "Bibigo Kimchi Ramyun Cup", "spec": "98g", "price": 1.55, "also": ["jkinst"], "img": "img/hd_ne488.jpg"},
  {"c": "cupnoodle", "zh": "必品阁 Bibigo 甜辣鸡肉杯面", "en": "Bibigo K-Chicken Ramyun (Sweet & Spicy)", "spec": "97.5g", "price": 1.55, "also": ["jkinst"], "img": "img/hd_ne487.jpg"},
  {"c": "cupnoodle", "zh": "必品阁 Bibigo 韩式烧烤杯面", "en": "Bibigo 必品阁 K-BBQ Ramyun", "spec": "98g", "price": 1.55, "also": ["jkinst"], "img": "img7/n3_08.jpg"},
- {"c": "instnoodle", "zh": "三养奶油火鸡面 单包", "en": "Samyang Carbonara Buldak", "spec": "130g", "price": 1.25, "also": ["jkinst"], "img": "img/ph_bd1_carb.jpg"},
- {"c": "instnoodle", "zh": "三养原味火鸡面 单包", "en": "Samyang Original Buldak", "spec": "140g", "price": 1.25, "also": ["jkinst"], "img": "img/ph_bd1_orig.jpg"},
- {"c": "instnoodle", "zh": "三养芝士火鸡面 单包", "en": "Samyang Cheese Buldak", "spec": "140g", "price": 1.35, "also": ["jkinst"], "img": "img/ph_bd1_cheese.jpg"},
- {"c": "instnoodle", "zh": "三养火鸡面 2倍辣 单包", "en": "Samyang Buldak 2x Spicy", "spec": "140g", "price": 1.35, "also": ["jkinst"], "img": "img/ph_bd1_2x.jpg"},
+ {"c": "instnoodle", "zh": "三养奶油火鸡面 单包", "en": "Samyang Carbonara Buldak", "spec": "130g", "price": 1.25, "also": ["jkinst"], "img": "img/ph_bd1_carb.jpg", "halal": true},
+ {"c": "instnoodle", "zh": "三养原味火鸡面 单包", "en": "Samyang Original Buldak", "spec": "140g", "price": 1.25, "also": ["jkinst"], "img": "img/ph_bd1_orig.jpg", "halal": true},
+ {"c": "instnoodle", "zh": "三养芝士火鸡面 单包", "en": "Samyang Cheese Buldak", "spec": "140g", "price": 1.35, "also": ["jkinst"], "img": "img/ph_bd1_cheese.jpg", "halal": true},
+ {"c": "instnoodle", "zh": "三养火鸡面 2倍辣 单包", "en": "Samyang Buldak 2x Spicy", "spec": "140g", "price": 1.35, "also": ["jkinst"], "img": "img/ph_bd1_2x.jpg", "halal": true},
  {"c": "instnoodle", "zh": "农心辛拉面 泡菜味 单包", "en": "Nongshim Shin Ramyun Kimchi (Vegan)", "spec": "120g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_n3872.jpg", "vg": "vegan"},
  {"c": "instnoodle", "zh": "农心辛拉面 Toomba 奶油辣拌面 单包", "en": "Nongshim Shin Ramyun Toomba Spicy Cream", "spec": "137g", "price": 1.39, "also": ["jkinst"], "img": "img/hd_n3871.jpg"},
  {"c": "instnoodle", "zh": "农心辛拉面 单包", "en": "Nongshim Shin Ramyun", "spec": "120g", "price": 1.09, "also": ["jkinst"], "img": "img/hd_n3870.jpg"},
@@ -2139,7 +2141,7 @@ const PRODUCTS_RAW=[
  {"c": "instnoodle", "zh": "统一茄皇番茄鸡蛋牛肉面", "en": "Unif Qie Huang Tomato Egg Beef Noodles", "spec": "122g", "price": 1.45, "img": "img/hd_qh_tomeggbeef1.jpg"},
  {"c": "instnoodle", "zh": "汤达人韩式辣牛肉面", "en": "Tang Daren Spicy Beef Noodles", "spec": "125g", "price": 1.39, "img": "img7/n4_05.jpg"},
  {"c": "instnoodle", "zh": "汤达人海鲜拉面", "en": "Tang Daren Seafood Noodles", "spec": "113g", "price": 1.39, "img": "img7/n4_06.jpg"},
- {"c": "instnoodle", "zh": "印尼营多鸡肉面", "en": "Indomie Chicken Noodles", "spec": "70g", "price": 0.55, "img": "img/sw_indo_chicken.jpg"},
+ {"c": "instnoodle", "zh": "印尼营多鸡肉面", "en": "Indomie Chicken Noodles", "spec": "70g", "price": 0.55, "img": "img/sw_indo_chicken.jpg", "halal": true},
  {"c": "instnoodle", "zh": "白家麻辣烫粉", "en": "Baijia Spicy Hot Vermicelli", "spec": "105g", "price": 1.15, "img": "img/sw_bj_malatang1.jpg"},
  {"c": "instnoodle", "zh": "李海龙麻辣烫（微辣）", "en": "Li Hailong Malatang Spicy Hot Pot Noodles (Mild)", "spec": "437g", "price": 4.19, "img": "img/ph_lhl_malatang2.jpg", "arr": "14/11/2026", "arrDays": 10},
  {"c": "instnoodle", "zh": "李海龙黏糊麻辣烫（轻享装）", "en": "Li Hailong Creamy Malatang Noodles (Light Pack)", "spec": "266g", "price": 3.99, "img": "img/ph_lhl_nianhu2.jpg", "arr": "14/11/2026", "arrDays": 10},
@@ -2192,13 +2194,13 @@ const PRODUCTS_RAW=[
  {"c": "instnoodle", "zh": "Acecook 越南牛肉河粉", "en": "Acecook Ricey Beef Pho Noodles", "spec": "70g", "price": 0.75, "img": "img/hd_acecook_pho.jpg"},
  {"c": "cupnoodle", "zh": "好好牌辣椒青柠虾味杯面", "en": "Hao Hao Chili & Lime Shrimp Cup", "spec": "68g", "price": 0.79, "also": ["jkinst"], "img": "img/sw_haohao_cup.jpg"},
  {"c": "instnoodle", "zh": "好好牌辣椒青柠虾面", "en": "Hao Hao Chili & Lime Shrimp Noodles", "spec": "78g", "price": 0.49, "img": "img/sw_haohao.jpg"},
- {"c": "instnoodle", "zh": "印尼营多辣牛肉捞面（Rendang 味）", "en": "Indomie Mi Goreng Spicy Beef Rendang", "price": 0.55, "img": "img/sw_indo_rendang.jpg"},
-{"c": "instnoodle", "zh": "印尼营多捞面（干拌面）", "en": "Indomie Mi Goreng Stir Fry", "spec": "80g", "price": 0.55, "img": "img/sw_indo_goreng.jpg"},
- {"c": "inst5", "zh": "印尼营多捞面", "en": "Indomie Mi Goreng", "spec": "5连包 5 pack", "price": 2.69, "img": "img/sw_indo5.jpg", "unit": "/提 pack"},
+ {"c": "instnoodle", "zh": "印尼营多辣牛肉捞面（Rendang 味）", "en": "Indomie Mi Goreng Spicy Beef Rendang", "price": 0.55, "img": "img/sw_indo_rendang.jpg", "halal": true},
+{"c": "instnoodle", "zh": "印尼营多捞面（干拌面）", "en": "Indomie Mi Goreng Stir Fry", "spec": "80g", "price": 0.55, "img": "img/sw_indo_goreng.jpg", "halal": true},
+ {"c": "inst5", "zh": "印尼营多捞面", "en": "Indomie Mi Goreng", "spec": "5连包 5 pack", "price": 2.69, "img": "img/sw_indo5.jpg", "unit": "/提 pack", "halal": true},
  {"c": "cupnoodle", "zh": "优波奇 Yopokki 奶油培根（卡邦尼）年糕杯", "en": "Yopokki 优波奇 Carbonara Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img/hd_yopokki_carbonara.jpg"},
- {"c": "cupnoodle", "zh": "优波奇 Yopokki 清真辣味年糕杯", "en": "Yopokki 优波奇 Halal Spicy Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img/hd_yopokki_halal_spicy.jpg"},
- {"c": "cupnoodle", "zh": "优波奇 Yopokki 清真原味年糕杯", "en": "Yopokki 优波奇 Halal Original Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img/hd_yopokki_halal_orig.jpg"},
- {"c": "inst5", "zh": "三养火鸡面 2倍辣", "en": "Samyang Buldak 2x Spicy Hot Chicken Ramen", "spec": "5连包 700g (140g×5)", "price": 6.5, "also": ["jkinst"], "img": "img/hd_buldak2x5.jpg", "unit": "/提 pack"},
+ {"c": "cupnoodle", "zh": "优波奇 Yopokki 清真辣味年糕杯", "en": "Yopokki 优波奇 Halal Spicy Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img/hd_yopokki_halal_spicy.jpg", "halal": true},
+ {"c": "cupnoodle", "zh": "优波奇 Yopokki 清真原味年糕杯", "en": "Yopokki 优波奇 Halal Original Topokki", "spec": "120g", "price": 1.99, "also": ["jkinst"], "img": "img/hd_yopokki_halal_orig.jpg", "halal": true},
+ {"c": "inst5", "zh": "三养火鸡面 2倍辣", "en": "Samyang Buldak 2x Spicy Hot Chicken Ramen", "spec": "5连包 700g (140g×5)", "price": 6.5, "also": ["jkinst"], "img": "img/hd_buldak2x5.jpg", "unit": "/提 pack", "halal": true},
  {"c": "inst5", "zh": "三养 MEP 葱香青阳辣椒味拉面", "en": "Samyang MEP Spring Onion & Green Chilli Ramen", "spec": "5连包 630g (126g×5)", "price": 7.99, "also": ["jkinst"], "img": "img/ph_sy_mep5.jpg", "unit": "/提 pack", "oos": true},
  {"c": "roastmeat", "zh": "新鲜叉烧", "en": "Char Siu BBQ Pork", "spec": "200g", "price": 10.95, "unit": "/份 portion", "img": "img/pre_charsiu.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "roastmeat", "zh": "新鲜叉烧", "en": "Char Siu BBQ Pork", "spec": "400g", "price": 16.95, "unit": "/份 portion", "img": "img/pre_charsiu.jpg", "pre": {"days": [2, 5], "lead": 1}},
@@ -2581,7 +2583,7 @@ const PRODUCTS_RAW=[
  {"c": "bread", "zh": "豆沙包", "en": "Red Bean Paste Bun", "spec": "2个 2 pcs", "price": 3.49, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_00.jpg"},
  {"c": "bread", "zh": "杏仁奶黄包", "en": "Almond & Custard Bun", "spec": "2个 2 pcs", "price": 2.79, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_02.jpg"},
  {"c": "bread", "zh": "开心果奶油包", "en": "Pistachio Cream / Chocolate Bun", "spec": "2个 2 pcs", "price": 3.49, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_05.jpg"},
- {"c": "bread", "zh": "清真鸡肠包", "en": "Halal Chicken Sausage Bun", "spec": "2个 2 pcs", "price": 4.49, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_07.jpg"},
+ {"c": "bread", "zh": "清真鸡肠包", "en": "Halal Chicken Sausage Bun", "spec": "2个 2 pcs", "price": 4.49, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_07.jpg", "halal": true},
  {"c": "bread", "zh": "椰丝方包", "en": "Sweet Coconut Loaf", "spec": "1袋 1 bag", "price": 4.49, "unit": "/袋 bag", "oos": true, "img": "img/hd_ss_cat_04.jpg"},
  {"c": "cake", "zh": "老婆饼", "en": "Wife Cake", "spec": "2个 2 pcs", "price": 3.49, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_09.jpg"},
  {"c": "cake", "zh": "圆形香兰蛋糕", "en": "Pandan Circle Cake", "spec": "1个 1 pc", "price": 6.79, "unit": "/盒 box", "oos": true, "img": "img/hd_ss_cat_13.jpg"},
@@ -2841,6 +2843,7 @@ const RESTOCK={"周一":"Monday","周二":"Tuesday","周三":"Wednesday","周四
 function restockLine(p){if(!isOOS(p)||p.oos===true)return "";const r=String(p.oos),en=p.oosEn||RESTOCK[r]||r;return `<div class="restock">${B(`预计${r}回货`,`Back in stock ${en}`)}</div>`;}
 function incShort(p){if(!p.inc)return "";return `<div class="incs">${B("点图片看详情","Tap photo for details")}</div>`;}
 function incLine(p){if(!p.inc)return "";return `<div class="incl">${p.blurb?`<div class="incb">${B(p.blurb[0],p.blurb[1])}</div>`:""}<div class="inch">${B("组合包含","Includes")}</div><ul>${p.inc.map(x=>`<li>${B(x[0],x[1])}</li>`).join("")}</ul></div>`;}
+function hlLine(p){return p.halal?`<div class="hlline">☪ ${B("清真","Halal")}</div>`:"";}
 function vgLine(p){if(p.vg==="vegan")return `<div class="vgline">🌱 ${B("纯素","Vegan")}</div>`;if(p.vg==="veg")return `<div class="vgline v2">🌿 ${B("素食","Vegetarian")}</div>`;return "";}
 function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"英国本地制作",en:"Made in the UK"};return `<div class="ukline">${B(t.zh,t.en)}</div>`;}
 /* 只在中文/中英模式显示的提示（英文模式隐藏）：商品加 "zhnote": "文字"；整箱矿泉水自动加"配送可提供小推车" */
@@ -2900,7 +2903,7 @@ const ALIAS={/* 香料别名 */"黄姜":["姜黄"],"黄姜粉":["姜黄粉"],"�
  dan:["蛋"],egg:["蛋","egg"],pidan:["皮蛋"],babaozhou:["八宝粥"],zhou:["粥"],congee:["粥","porridge"],porridge:["粥","porridge"],
  lkk:["李锦记"],leekumkee:["李锦记"],haitian:["海天"],haday:["海天"],
 };
-function hayOf(p){if(!p._hay){const c=CATS.find(x=>x.id===p.c)||{};p._hay=[p.zh,p.en,p.spec||"",c.zh||"",c.en||"",p.kw||"",p.vg==="vegan"?"vegan 纯素 素食 vegetarian plant-based":p.vg==="veg"?"vegetarian 素食":""].join(" ").toLowerCase();}return p._hay;}
+function hayOf(p){if(!p._hay){const c=CATS.find(x=>x.id===p.c)||{};p._hay=[p.zh,p.en,p.spec||"",c.zh||"",c.en||"",p.kw||"",p.vg==="vegan"?"vegan 纯素 素食 vegetarian plant-based":p.vg==="veg"?"vegetarian 素食":"",p.halal?"halal 清真 哈拉":""].join(" ").toLowerCase();}return p._hay;}
 function nameOf(p){if(!p._nm)p._nm=[p.zh,p.en,p.spec||""].join(" ").toLowerCase().replace(/chilli/g,"chili");return p._nm;}
 function tokMatch(h,t,n){if(h.includes(t))return true;h=n;
   const al=ALIAS[t]||(t.length>=3?Object.keys(ALIAS).filter(k=>k.startsWith(t)).flatMap(k=>ALIAS[k]):[]);
@@ -2918,6 +2921,7 @@ function wordsOf(p){if(!p._w){p._w=nameOf(p).split(/[^a-z0-9]+/).filter(Boolean)
 function tokScore(p,t){const n=nameOf(p),h=hayOf(p);
   if(CJK.test(t)){if(n.includes(t))return 3;if(h.includes(t))return 1.5;const al=ALIAS[t];if(al&&al.some(a=>n.includes(a.toLowerCase())))return 2.5;return 0;}
   const W=wordsOf(p);
+  if(p.halal&&t.length>=4&&"halal".startsWith(t))return 2.8;
   if(p.vg&&((p.vg==="vegan"&&((t.length>=4&&"vegan".startsWith(t))||t==="plant"||t==="plant-based"))||(t.length>=7&&"vegetarian".startsWith(t))))return 2.8;
   if(W.includes(t))return 3;
   if(W.some(w=>w.startsWith(t)))return t.length>=2?2.6:2;
@@ -3009,7 +3013,7 @@ function render(){
 function cardHTML(p){const c=CATS.find(x=>x.id===p.c);return `
    <article class="card${hasPromo(p)?" sale":""}${isOOS(p)?" oos":""}">
      <div class="art" style="background:var(${c.tone})">${p.img?`<img src="${src(p.img)}" alt="${p.zh} ${p.en}" loading="lazy" data-zoom="${PRODUCTS.indexOf(p)}" tabindex="0" role="button" aria-label="放大图片 Enlarge ${p.en}">`:`<span class="glyph" aria-hidden="true">${p.g||c.g||"食"}</span>`}<span class="badge">${B(c.zh,c.en)}</span>${isOOS(p)?`<span class="oosbadge">${BB("售罄","Sold out")}</span>`:""}${p.local?`<span class="localbadge"><span class="lz">仅限 Huddersfield</span><span class="lb"><br></span><span class="le">Huddersfield only</span></span>`:""}${p.home?`<span class="homebadge"><span class="lz">自制</span><span class="lb"> </span><span class="le">Homemade</span></span>`:""}${isPre(p)?`<span class="prebadge"><span class="lz">预订</span><span class="lb"><br></span><span class="le">PRE-ORDER</span></span>`:""}${isNew(p)?`<span class="newbadge"><span class="lz">新品</span><span class="lb"><br></span><span class="le">NEW</span></span>`:""}${!isNew(p)&&isArr(p)?`<span class="newbadge arrbadge"><span class="lz">回货</span><span class="lb"><br></span><span class="le">BACK</span></span>`:""}${hasPromo(p)?(p.short?`<span class="salebadge shortbadge"><span class="lz">临期</span><span class="lb"><br></span><span class="le">SHORT DATE</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`:`<span class="salebadge${p.web?" webbadge":""}"><span class="lz">${p.web?"网上特价":"特价"}</span><span class="lb"><br></span><span class="le">${p.web?"ONLINE DEAL":"OFFER"}</span>${onSale(p)?`<br>Save ${pct(p)}%`:""}</span>`):""}</div>
-     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${vgLine(p)}${bbdLine(p)}${kgPick(PRODUCTS.indexOf(p))}</div>
+     <div class="body"><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incShort(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")}</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${restockLine(p)}${dealLine(p)}${approxLine(p)}${ukLine(p)}${vgLine(p)}${hlLine(p)}${bbdLine(p)}${kgPick(PRODUCTS.indexOf(p))}</div>
      ${zhNote(p)}${priceTag(p)}
      <div class="addrow">${ctrl(PRODUCTS.indexOf(p),"add")}</div>
    </article>`}
@@ -3043,7 +3047,7 @@ function setQty(i,n){if(n>0&&isOOS(PRODUCTS[i]))return;if(n<=0)delete cart[i];el
 let zi=-1;
 function renderZoom(){const p=PRODUCTS[zi];if(!p)return;
   const G=[p.img,...(p.imgs||[])].filter(Boolean);if(zk>=G.length)zk=0;const many=G.length>1;
-  $("zbox").innerHTML=`<div class="zgal"><img src="${src(G[zk]||p.img)}" alt="${p.zh} ${p.en}${many?` (${zk+1}/${G.length})`:""}" id="zimg">${many?`<button type="button" class="zarr l" id="zprev" aria-label="上一张 Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="zarr r" id="znext" aria-label="下一张 Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><div class="zdots" aria-hidden="true">${G.map((_,j)=>`<i${j===zk?' class="on"':""}></i>`).join("")}</div>`:""}</div><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${vgLine(p)}${bbdLine(p)}${ingLine(p)}<div class="zrow">${zhNote(p)}${priceTag(p)}${p.kg&&!isOOS(p)?"":ctrl(zi,"add")}</div>${p.kg&&!isOOS(p)?`<div class="zkg">${kgPick(zi)}</div>`:""}</div>`;}
+  $("zbox").innerHTML=`<div class="zgal"><img src="${src(G[zk]||p.img)}" alt="${p.zh} ${p.en}${many?` (${zk+1}/${G.length})`:""}" id="zimg">${many?`<button type="button" class="zarr l" id="zprev" aria-label="上一张 Previous photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button type="button" class="zarr r" id="znext" aria-label="下一张 Next photo"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button><div class="zdots" aria-hidden="true">${G.map((_,j)=>`<i${j===zk?' class="on"':""}></i>`).join("")}</div>`:""}</div><div class="zinfo"><button type="button" class="x zclose" id="zclose">${B("关闭","Close")}</button><div class="name lz">${p.zh}</div><div class="en le pen">${p.en}</div>${p.spec?`<div class="spec">${B("规格","Size")}: ${sp(p.spec)}</div>`:""}${incLine(p)}${isAlc(p)?`<span class="age">18+ ${B("须年满18岁","only")} · ID may be checked</span>`:""}${isPre(p)?preLine(p):""}${whLine(p)}${caseLine(p)}${ukLine(p)}${vgLine(p)}${hlLine(p)}${bbdLine(p)}${ingLine(p)}<div class="zrow">${zhNote(p)}${priceTag(p)}${p.kg&&!isOOS(p)?"":ctrl(zi,"add")}</div>${p.kg&&!isOOS(p)?`<div class="zkg">${kgPick(zi)}</div>`:""}</div>`;}
 let zk=0,zsw=false;
 function zstep(d){const p=PRODUCTS[zi];const n=1+((p&&p.imgs)||[]).length;if(n<2)return;zk=(zk+d+n)%n;renderZoom();}
 /* 配料表：商品可写 "ingZh"、"ingEn"（过敏原用 **粗体**）、"contains"（如 "Soya, Wheat"）、"containsZh"（如 "大豆、小麦"） */
