@@ -2824,9 +2824,10 @@ const isOOS=p=>!!(p&&p.oos);
 const KGS=[0.25,0.5,0.75,1,1.5,2,2.5,3,4,5];
 const kgDef=p=>p.kgdef||p.pc||(["veg","fruit"].includes(p.c)?0.5:1);
 const kgFmt=n=>String(+n.toFixed(2));
+const kgMin=p=>p.kgmin||(p.c==="freshmeat"?1:0); /* 新鲜肉类 1kg 起订 */
 function kgPick(i){const p=PRODUCTS[i];if(!p||!p.kg||isOOS(p))return "";const n=cart[i]||0;
   /* 不再显示 1根/2根… 或 0.25kg/0.5kg… 的选择格（卡片高度统一）：点「加入购物车」先加 1 根 / 默认重量，再用 + − 加减 */
-  return `<div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${p.pc?`${Math.round(n/p.pc)} ${B("根","pc")} · `:""}${B("约","approx.")} ${kgFmt(n)} kg`:B("按实际重量计价","Priced by actual weight")}</div>`;}
+  return `<div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${p.pc?`${Math.round(n/p.pc)} ${B("根","pc")} · `:""}${B("约","approx.")} ${kgFmt(n)} kg`:kgMin(p)?B(`${kgFmt(kgMin(p))}kg 起订 · 按实际重量计价`,`Min. ${kgFmt(kgMin(p))}kg · priced by actual weight`):B("按实际重量计价","Priced by actual weight")}</div>`;}
 function ctrl(i,style){const n=cart[i]||0;
   if(isOOS(PRODUCTS[i])){const p=PRODUCTS[i],sp2=p.spec?" "+String(p.spec).replace(/<[^>]*>/g,""):"";
     const t=`你好，「${p.zh}${sp2}」到货了麻烦通知我，谢谢！\nHi, please let me know when ${p.en}${sp2} is back in stock. Thanks!`;
@@ -2858,7 +2859,7 @@ document.addEventListener("keydown",e=>{const z=e.target.closest&&e.target.close
 document.addEventListener("click",e=>{const b=e.target.closest("[data-add],[data-inc],[data-dec]");if(!b)return;
   const i=+(b.dataset.add??b.dataset.inc??b.dataset.dec),kg=PRODUCTS[i]&&PRODUCTS[i].kg,cur=cart[i]||0,dec=b.dataset.dec!==undefined;
   // 按公斤：加入时用默认重量（蔬菜 0.5 kg、肉 1 kg），加减按 0.25 / 0.5 / 0.75 / 1 / 1.5 / 2 … 走
-  let n;if(kg&&PRODUCTS[i].pc){const pc=PRODUCTS[i].pc;n=Math.max(0,Math.round(cur/pc)+(dec?-1:1))*pc;}else if(kg){const p=PRODUCTS[i];if(!cur)n=dec?0:kgDef(p);else if(dec){const lo=KGS.filter(w=>w<cur-1e-9);n=lo.length?lo[lo.length-1]:0}else{const hi=KGS.find(w=>w>cur+1e-9);n=hi||cur+1}}
+  let n;if(kg&&PRODUCTS[i].pc){const pc=PRODUCTS[i].pc;n=Math.max(0,Math.round(cur/pc)+(dec?-1:1))*pc;}else if(kg){const p=PRODUCTS[i];if(!cur)n=dec?0:kgDef(p);else if(dec){const lo=KGS.filter(w=>w<cur-1e-9&&w>=kgMin(p)-1e-9);n=lo.length?lo[lo.length-1]:0}else{const hi=KGS.find(w=>w>cur+1e-9);n=hi||cur+1}}
   else n=cur+(dec?-1:1);
   setQty(i,Math.round(n*100)/100);});
 document.addEventListener("click",e=>{const b=e.target.closest("[data-kg]");if(!b)return;const i=+b.dataset.kg,w=+b.dataset.w;setQty(i,(cart[i]||0)===w?0:w);});
