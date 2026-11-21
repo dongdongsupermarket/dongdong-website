@@ -419,7 +419,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .nopill{display:inline-block;border:1.5px solid var(--gold);color:inherit;border-radius:20px;padding:2px 12px;font-weight:600;font-size:12.5px;line-height:1.5}
 .askbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;border:1.5px dashed #25d366;border-radius:10px;background:rgba(37,211,102,.06);font-size:14px;line-height:1.5}
 body.wsmode #cats{display:none!important}html #grid .allfold{grid-column:1/-1;display:flex;justify-content:flex-end;margin:0 0 4px}.allfold .allbtn{width:auto;padding:8px 16px;font-weight:700}
-.vattag{flex-wrap:wrap}.vattag .price small{font-size:.55em;font-weight:700;margin-left:2px}.vattag .incvat{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:2px}.zhnote{font-size:13px;font-weight:700;color:#1d6a3a;margin:6px 0 2px}.wsph{grid-column:1/-1;margin:18px 0 4px;font-size:18px;color:var(--green)}.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
+.vattag{flex-wrap:wrap}.vattag .price small{font-size:.55em;font-weight:700;margin-left:2px}.vattag .incvat{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:2px}.each{font-size:13px;font-weight:700;color:#1d6a3a;margin:2px 0 4px}.zhnote{font-size:13px;font-weight:700;color:#1d6a3a;margin:6px 0 2px}.wsph{grid-column:1/-1;margin:18px 0 4px;font-size:18px;color:var(--green)}.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
 .askbox .atxt{flex:1 1 180px;min-width:0}.askbox .atxt b{display:block;font-size:15px;margin-bottom:2px}
 .askbox .abtn{flex:none;max-width:100%;background:#25d366;color:#fff;font-weight:700;border-radius:20px;padding:8px 16px;text-decoration:none;text-align:center}
 @media (max-width:520px){.askbox .abtn{flex:1 1 100%}}
@@ -2828,7 +2828,10 @@ function defUnit(p){const n=p.zh+" "+p.en,s=p.spec||"",ml=(s.match(/(\d+)\s*ml/i
 // 最佳食用日期：商品加 "bbd": "dd/mm/yyyy"
 function bbdLine(p){if(!p.bbd||onSale(p))return "";return `<div class="bbd">${B("最佳食用日期","Best before")}：<b>${p.bbd}</b></div>`;}
 // 整箱：商品加 "case": {"n":24,"u":"瓶","ue":"bottle"}，自动显示单件价
-function caseLine(p){if(!p.case||!p.case.n)return "";const c=p.case,each=p.price/c.n;
+function caseLine(p){let c=p.case;if(!c||!c.n){const k=caseCount(p);if(k)c={n:k[0],u:k[1],ue:UW[k[1]]||"item"};}
+  if(!c||!c.n||c.n<2){const m=!p.kg&&(String(p.c||"").startsWith("case")||/整箱/.test(p.zh))&&String(p.spec||"").match(/^([\d.]+)\s*kg$/i);
+    return m&&+m[1]>1?`<div class="caseline">${B(`整箱 ${m[1]}kg · 约 ${money(p.price/+m[1])}/kg`,`${m[1]}kg · approx. ${money(p.price/+m[1])}/kg`)}</div>`:"";}
+  const each=p.price/c.n;if(p.exvat)return `<div class="caseline">${B(`整箱 ${c.n} ${c.u} · 约 ${money(each)}/${c.u}（含VAT）`,`${c.n} ${c.ue}s · approx. ${money(each)} each inc. VAT`)}</div>`;
   return `<div class="caseline">${B(`整箱 ${c.n} ${c.u} · 约 ${money(each)}/${c.u}`,`${c.n} ${c.ue||"items"}${c.n>1&&c.ue&&!/s$/.test(c.ue)?"s":""} · approx. ${money(each)} each`)}</div>`;}
 // 英国本地制作：商品加 "uk": true
 function approxLine(p){if(!p.approx)return "";const k=p.perkg?`<b>${money(p.perkg)}/kg</b> · `:"";return `<div class="apxline">${k}${B("约价，按实际重量计价","Approx. price, final price by actual weight")}</div>`;}
@@ -2839,6 +2842,11 @@ function incLine(p){if(!p.inc)return "";return `<div class="incl">${p.blurb?`<di
 function ukLine(p){if(!p.uk)return "";const t=typeof p.uk==="object"?p.uk:{zh:"英国本地制作",en:"Made in the UK"};return `<div class="ukline">${B(t.zh,t.en)}</div>`;}
 /* 只在中文/中英模式显示的提示（英文模式隐藏）：商品加 "zhnote": "文字"；整箱矿泉水自动加"配送可提供小推车" */
 function zhNote(p){const t=p.zhnote||(p.c==="casedrink"&&/矿泉水|饮用水|mineral water|spring water/i.test(p.zh+" "+p.en)?"配送可提供小推车":"");return t?`<div class="zhnote lz">🛒 ${t}</div>`:"";}
+/* 整箱货：按箱里数量算出每包/每瓶/每杯合多少钱 */
+const UW={"包":"pack","杯":"cup","瓶":"bottle","罐":"can","袋":"bag","盒":"box","套":"set","个":"pc","支":"pc","只":"pc","碗":"bowl"};
+function caseCount(p){if(p.kg||!(p.c||"").startsWith("case")&&!/整箱|整提/.test(p.zh))return null;const sp=String(p.spec||"");
+  let m=sp.match(/(\d+)\s*(包|杯|瓶|罐|袋|盒|套|个|支|只|碗)/)||p.zh.match(/(\d+)\s*(包|杯|瓶|罐|袋|盒|套|个|支|只|碗)/);
+  if(m)return [+m[1],m[2]];m=sp.match(/^(\d+)\s*[×x]/);if(m)return [+m[1],/水|drink|water|可乐|饮料|ml|L\b/i.test(p.zh+sp)?"瓶":"包"];return null;}
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
   if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span></div>`;
