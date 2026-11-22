@@ -237,7 +237,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .nopill{display:inline-block;border:1.5px solid var(--gold);color:inherit;border-radius:20px;padding:2px 12px;font-weight:600;font-size:12.5px;line-height:1.5}
 .askbox{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:18px 0 6px;padding:14px 16px;border:1.5px dashed #25d366;border-radius:10px;background:rgba(37,211,102,.06);font-size:14px;line-height:1.5}
 body.wsmode #cats{display:none!important}html #grid .allfold{grid-column:1/-1;display:flex;justify-content:flex-end;margin:0 0 4px}.allfold .allbtn{width:auto;padding:8px 16px;font-weight:700}
-.vattag{flex-wrap:wrap}.vattag .price small{font-size:.55em;font-weight:700;margin-left:2px}.vattag .incvat{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:2px}.each{font-size:13px;font-weight:700;color:#1d6a3a;margin:2px 0 4px}.zhnote{font-size:13px;font-weight:700;color:#1d6a3a;margin:6px 0 2px}.wsph{grid-column:1/-1;margin:18px 0 4px;font-size:18px;color:var(--green)}.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
+.vattag{flex-wrap:wrap}.vattag .price small{font-size:.55em;font-weight:700;margin-left:2px}.vattag .incvat{flex-basis:100%;font-size:12px;color:var(--muted);margin-top:2px}.each{font-size:13px;font-weight:700;color:#1d6a3a;margin:2px 0 4px}.zhnote{font-size:13px;font-weight:700;color:#1d6a3a;margin:6px 0 2px}.hpgo{grid-column:1/-1;margin:4px 0 10px}.hpgo button{width:100%;border:0;border-radius:12px;background:#c0262d;color:#fff;font:inherit;font-weight:700;font-size:15px;padding:13px;cursor:pointer}.wsph{grid-column:1/-1;margin:18px 0 4px;font-size:18px;color:var(--green)}.wsbox{grid-column:1/-1!important;width:100%;box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 20px;max-width:640px}.wsbox h3{margin:0 0 8px;font-size:22px;font-family:var(--cn-display);color:var(--green)}.wsbox p{margin:0 0 10px;line-height:1.55}.wsl{margin:0 0 12px;padding-left:20px;line-height:1.9;font-weight:600}.wsq{font-weight:600}.wsbtn{display:inline-block;background:#25d366;color:#fff!important;font-weight:700;text-decoration:none!important;text-align:center;font-size:17px;padding:12px 24px;border-radius:24px;max-width:100%}.wsbtn:hover{background:#1ebe5b}.wstel{margin-top:10px!important;color:var(--muted);font-size:14px}
 .askbox .atxt{flex:1 1 180px;min-width:0}.askbox .atxt b{display:block;font-size:15px;margin-bottom:2px}
 .askbox .abtn{flex:none;max-width:100%;background:#25d366;color:#fff;font-weight:700;border-radius:20px;padding:8px 16px;text-decoration:none;text-align:center}
 @media (max-width:520px){.askbox .abtn{flex:1 1 100%}}
@@ -768,6 +768,12 @@ function sp(s){if(!s||!/[\u4e00-\u9fff]/.test(s))return s||"";
   return m?`<span class="lz">${m[1]+m[2]}</span><span class="lb"> </span><span class="le">${m[1]?`<span class="leo">${m[1]}</span>`:""}${m[3]}</span>`:s;}
 const CATS=[
  {id:"all",zh:"全部",en:"All"},
+ {id:"hpbase",z:"hotpotz",zh:"锅底 · 蘸料",en:"Soup bases & dips",tone:"--t-sauce",g:"锅"},
+ {id:"hpball",z:"hotpotz",zh:"丸滑 · 肉卷 · 毛肚",en:"Balls, sliced meat & tripe",tone:"--t-sauce",g:"丸"},
+ {id:"hpsea",z:"hotpotz",zh:"海鲜",en:"Seafood",tone:"--t-sauce",g:"鲜"},
+ {id:"hpveg",z:"hotpotz",zh:"新鲜蔬菜 · 菌菇",en:"Fresh veg & mushrooms",tone:"--t-rice",g:"菜"},
+ {id:"hptofu",z:"hotpotz",zh:"豆制品 · 干货",en:"Tofu & dried goods",tone:"--t-rice",g:"豆"},
+ {id:"hpnoodle",z:"hotpotz",zh:"粉面 · 年糕",en:"Noodles & rice cakes",tone:"--t-rice",g:"粉"},
  {id:"bundle",z:"webonly",zh:"网上特价",en:"Online deals",tone:"--t-sauce",g:"惠"},
  {id:"dumpling",z:"frozen",zh:"水饺煎饺",en:"Dumplings & gyoza",tone:"--t-rice",g:"饺"},
  {id:"bun",z:"frozen",zh:"包子馒头",en:"Buns & bao",tone:"--t-tofu",g:"包"},
@@ -861,6 +867,7 @@ const CATS=[
 // 分区：只显示有商品的分区
 const ZONES=[
  {id:"webonly",zh:"网上专享",en:"Online exclusive"},
+ {id:"hotpotz",zh:"火锅专区",en:"Hot pot"},
  {id:"freshzone",zh:"鲜货区",en:"Fresh &amp; homemade"},
  {id:"fresh",zh:"蔬菜水果区",en:"Fruit &amp; vegetables"},
  {id:"grocery",zh:"调料干货区",en:"Seasonings & dry goods"},
@@ -2421,6 +2428,15 @@ const PRODUCTS_RAW=[
  {"c": "cake", "zh": "奥利奥蛋糕", "en": "Oreo Cake (Slice)", "spec": "1件 1 slice", "price": 3.49, "unit": "/件 slice", "oos": true, "img": "img/hd_ss_cat_15.jpg"},
  {"c": "cake", "zh": "抹茶蛋糕", "en": "Green Tea Cake (Slice)", "spec": "1件 1 slice", "price": 3.49, "unit": "/件 slice", "oos": true, "img": "img/hd_ss_cat_17.jpg"}];
 PRODUCTS_RAW.forEach(p=>{if(p.en&&/[\u3400-\u9fff]/.test(p.en)){const b=(p.en.match(/[\u3400-\u9fff]+/g)||[]).filter(x=>!String(p.zh).includes(x));if(b.length)p.zh=b.join("")+" "+p.zh;p.en=p.en.replace(/\s*[\u3400-\u9fff]+\s*/g," ").replace(/\s+/g," ").trim();}}) /* 英文名不显示中文品牌 */;
+/* ---------- 火锅专区：按规则自动把相关商品「再放一份」进火锅专区（原来的位置不变）。单个商品可加 "hp":"hpveg" 指定，或 "nohp":true 排除 ---------- */
+(function(){const R=[
+ ["hpbase",p=>(p.c==="hotpotbase"&&!/豆卷|腐皮|面筋|苕皮/.test(p.zh))||((p.also||[]).includes("hotpotbase")&&p.c!=="hotpotbase")||/沙茶酱|火锅.*蘸/.test(p.zh)],
+ ["hpball",p=>(p.c==="hotpot"&&!/冻豆腐|干豆腐|莲藕|刀削面|腐皮卷/.test(p.zh))||(p.c==="meat"&&/牛百叶|金钱肚|猪肚|黄喉|毛肚/.test(p.zh))],
+ ["hpsea",p=>p.c==="seafood"&&/白虾|虾仁|大虾|鱿鱼|八爪|白蚬|鱼滑|海鲜杂锦|生蚝|田螺/.test(p.zh)],
+ ["hpveg",p=>(p.c==="veg"&&/上海青|菠菜|豆芽|菜心|冬瓜|白菜|茼蒿|莴笋|空心菜|莲藕|金针菇|白萝卜|白玉菇|菌菇|杏鲍菇|香菇|蘑菇|香菜|小葱|生菜|娃娃菜|山药|土豆|芥兰|茭白/.test(p.zh))||(p.c==="hotpot"&&/莲藕/.test(p.zh))],
+ ["hptofu",p=>p.c==="tofufresh"||(p.c==="hotpot"&&/冻豆腐|干豆腐|腐皮卷/.test(p.zh))||(p.c==="hotpotbase"&&/豆卷|腐皮|面筋|苕皮/.test(p.zh))||(p.c==="dried"&&/腐竹|木耳|云耳|冬菇|香菇|白花菇|海带/.test(p.zh))],
+ ["hpnoodle",p=>(p.c==="vermicelli"&&/红薯|粉丝|宽粉|嫩粉/.test(p.zh))||(p.c==="hotpot"&&/刀削面/.test(p.zh))||(p.c==="freshnoodle"&&/年糕|乌冬/.test(p.zh))||(p.c==="noodle"&&/乌冬/.test(p.zh))]];
+ PRODUCTS_RAW.forEach(p=>{if(p.off||p.nohp)return;const add=p.hp?[p.hp]:R.filter(([,f])=>f(p)).map(([id])=>id).slice(0,1);if(add.length)p.also=[...(p.also||[]),...add];});})();
 /* ---------- 面包蛋糕预订 ----------
    BAKERY_DATES：面包蛋糕下次到货日期（dd/mm/yyyy，可写多个）。过了的日期自动失效。
    有下次到货日期时：售罄的面包蛋糕变成"可预订"（显示到货日，客人可网上预订，提前 BAKERY_LEAD 天）；有货的照常卖。 */
@@ -2527,7 +2543,7 @@ const today0=new Date(new Date().toDateString());
 const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.new))>=0;
 
 if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});{const wi=liveZones.findIndex(z=>z.id==="webonly");liveZones.splice(wi<0?liveZones.length:wi+1,0,{id:"ws",zh:"批发 · 餐饮",en:"Wholesale & catering",isws:true});};
-{const ORD=["arr","sale","webonly","snacks","grocery","staples","jpkr","sea","frozen","freshzone","fresh","bakery","preorder","chilled","drinks","household","bulk","ws"];liveZones.sort((x,y)=>{const i=ORD.indexOf(x.id),j=ORD.indexOf(y.id);return (i<0?90:i)-(j<0?90:j)});} /* 分区顺序（店主 19/11 定） */
+{const ORD=["arr","sale","hotpotz","webonly","snacks","grocery","staples","jpkr","sea","frozen","freshzone","fresh","bakery","preorder","chilled","drinks","household","bulk","ws"];liveZones.sort((x,y)=>{const i=ORD.indexOf(x.id),j=ORD.indexOf(y.id);return (i<0?90:i)-(j<0?90:j)});} /* 分区顺序（店主 19/11 定） */
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
   return `<button type="button" class="pit${p.kg?" kgc":""}" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&isNew(p)?`<span class="pctbadge newmini minibadge">${B("新品","NEW")}</span>`:""}${!onSale(p)&&!isNew(p)&&isArr(p)?`<span class="pctbadge arrbadge minibadge">${B("回货","BACK")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${(p._per&&p.kg?p._sp0:p.spec)?" "+sp(p._per&&p.kg?p._sp0:p.spec):""}</span><span class="pp${p.kg?" kgp":""}">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper pperx">${p.per?sp(p.per):`250g ≈ ${money(p.price/4)}`}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
@@ -2621,7 +2637,9 @@ $("zones").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
   const top=document.getElementById("products").getBoundingClientRect().top;if(top<0)document.getElementById("products").scrollIntoView();});
 $("cats").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clearSearch();cat=b.dataset.c;renderZones();render();});
 renderZones();
-$("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();renderZones();render();});
+$("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();renderZones();render();
+  if(/^(火锅|打边炉|涮锅|涮火锅|hot ?pot|hotpot|steamboat)$/i.test(q)&&liveZones.some(z=>z.id==="hotpotz")){const g=$("grid");g.insertAdjacentHTML("afterbegin",`<div class="hpgo"><button type="button" data-gozone="hotpotz">🍲 ${B("进入火锅专区 · 锅底、丸子、肉卷、蔬菜一次买齐","Go to the Hot pot section")} ›</button></div>`);}});
+document.addEventListener("click",e=>{const b=e.target.closest("[data-gozone]");if(!b)return;const g=b.dataset.gozone;if(liveZones.some(z=>z.id===g)){zone=g;expanded=g;cat="all";q="";$("q").value="";renderZones();render();scrollTo({top:$("grid").getBoundingClientRect().top+scrollY-120,behavior:"smooth"});}});
 const isAlc=p=>p.c==="alcohol"||!!p.age18;
 /* ---------- 预订 ----------
    商品加 "pre": {"days":[2,5],"lead":1}
