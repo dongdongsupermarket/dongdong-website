@@ -2833,13 +2833,14 @@ const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：�
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
 /* 分类内小类：SUB_MODE 选用哪种分法；组内顺序固定（不受售罄、回货影响） */
 const SUBDEF={tofufresh:{
-  type:[{zh:"嫩豆腐 · 绢豆腐",en:"Soft & silken tofu",t:/嫩豆腐|绢豆腐|鸡蛋豆腐/},{zh:"老豆腐 · 板豆腐",en:"Firm tofu",t:/老豆腐|板豆腐|手工豆腐/},{zh:"豆干 · 干豆腐",en:"Pressed & dried tofu",t:/豆干|干豆腐|百叶/},{zh:"豆腐泡 · 炸豆腐",en:"Fried tofu",t:/豆腐泡|炸豆腐|豆腐条/}],
+  type:[{zh:"北豆腐 · 老豆腐",en:"Firm tofu",t:/老豆腐|板豆腐|手工豆腐/},{zh:"嫩豆腐",en:"Medium firm tofu",t:/嫩豆腐/},{zh:"绢豆腐 · 鸡蛋豆腐",en:"Silken & egg tofu",t:/绢豆腐|鸡蛋豆腐/},{zh:"豆泡 · 豆干",en:"Fried & pressed tofu",t:/豆腐泡|炸豆腐|豆腐条|豆干|干豆腐|百叶/,o:[/豆腐泡|炸豆腐/,/豆腐条/,/五香豆干/,/豆干/,/干豆腐|百叶/]}],
   brand:[{zh:"北佬 Tofu King",en:"",t:/北佬/},{zh:"永安 Wing On",en:"",t:/永安/},{zh:"东方龙 Oriental Dragon",en:"",t:/东方龙/}]}};
 const SUB_MODE={tofufresh:"type"};
 const subList=cid=>{const d=SUBDEF[cid];return d?d[SUB_MODE[cid]]:null;};
 const subIdx=(L,p)=>{const i=L.findIndex(g=>g.t.test(p.zh));return i<0?L.length:i;};
 function arrangeSub(items,cid){const L=subList(cid);if(!L)return items;const d=SUBDEF[cid],O=d[SUB_MODE[cid]==="type"?"brand":"type"]||[];
-  return items.slice().sort((a,b)=>subIdx(L,a)-subIdx(L,b)||subIdx(O,a)-subIdx(O,b)||PRODUCTS.indexOf(a)-PRODUCTS.indexOf(b));}
+  const oi=p=>{const g=L[subIdx(L,p)];if(!g||!g.o)return 0;const i=g.o.findIndex(r=>r.test(p.zh));return i<0?g.o.length:i;};
+  return items.slice().sort((a,b)=>subIdx(L,a)-subIdx(L,b)||oi(a)-oi(b)||subIdx(O,a)-subIdx(O,b)||PRODUCTS.indexOf(a)-PRODUCTS.indexOf(b));}
 function subCardsHTML(items,cid,all){const L=subList(cid);if(!L)return items.map(cardHTML).join("");let last=-1,h="";const pool=all||items;
   items.forEach(p=>{const i=subIdx(L,p);if(i!==last){last=i;const g=L[i]||{zh:"其他",en:"Other"};const n=pool.filter(x=>subIdx(L,x)===i).length;h+=`<h4 class="subh">${g.en?B(g.zh,g.en):`<span>${g.zh}</span>`}<span class="subn">${n} ${B("样","items")}</span></h4>`;}h+=cardHTML(p);});return h;}
 let inStockOnly=false; /* "只看有货"开关：默认关（全部显示），打开后隐藏售罄 */
@@ -2849,7 +2850,7 @@ function render(){
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :zone==="arr"?PRODUCTS.filter(isArr)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:((zone==="sale"?byBest(a,b):0)||(zone==="arr"?((isNew(b)?1:0)-(isNew(a)?1:0)):0)||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 新到货区：新品排前，回货排后 */ /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:((zone==="sale"?byBest(a,b):0)||(zone==="arr"?((isNew(b)?1:0)-(isNew(a)?1:0)):0))); /* 新到货区：新品排前，回货排后 */ /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
   if(!q&&cat!=="all"&&subList(cat))list=arrangeSub(list,cat);
   const fullList=list,oosN=fullList.filter(isOOS).length;if(inStockOnly)list=list.filter(p=>!isOOS(p));
   const z=liveZones.find(x=>x.id===zone);
