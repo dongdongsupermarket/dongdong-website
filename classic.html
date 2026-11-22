@@ -132,7 +132,16 @@ h2 .en{font-family:var(--en-display);font-weight:400;font-size:.65em;letter-spac
 .zones button[aria-pressed="true"] b{color:var(--green)}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .zones button[aria-pressed="true"] b{color:var(--gold-hi)}}
 :root[data-theme="dark"] .zones button[aria-pressed="true"] b{color:var(--gold-hi)}
-.zcount{font-size:13px;color:var(--muted);margin:0}
+.zcount{font-size:13px;color:var(--muted);margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.stockonly{display:inline-flex;align-items:center;gap:7px;cursor:pointer;user-select:none;font-size:13px;color:var(--ink);font-weight:600;padding:5px 12px 5px 6px;border:1px solid var(--line);border-radius:999px;background:var(--card,#fff)}
+.stockonly input{position:absolute;opacity:0;pointer-events:none}
+.stockonly .sw{width:30px;height:18px;border-radius:9px;background:#c9c9c9;position:relative;transition:background .15s;flex:none}
+.stockonly .sw:after{content:"";position:absolute;left:2px;top:2px;width:14px;height:14px;border-radius:50%;background:#fff;transition:left .15s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.stockonly input:checked+.sw{background:#25a35a}.stockonly input:checked+.sw:after{left:14px}
+.stockonly input:focus-visible+.sw{outline:2px solid #25a35a;outline-offset:2px}
+.subh{grid-column:1/-1;margin:10px 0 0;font-size:15px;font-weight:700;color:var(--green);display:flex;align-items:baseline;gap:8px;padding:4px 0 4px 10px;border-left:4px solid var(--gold,#c9a24a)}
+.subh:first-child{margin-top:0}.subh .le{font-weight:500;font-size:.85em;color:var(--muted)}.subh .subn{margin-left:auto;font-size:12px;font-weight:500;color:var(--muted)}
+.stockempty{grid-column:1/-1;text-align:center;color:var(--muted);padding:24px 8px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
 .art{aspect-ratio:4/3;max-width:100%;display:grid;place-items:center;position:relative;overflow:hidden;background:#fff}
@@ -206,7 +215,7 @@ html[data-lang="both"] .area label>span>.le{font-size:12.5px;color:var(--muted)}
 .terms{margin:6px 0 0;padding-left:18px;display:grid;gap:5px}
 .legal{border-top:1px solid rgba(247,241,223,.25);margin-top:10px;padding-top:10px;font-size:12px;opacity:.85;line-height:1.55;flex-basis:100%}
 .card .badge{display:none}
-.card.oos .art img{filter:grayscale(.35);opacity:.9}
+.card.oos .art img{filter:grayscale(1);opacity:.55}
 .card.oos .tag{filter:grayscale(1);opacity:.55}
 .card.oos .name,.card.oos .pen{color:var(--muted)}
 .dealline{margin-top:6px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
@@ -2822,20 +2831,36 @@ const MOB=matchMedia("(max-width:760px)").matches,GRP_SHOW=3,FLAT_SHOW=24;let li
 const GROUP_N=matchMedia("(max-width:760px)").matches?4:8;
 const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：海天生抽/老抽、李锦记生抽/老抽、珠江桥生抽/老抽）
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
+/* 分类内小类：SUB_MODE 选用哪种分法；组内顺序固定（不受售罄、回货影响） */
+const SUBDEF={tofufresh:{
+  type:[{zh:"嫩豆腐 · 绢豆腐",en:"Soft & silken tofu",t:/嫩豆腐|绢豆腐|鸡蛋豆腐/},{zh:"老豆腐 · 板豆腐",en:"Firm tofu",t:/老豆腐|板豆腐|手工豆腐/},{zh:"豆干 · 干豆腐",en:"Pressed & dried tofu",t:/豆干|干豆腐|百叶/},{zh:"豆腐泡 · 炸豆腐",en:"Fried tofu",t:/豆腐泡|炸豆腐|豆腐条/}],
+  brand:[{zh:"北佬 Tofu King",en:"",t:/北佬/},{zh:"永安 Wing On",en:"",t:/永安/},{zh:"东方龙 Oriental Dragon",en:"",t:/东方龙/}]}};
+const SUB_MODE={tofufresh:"type"};
+const subList=cid=>{const d=SUBDEF[cid];return d?d[SUB_MODE[cid]]:null;};
+const subIdx=(L,p)=>{const i=L.findIndex(g=>g.t.test(p.zh));return i<0?L.length:i;};
+function arrangeSub(items,cid){const L=subList(cid);if(!L)return items;const d=SUBDEF[cid],O=d[SUB_MODE[cid]==="type"?"brand":"type"]||[];
+  return items.slice().sort((a,b)=>subIdx(L,a)-subIdx(L,b)||subIdx(O,a)-subIdx(O,b)||PRODUCTS.indexOf(a)-PRODUCTS.indexOf(b));}
+function subCardsHTML(items,cid,all){const L=subList(cid);if(!L)return items.map(cardHTML).join("");let last=-1,h="";const pool=all||items;
+  items.forEach(p=>{const i=subIdx(L,p);if(i!==last){last=i;const g=L[i]||{zh:"其他",en:"Other"};const n=pool.filter(x=>subIdx(L,x)===i).length;h+=`<h4 class="subh">${g.en?B(g.zh,g.en):`<span>${g.zh}</span>`}<span class="subn">${n} ${B("样","items")}</span></h4>`;}h+=cardHTML(p);});return h;}
+let inStockOnly=false; /* "只看有货"开关：默认关（全部显示），打开后隐藏售罄 */
 function render(){
-  $("askbox").hidden=false;document.body.classList.toggle("wsmode",!q&&zone==="ws");if(!q&&zone==="ws"){$("grid").classList.remove("grouped");{const wl=PRODUCTS.filter(p=>inZone(p,"ws")).sort((a,b)=>(a.oos?1:0)-(b.oos?1:0));$("grid").innerHTML=wsHTML()+(wl.length?`<h3 class="wsph">${B("餐饮用品 · 现货","Catering supplies · in store")}</h3>`+wl.map(cardHTML).join(""):"");}$("zcount").innerHTML="";$("empty").hidden=true;$("askbox").hidden=true;return;}
-  const list=(q?searchAll(q)
+  $("askbox").hidden=false;document.body.classList.toggle("wsmode",!q&&zone==="ws");if(!q&&zone==="ws"){$("grid").classList.remove("grouped");{const wl=PRODUCTS.filter(p=>inZone(p,"ws"));$("grid").innerHTML=wsHTML()+(wl.length?`<h3 class="wsph">${B("餐饮用品 · 现货","Catering supplies · in store")}</h3>`+wl.map(cardHTML).join(""):"");}$("zcount").innerHTML="";$("empty").hidden=true;$("askbox").hidden=true;return;}
+  let list=(q?searchAll(q)
     :zone==="sale"?PRODUCTS.filter(p=>hasPromo(p)&&!p.web)
     :zone==="new"?PRODUCTS.filter(isNew)
     :zone==="arr"?PRODUCTS.filter(isArr)
-    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:(((a.oos?1:0)-(b.oos?1:0))||(zone==="sale"?byBest(a,b):0)||(zone==="arr"?((isNew(b)?1:0)-(isNew(a)?1:0)):0)||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 新到货区：新品排前，回货排后 */ /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
+    :PRODUCTS.filter(p=>inZone(p,zone)&&(cat==="all"||inCat(p,cat)))).slice().sort((a,b)=>q?0:((zone==="sale"?byBest(a,b):0)||(zone==="arr"?((isNew(b)?1:0)-(isNew(a)?1:0)):0)||((isArr(b)?1:0)-(isArr(a)?1:0)))); /* 新到货区：新品排前，回货排后 */ /* 售罄排到最后（搜索时由 searchAll 排：同类有货→同类售罄→其他） */
+  if(!q&&cat!=="all"&&subList(cat))list=arrangeSub(list,cat);
+  const fullList=list,oosN=fullList.filter(isOOS).length;if(inStockOnly)list=list.filter(p=>!isOOS(p));
   const z=liveZones.find(x=>x.id===zone);
-  $("zcount").innerHTML=q?BS(`搜索全店：${list.length} 样`,`Search all sections: ${list.length} items`):`${B(z.zh,z.en)} · ${list.length} ${B("样","items")}`;
+  const tog=`<label class="stockonly"><input type="checkbox" data-stockonly${inStockOnly?" checked":""}><span class="sw" aria-hidden="true"></span>${B("只看有货","In stock only")}</label>`;
+  const cnt=inStockOnly?` · ${B(`有货 ${list.length} / 共 ${fullList.length} 样`,`${list.length} of ${fullList.length} in stock`)}`:` · ${fullList.length} ${B("样","items")}`;
+  $("zcount").innerHTML=(q?BS(`搜索全店：${fullList.length} 样`,`Search all sections: ${fullList.length} items`)+(inStockOnly?` · ${B(`有货 ${list.length}`,`${list.length} in stock`)}`:""):`<span>${B(z.zh,z.en)}${cnt}</span>`)+tog;
   const agroup=false;if(!q&&zone==="arr"){const CZ=c=>(CATS.find(x=>x.id===c)||{}).z;const AR=p=>{const z=CZ(p.c);return (p.oos?100:0)+(p.arrHide?50:0)+(isNew(p)?-1:p.c==="veg"?0:p.c==="fruit"?1:["inst5","instnoodle","cupnoodle","jkinst"].includes(p.c)?2:z==="staples"?3:z==="grocery"?4:z==="freshzone"?5:z==="frozen"?9:6)};list.sort((x,y)=>AR(x)-AR(y));} /* 新到货：不分区，蔬菜→方便面→主食→调料…冻货最后 */const grouped=agroup||(!q&&cat==="all"&&zone!=="sale"&&zone!=="new"&&zone!=="arr");
   $("grid").classList.toggle("grouped",grouped);
   if(grouped){
     const AGR=g=>g.items.some(p=>!p.arrHide)?0:g.c.id==="inst5"?1:g.c.id==="seacracker"?9:5;
-    const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length).sort((x,y)=>AGR(x)-AGR(y)):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:list.filter(p=>inCat(p,c.id))})).filter(g=>g.items.length);
+    const groups=agroup?CATS.filter(c=>c.id!=="all").map(c=>({c,items:list.filter(p=>p.c===c.id)})).filter(g=>g.items.length).sort((x,y)=>AGR(x)-AGR(y)):CATS.filter(c=>c.id!=="all"&&c.z===zone).map(c=>({c,items:arrangeSub(list.filter(p=>inCat(p,c.id)),c.id)})).filter(g=>g.items.length);
     const foldable=groups.filter(g=>g.items.length>GN(g.c.id)),allOpen=foldable.length&&foldable.every(g=>openGroups.has(g.c.id));
     const allBtn=foldable.length>1?`<div class="allfold"><button type="button" class="more allbtn" data-foldall="${allOpen?0:1}">${allOpen?B("全部收起","Collapse all")+" ⌃":B(`全部展开（${groups.reduce((n,g)=>n+g.items.length,0)} 样）`,`Show everything (${groups.reduce((n,g)=>n+g.items.length,0)})`)+" ⌄"}</button></div>`:"";
     const gk=zone+"|"+q;if(gk!==listKey){listKey=gk;listAll=false;}
@@ -2843,17 +2868,17 @@ function render(){
     const restN=groups.slice(gShow).reduce((n,g)=>n+g.items.length,0);
     const moreBtn=gShow<groups.length?`<div class="listmore"><button type="button" class="more allbtn" data-listall="1">${B(`显示全部 ${groups.length} 个小类（还有 ${restN} 样）`,`Show all ${groups.length} sections (${restN} more)`)} ⌄</button></div>`:"";
     $("grid").innerHTML=allBtn+groups.slice(0,gShow).map(g=>`<section class="grp" id="grp-${g.c.id}"><div class="grp-h"><h3>${B(g.c.zh,g.c.en,"en")}</h3><span class="grp-n">${g.items.length} ${B("样","items")}</span></div>
-      <div class="grp-list">${(openGroups.has(g.c.id)?g.items:g.items.slice(0,GN(g.c.id))).map(cardHTML).join("")}</div>
+      <div class="grp-list">${subCardsHTML(openGroups.has(g.c.id)?g.items:g.items.slice(0,GN(g.c.id)),g.c.id,g.items)}</div>
       ${g.items.length>GN(g.c.id)?(openGroups.has(g.c.id)
         ?`<button type="button" class="more" data-fold="${g.c.id}">${B("收起","Show less")} ⌃</button>`
-        :`<button type="button" class="more" data-fold="${g.c.id}">${B(`展开全部 ${g.items.length} 样`,`Show all ${g.items.length}`)} ⌄</button>`):""}</section>`).join("")+moreBtn;
+        :`<button type="button" class="more" data-fold="${g.c.id}">${B(`展开全部 ${g.items.length} 样`,`Show all ${g.items.length}`)} ⌄</button>`):""}</section>`).join("")+moreBtn+(!groups.length&&inStockOnly?`<p class="stockempty">${B("这里的商品暂时都售罄了，关掉“只看有货”可以看到全部。","Everything here is sold out right now. Turn off “In stock only” to see all items.")}</p>`:"");
     spy();
   }else{const gk=zone+"|"+q;if(gk!==listKey){listKey=gk;listAll=false;}const n=(MOB&&!listAll&&list.length>FLAT_SHOW+6)?FLAT_SHOW:list.length;
-    $("grid").innerHTML=list.slice(0,n).map(cardHTML).join("")+(n<list.length?`<div class="listmore"><button type="button" class="more allbtn" data-listall="1">${B(`显示全部 ${list.length} 样（还有 ${list.length-n} 样）`,`Show all ${list.length} items (${list.length-n} more)`)} ⌄</button></div>`:"");}
+    $("grid").innerHTML=(!list.length&&inStockOnly?`<p class="stockempty">${B("这里的商品暂时都售罄了，关掉“只看有货”可以看到全部。","Everything here is sold out right now. Turn off “In stock only” to see all items.")}</p>`:"")+(!q&&cat!=="all"&&subList(cat)?subCardsHTML(list.slice(0,n),cat,list):list.slice(0,n).map(cardHTML).join(""))+(n<list.length?`<div class="listmore"><button type="button" class="more allbtn" data-listall="1">${B(`显示全部 ${list.length} 样（还有 ${list.length-n} 样）`,`Show all ${list.length} items (${list.length-n} more)`)} ⌄</button></div>`:"");}
   $("empty").hidden=true;
-  {const box=$("askbox");if(box){const qq=q?String(q).trim():"";box.classList.toggle("big",!!qq&&!list.length);
-    $("askZ").textContent=qq?(list.length?`没找到想要的“${qq}”？`:`网站上暂时没有“${qq}”`):"找不到想要的商品？";
-    $("askE").textContent=qq?(list.length?`Not the "${qq}" you wanted?`:`"${qq}" isn't on our website yet`):"Can't find what you need?";
+  {const box=$("askbox");if(box){const qq=q?String(q).trim():"";box.classList.toggle("big",!!qq&&!fullList.length);
+    $("askZ").textContent=qq?(fullList.length?`没找到想要的“${qq}”？`:`网站上暂时没有“${qq}”`):"找不到想要的商品？";
+    $("askE").textContent=qq?(fullList.length?`Not the "${qq}" you wanted?`:`"${qq}" isn't on our website yet`):"Can't find what you need?";
     const msg=qq?`你好，请问店里有没有 ${qq}？ Hello, do you have ${qq}?`:"你好，请问店里有没有 Hello, do you have ";
     $("askBtn").href="https://wa.me/447546185999?text="+encodeURIComponent(msg);}}
 }
@@ -3074,6 +3099,7 @@ function applyLang(){const h=document.documentElement;h.dataset.lang=LANG;h.lang
   document.querySelectorAll(".langsw button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.lang===LANG));}
 document.querySelector(".langsw").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
   LANG=b.dataset.lang;try{localStorage.setItem("dd-lang",LANG)}catch(err){}applyLang();renderCart();});
+$("zcount").addEventListener("change",e=>{if(e.target.matches("[data-stockonly]")){inStockOnly=e.target.checked;listAll=false;render();}});
 $("grid").addEventListener("click",e=>{if(e.target.closest("[data-listall]")){listAll=true;const y=scrollY;render();scrollTo(0,y);return;}const fa=e.target.closest("[data-foldall]");if(fa){const on=fa.dataset.foldall==="1";[...document.querySelectorAll("#grid [data-fold]")].forEach(x=>on?openGroups.add(x.dataset.fold):openGroups.delete(x.dataset.fold));render();if(!on)window.scrollTo({top:document.getElementById("grid").getBoundingClientRect().top+scrollY-120});return;}const b=e.target.closest("[data-fold]");if(!b)return;
   const id=b.dataset.fold,was=openGroups.has(id);was?openGroups.delete(id):openGroups.add(id);render();
   if(was){const g=document.getElementById("grp-"+id);if(g&&g.getBoundingClientRect().top<0)g.scrollIntoView({block:"start"});}});
