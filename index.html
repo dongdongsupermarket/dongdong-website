@@ -418,7 +418,7 @@ html[data-lang="both"] .oosbadge .le{font-size:11px;font-weight:500}
 .preline{margin-top:4px;font-size:12.5px;line-height:1.4;color:#2f5d8a;display:grid;gap:1px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .preline{color:#8fb6dd}}
 :root[data-theme="dark"] .preline{color:#8fb6dd}
-.prenext{font-weight:700}
+.prenext{font-weight:700;font-size:13.5px}.preweek{font-size:11.5px;opacity:.85}
 .localbadge{position:absolute;top:8px;right:8px;z-index:1;background:#1f4e79;color:#fff;font-weight:700;font-size:11px;padding:3px 7px;border-radius:3px;line-height:1.25;text-align:center}
 .homebadge{position:absolute;bottom:8px;right:8px;z-index:1;background:#7a4a1e;color:#fff4e0;font-weight:700;font-size:11px;padding:3px 7px;border-radius:3px;line-height:1.2}
 .caseline{margin-top:4px;font-size:12.5px;font-weight:600;color:var(--green)}
@@ -2229,19 +2229,19 @@ const PRODUCTS_RAW=[
  {"c": "roastmeat", "zh": "烧腊三拼", "en": "Three-Meat Combo", "spec": "叉烧 + 烧肉 + 烧鸭 Char siu + roast pork + roast duck", "price": 20.95, "unit": "/份 portion", "img": "img/pre_combo.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "roastmeat", "zh": "烧鸭 半只", "en": "Roast Duck, Half", "spec": "半只 half", "price": 21.95, "unit": "/份 portion", "img": "img/pre_duck.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "roastmeat", "zh": "烧鸭 一只", "en": "Roast Duck, Whole", "spec": "一只 whole", "price": 39.95, "unit": "/只 each", "img": "img/pre_duck.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛腩", "en": "Fresh Beef Brisket", "per": "每块约1kg approx. 1kg per piece", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_brisket.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛肋条", "en": "Fresh Beef Short Ribs", "per": "每份约1.2kg approx. 1.2kg per portion", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_shortrib.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜牛腱子", "en": "Fresh Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 11.99, "unit": "/kg", "kg": true, "img": "img/pre_shank.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜金钱腱", "en": "Golden Coin Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 13.99, "unit": "/kg", "kg": true, "img": "img/hd_goldshank.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜排骨 整条", "en": "Fresh Pork Ribs, Whole", "per": "每份约1kg approx. 1kg per portion", "spec": "整条 whole", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜排骨 切好", "en": "Fresh Pork Ribs, Cut", "per": "每份约1kg approx. 1kg per portion", "spec": "切好 cut", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜猪蹄 整只", "en": "Fresh Pig Trotters, Whole", "spec": "整只 whole", "price": 3.2, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜猪蹄 切好", "en": "Fresh Pig Trotters, Cut", "spec": "切好 cut", "price": 4.1, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜猪肉馅", "en": "Fresh Minced Pork", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/pre_mince.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "带皮五花肉", "en": "Skin-on Pork Belly", "price": 5.8, "unit": "/kg", "kg": true, "img": "img/pre_porkbelly.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜猪耳", "en": "Fresh Pig Ears", "price": 4.95, "unit": "/kg", "kg": true, "img": "img/pre_ear.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "汤骨", "en": "Pork Soup Bones", "price": 3.5, "unit": "/kg", "kg": true, "img": "img/pre_soupbone.jpg", "pre": {"days": [2, 5], "lead": 1}},
- {"c": "freshmeat", "zh": "新鲜老鸡", "en": "Fresh Mature Chicken", "price": 6.99, "unit": "/只 each", "img": "img/pre_chicken.jpg", "pre": {"days": [2, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛腩", "en": "Fresh Beef Brisket", "per": "每块约1kg approx. 1kg per piece", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_brisket.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛肋条", "en": "Fresh Beef Short Ribs", "per": "每份约1.2kg approx. 1.2kg per portion", "price": 12.99, "unit": "/kg", "kg": true, "img": "img/pre_shortrib.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜牛腱子", "en": "Fresh Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 11.99, "unit": "/kg", "kg": true, "img": "img/pre_shank.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜金钱腱", "en": "Golden Coin Beef Shank", "per": "每块约1kg approx. 1kg per piece", "price": 13.99, "unit": "/kg", "kg": true, "img": "img/hd_goldshank.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜排骨 整条", "en": "Fresh Pork Ribs, Whole", "per": "每份约1kg approx. 1kg per portion", "spec": "整条 whole", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜排骨 切好", "en": "Fresh Pork Ribs, Cut", "per": "每份约1kg approx. 1kg per portion", "spec": "切好 cut", "price": 7.5, "unit": "/kg", "kg": true, "img": "img/hd_ribs_whole.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜猪蹄 整只", "en": "Fresh Pig Trotters, Whole", "spec": "整只 whole", "price": 3.2, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜猪蹄 切好", "en": "Fresh Pig Trotters, Cut", "spec": "切好 cut", "price": 4.1, "unit": "/kg", "kg": true, "img": "img/hd_trotter_whole.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜猪肉馅", "en": "Fresh Minced Pork", "price": 6.6, "unit": "/kg", "kg": true, "img": "img/pre_mince.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "带皮五花肉", "en": "Skin-on Pork Belly", "price": 5.8, "unit": "/kg", "kg": true, "img": "img/pre_porkbelly.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜猪耳", "en": "Fresh Pig Ears", "price": 4.95, "unit": "/kg", "kg": true, "img": "img/pre_ear.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "汤骨", "en": "Pork Soup Bones", "price": 3.5, "unit": "/kg", "kg": true, "img": "img/pre_soupbone.jpg", "pre": {"days": [1, 5], "lead": 1}},
+ {"c": "freshmeat", "zh": "新鲜老鸡", "en": "Fresh Mature Chicken", "price": 6.99, "unit": "/只 each", "img": "img/pre_chicken.jpg", "pre": {"days": [1, 5], "lead": 1}},
  {"c": "freshfish", "zh": "鲈鱼", "en": "Sea Bass", "price": 0, "mp": true, "unit": "/条 each", "img": "img/pre_seabass.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "freshfish", "zh": "鲷鱼", "en": "Sea Bream", "price": 0, "mp": true, "unit": "/条 each", "img": "img/pre_bream.jpg", "pre": {"days": [2, 5], "lead": 1}},
  {"c": "freshfish", "zh": "金鲳鱼", "en": "Golden Pomfret", "price": 0, "mp": true, "unit": "/条 each", "img": "img/pre_pomfret.jpg", "pre": {"days": [2, 5], "lead": 1}},
@@ -2842,16 +2842,21 @@ const isWH=p=>!!(p&&p.wh);
 const whLead=p=>(typeof p.wh==="object"&&p.wh.lead)||"1–3";
 function whLine(p){if(!isWH(p))return "";const d=whLead(p);return `<div class="whline"><span class="whtag">${B("仅限网上预订","Online order only")}</span> ${B(`仓库货，需提前 ${d} 天预订`,`From our warehouse, order ${d} day${d==1?"":"s"} ahead`)}</div>`;}
 function londonToday(){const d=new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/London"}));d.setHours(0,0,0,0);return d;}
+/* 临时加一次到货：在对应分类里写日期（dd/mm/yyyy），过期的会自动不显示。例：freshmeat:["03/12/2026"] */
+const PRE_EXTRA={freshmeat:[],roastmeat:[],freshfish:[]};
+const pDate=x=>{const[a,b,c]=x.split("/").map(Number);return new Date(c,b-1,a)};
 function nextArrival(p){const t=londonToday(),lead=p.pre.lead??1;
+  if(!p.pre.dates&&(PRE_EXTRA[p.c]||[]).length){const m=new Date(t);m.setDate(t.getDate()+lead);const ex=PRE_EXTRA[p.c].map(pDate).filter(d=>d>=m);let wk=null;for(let k=lead;k<lead+15;k++){const d=new Date(t);d.setDate(t.getDate()+k);if(p.pre.days.includes(d.getDay())){wk=d;break;}}return [...ex,...(wk?[wk]:[])].sort((a,b)=>a-b)[0]||null;}
   if(p.pre.dates){const m=new Date(t);m.setDate(t.getDate()+lead);return p.pre.dates.map(x=>{const[a,b,c]=x.split("/").map(Number);return new Date(c,b-1,a)}).filter(d=>d>=m).sort((a,b)=>a-b)[0]||null;}
   for(let k=lead;k<lead+15;k++){const d=new Date(t);d.setDate(t.getDate()+k);if(p.pre.days.includes(d.getDay()))return d;}return null;}
 const dm=d=>`${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}`;
 function preDays(p){return p.pre.days.slice().sort((a,b)=>((a+6)%7)-((b+6)%7));}
 function preLine(p){if(p.pre.dates){const na=nextArrival(p);if(!na)return "";return `<div class="preline"><span>🗓 ${B("售罄 · 下次到货","Sold out · next delivery")}</span><b class="prenext">${BB(`${DAYS[na.getDay()][0]} ${dm(na)} 到货 · 可网上预订`,`Arrives ${DAYS[na.getDay()][1]} ${dm(na)} · pre-order now`)}</b></div>`;}
   const ds=preDays(p),na=nextArrival(p),lead=p.pre.lead??1;
-  const zh=`周${ds.map(i=>DAYS[i][0].slice(1)).join("、")}到货 · 提前 ${lead} 天订`,en=`Arrives ${ds.map(i=>DAYS[i][1]).join(" & ")} · order ${lead} day${lead>1?"s":""} ahead`;
-  const nz=na?`最早 ${DAYS[na.getDay()][0]} ${dm(na)}`:"",ne=na?`Earliest ${DAYS[na.getDay()][1]} ${dm(na)}`:"";
-  return `<div class="preline">${p.kg?`<span class="kgnote">${BB("按公斤计价 · 选大概重量 · 按实际重量收费","Priced per kg · pick an approx. weight · charged by actual weight")}</span>`:""}<span>🗓 ${B(zh,en)}</span>${na?`<b class="prenext">${BB(nz,ne)}</b>`:""}</div>`;}
+  const zh=`每周${ds.map(i=>DAYS[i][0].slice(1)).join("、")}到货 · 提前 ${lead} 天订`,en=`Every ${ds.map(i=>DAYS[i][1]).join(" & ")} · order ${lead} day${lead>1?"s":""} ahead`;
+  const nz=na?`下次到货 ${DAYS[na.getDay()][0]} ${dm(na)}`:"",ne=na?`Next delivery ${DAYS[na.getDay()][1]} ${dm(na)}`:"";
+  /* 先显示下次到货日期（醒目），再小字写每周固定到货日 */
+  return `<div class="preline">${na?`<b class="prenext">🗓 ${BB(nz,ne)}</b>`:""}<span class="preweek">${B(zh,en)}</span>${p.kg?`<span class="kgnote">${BB("按公斤计价 · 选大概重量 · 按实际重量收费","Priced per kg · pick an approx. weight · charged by actual weight")}</span>`:""}</div>`;}
 // 默认价格单位：按商品类型自动判断（商品里写了 "unit" 的以商品为准）
 function defUnit(p){const n=p.zh+" "+p.en,s=p.spec||"",ml=(s.match(/(\d+)\s*ml/i)||[])[1];
   if(p.case||/^case/.test(p.c))return "/箱 case";
