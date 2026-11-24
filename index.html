@@ -1153,7 +1153,7 @@ const PRODUCTS_RAW=[
  {"c": "hotpot", "zh": "京厨火锅羊肉卷", "en": "Jingchu Hot Pot Mutton Rolls", "spec": "400g", "price": 7.49, "img": "img/nw_p5_01.jpg"},
  {"c": "hotpot", "zh": "京厨火锅牛肉卷", "en": "Jingchu Hot Pot Beef Rolls", "spec": "400g", "price": 7.29, "img": "img/nw_p5_02.jpg"},
  {"c": "hotpot", "zh": "金达羊肉卷", "en": "Jinda Lamb Rolls", "spec": "400g", "price": 7.99, "img": "img/p5_03.jpg"},
- {"c": "hotpot", "zh": "金达牛肉卷", "en": "Jinda Beef Rolls", "spec": "400g", "price": 7.99, "img": "img/p5_04.jpg"},
+ {"c": "hotpot", "oos": true, "zh": "金达牛肉卷", "en": "Jinda Beef Rolls", "spec": "400g", "price": 7.99, "img": "img/p5_04.jpg"},
  {"c": "hotpot", "zh": "金达猪肉卷", "en": "Jinda Pork Rolls", "spec": "400g", "price": 6.5, "img": "img/hd_jd_porkroll.jpg"},
  {"c": "hotpot", "zh": "功夫牛肉卷", "en": "Kung Fu Beef Slices", "spec": "400g", "price": 7.49, "img": "img/p5_06.jpg"},
  {"c": "hotpot", "zh": "10分嗨火锅牛百叶", "en": "HIPOT Hot Pot Beef Tripes", "spec": "200g", "price": 2.99, "img": "img/p5_07.jpg", "oos": true},
@@ -2850,8 +2850,14 @@ $("zones").addEventListener("click",e=>{const b=e.target.closest("button");if(!b
   const top=document.getElementById("products").getBoundingClientRect().top;if(top<0)document.getElementById("products").scrollIntoView();});
 $("cats").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;clearSearch();cat=b.dataset.c;renderZones();render();});
 renderZones();
-$("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();renderZones();render();
-  if(/^(火锅|打边炉|涮锅|涮火锅|hot ?pot|hotpot|steamboat)$/i.test(q)&&liveZones.some(z=>z.id==="hotpotz")){const g=$("grid");g.insertAdjacentHTML("afterbegin",`<div class="hpgo"><button type="button" data-gozone="hotpotz">🍲 ${B("进入火锅专区 · 锅底、丸子、肉卷、蔬菜一次买齐","Go to the Hot pot section")} ›</button></div>`);}});
+/* 搜索：拼音输入法打字时（还没选字）不搜；停手 180ms 再搜，避免每按一个键都重画整页 */
+let qT=0,qComp=false;
+$("q").addEventListener("compositionstart",()=>{qComp=true});
+$("q").addEventListener("compositionend",e=>{qComp=false;e.target.dispatchEvent(new Event("input",{bubbles:true}))});
+$("q").addEventListener("input",e=>{if(qComp||e.isComposing)return;const v=e.target.value.trim().toLowerCase();clearTimeout(qT);
+  qT=setTimeout(()=>doSearch(v),e.isTrusted?(v.length<=1?260:180):0)});
+function doSearch(v){if(v===q&&v)return;q=v;renderZones();render();
+  if(/^(火锅|打边炉|涮锅|涮火锅|hot ?pot|hotpot|steamboat)$/i.test(q)&&liveZones.some(z=>z.id==="hotpotz")){const g=$("grid");g.insertAdjacentHTML("afterbegin",`<div class="hpgo"><button type="button" data-gozone="hotpotz">🍲 ${B("进入火锅专区 · 锅底、丸子、肉卷、蔬菜一次买齐","Go to the Hot pot section")} ›</button></div>`);}}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-gozone]");if(!b)return;const g=b.dataset.gozone;if(liveZones.some(z=>z.id===g)){zone=g;expanded=g;cat="all";q="";$("q").value="";renderZones();render();scrollTo({top:$("grid").getBoundingClientRect().top+scrollY-120,behavior:"smooth"});}});
 const isAlc=p=>p.c==="alcohol"||!!p.age18;
 /* ---------- 预订 ----------
