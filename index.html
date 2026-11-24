@@ -703,6 +703,7 @@ html .pit.dcard .pp.dpp{margin-top:auto}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
 html #arrivals .pit .pp,html #arrivals .pit .pp .ppkg{color:var(--ink)}html .pit.kgc{display:flex;flex-direction:column;align-items:stretch;text-align:left}html .pit.kgc .pper.pperx{order:3;font-size:14px;font-weight:700;color:var(--ink,#1d1d1b);line-height:1.35;padding:2px 8px 2px}html .pit.kgc .pp.kgp{order:4;margin-top:auto;font-size:12px;font-weight:500;color:var(--ink,#1d1d1b);padding:2px 8px 8px}html .pit.kgc .pp.kgp .ppkg{font-size:11px;font-weight:500}html .pit.kgc .pshort{order:5}
 .zkg{margin-top:10px}
+.kgtag .tierline{display:block;flex-basis:100%;margin-top:3px;font-size:12.5px;font-weight:800;color:#1f7a46;line-height:1.3}.kgtag{flex-wrap:wrap}.kgest .tierhint{display:block;color:#1f7a46;font-weight:700}
 .kgtag .kgper{display:block;font-size:12px;color:var(--muted);margin-top:2px}
 .pit .pp s{font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted);margin-left:4px}
 .s-sale .pit .pp{color:var(--red)}
@@ -2345,7 +2346,7 @@ const PRODUCTS_RAW=[
  {"c": "kimchi", "zh": "BLUE VILLE 首尔式切块泡菜（韩国辣白菜）", "en": "Blue Ville Seoul-style Cut Cabbage Kimchi", "spec": "453g", "price": 3.29, "unit": "/罐 jar", "also": ["jkfresh"], "img": "img/hd_d17_bv453.jpg"},
  {"c": "kimchi", "zh": "Blue Ville 紫菜包饭黄萝卜条（腌萝卜）", "en": "Blue Ville Pickled Radish Strips for Gimbap (Danmuji)", "spec": "350g", "price": 1.59, "img": "img/hd_bv_radish_strips350.jpg"},
  {"c": "kimchi", "zh": "必品阁萝卜块泡菜", "en": "Bibigo Diced Radish Kimchi (Kkakdugi)", "spec": "450g", "price": 4.3, "img": "img/hd_bibigo_radish_kimchi450.jpg"},
- {"c": "veg", "zh": "新鲜上海青", "en": "Green Pai Choi", "price": 4.5, "unit": "/kg", "img": "img/nw_veg_pakchoi.jpg", "arr": "23/11/2026", "kg": true, "kw": "小白菜 青江菜 bok choy pak choi"},
+ {"c": "veg", "zh": "新鲜上海青", "en": "Green Pai Choi", "price": 4.5, "unit": "/kg", "img": "img/nw_veg_pakchoi.jpg", "arr": "23/11/2026", "kg": true, "tier": {"min": 1, "price": 3.5}, "kw": "小白菜 青江菜 bok choy pak choi"},
  {"c": "veg", "zh": "菠菜", "en": "Spinach", "oos": true, "price": 1.6, "unit": "/捆 bunch", "img": "img/nw_veg_v02.jpg"},
 {"c": "veg", "zh": "小葱", "en": "Spring Onion", "price": 0.69, "unit": "/捆 bunch", "img": "img/nw_veg_spring_onion.jpg"},
  {"c": "veg", "zh": "豆芽", "en": "Bean Sprouts", "spec": "400–500g", "price": 0.89, "unit": "/包 bag", "img": "img/nw_veg_beansprout.jpg"},
@@ -2681,6 +2682,8 @@ const pct=p=>Math.round((p.was-p.price)/p.was*100);
 //  {"type":"bxgy","buy":2,"free":1}  → 买二送一（买一送一就是 buy:1,free:1）
 //  {"type":"half"}  → 第二件半价
 //  加 "group":"名字" 可让同组商品混搭（同组的 deal 要写成一样）
+/* 预订阶梯价：{"tier":{"min":1,"price":3.5}} = 网上预订满 1kg 每公斤 £3.50 */
+const upr=(p,n)=>p.tier&&n>=p.tier.min-1e-9?p.tier.price:p.price;
 const hasDeal=p=>!!(p.deal&&!p.kg&&!p.mp);
 const hasPromo=p=>onSale(p)||hasDeal(p);
 /* 特价排序（店主 21/11 定）：首页特价滚动栏 = 最新推出的排前面；特价区 = 快到 BBD 的先，其余按省的百分比从大到小。
@@ -2927,7 +2930,7 @@ function caseCount(p){if(p.kg||!(p.c||"").startsWith("case")&&!/整箱|整提/.t
   if(m)return [+m[1],m[2]];m=sp.match(/^(\d+)\s*[×x]/);if(m)return [+m[1],/水|drink|water|可乐|饮料|ml|L\b/i.test(p.zh+sp)?"瓶":"包"];return null;}
 function priceTag(p){const u=sp(p.unit||defUnit(p));
   if(p.mp)return `<div class="tag mptag"><span class="price mp">${B("时价","Market price")}</span></div>`;
-  if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span></div>`;
+  if(p.kg)return `<div class="tag kgtag"><span class="price">${money(p.price)}<small>/kg</small></span>${p.tier?`<span class="tierline">${B(`提前预订 ${kgFmt(p.tier.min)}kg 以上 ${money(p.tier.price)}/kg`,`Pre-order ${kgFmt(p.tier.min)}kg+ ${money(p.tier.price)}/kg`)}</span>`:""}</div>`;
   if(p.exvat&&!onSale(p))return `<div class="tag vattag"><span class="price">${money(p.exvat)}<small> + VAT</small></span><span class="unit">${u}</span><span class="incvat">${B(`含 VAT ${money(p.price)}`,`inc. VAT ${money(p.price)}`)}</span></div>`; /* "exvat": 不含税价，"price" 填含税价（×1.2） */
   if(!onSale(p))return `<div class="tag"><span class="price">${money(p.price)}</span><span class="unit">${u}</span></div>`;
   if(p.web)return `<div class="tag saletag webtag"><span class="wlab">${B("网上价","Online price")}</span><span class="price">${money(p.price)}</span><span class="was">${p.c==="bundle"?B("单买","Separately"):B("店内价","In store")} <s>${money(p.was)}</s></span><span class="save">${B("网上下单省","Save online")} ${money(p.was-p.price)}${p.until?` · until ${p.until}`:""}</span></div>`;
@@ -3132,7 +3135,7 @@ const kgFmt=n=>String(+n.toFixed(2));
 const kgMin=p=>p.kgmin||(p.c==="freshmeat"?1:0); /* 新鲜肉类 1kg 起订 */
 function kgPick(i){const p=PRODUCTS[i];if(!p||!p.kg||isOOS(p))return "";const n=cart[i]||0;
   /* 不再显示 1根/2根… 或 0.25kg/0.5kg… 的选择格（卡片高度统一）：点「加入购物车」先加 1 根 / 默认重量，再用 + − 加减 */
-  return `<div class="kgest">${n?`${B("约","approx.")} <b>${money(n*p.price)}</b> · ${p.pc?`${Math.round(n/p.pc)} ${B("根","pc")} · `:""}${B("约","approx.")} ${kgFmt(n)} kg`:kgMin(p)?B(`${kgFmt(kgMin(p))}kg 起订 · 按实际重量计价`,`Min. ${kgFmt(kgMin(p))}kg · priced by actual weight`):B("按实际重量计价","Priced by actual weight")}</div>`;}
+  return `<div class="kgest">${n?`${B("约","approx.")} <b>${money(n*upr(p,n))}</b> · ${p.pc?`${Math.round(n/p.pc)} ${B("根","pc")} · `:""}${B("约","approx.")} ${kgFmt(n)} kg${p.tier?(n>=p.tier.min-1e-9?`<span class="tierhint">✓ ${B("已按预订价","Pre-order price")} ${money(p.tier.price)}/kg</span>`:`<span class="tierhint">${B(`加到 ${kgFmt(p.tier.min)}kg 享 ${money(p.tier.price)}/kg`,`${kgFmt(p.tier.min)}kg+ for ${money(p.tier.price)}/kg`)}</span>`):""}`:kgMin(p)?B(`${kgFmt(kgMin(p))}kg 起订 · 按实际重量计价`,`Min. ${kgFmt(kgMin(p))}kg · priced by actual weight`):B("按实际重量计价","Priced by actual weight")}</div>`;}
 function ctrl(i,style){const n=cart[i]||0;
   if(isOOS(PRODUCTS[i])){const p=PRODUCTS[i],sp2=p.spec?" "+String(p.spec).replace(/<[^>]*>/g,""):"";
     const t=`你好，「${p.zh}${sp2}」到货了麻烦通知我，谢谢！\nHi, please let me know when ${p.en}${sp2} is back in stock. Thanks!`;
@@ -3170,12 +3173,12 @@ document.addEventListener("click",e=>{const b=e.target.closest("[data-add],[data
 document.addEventListener("click",e=>{const b=e.target.closest("[data-kg]");if(!b)return;const i=+b.dataset.kg,w=+b.dataset.w;setQty(i,(cart[i]||0)===w?0:w);});
 function items(){return Object.keys(cart).map(i=>({p:PRODUCTS[i],i:+i,n:cart[i]})).filter(x=>x.p&&!isOOS(x.p));}
 function renderCart(){
-  const it=items(),count=it.reduce((s,x)=>s+(x.p.kg?1:x.n),0),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);
+  const it=items(),count=it.reduce((s,x)=>s+(x.p.kg?1:x.n),0),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*upr(x.p,x.n),0)-dealTotal(it);
   $("alcNote").hidden=!it.some(x=>isAlc(x.p));$("preNote").hidden=!it.some(x=>isPre(x.p));$("whNote").hidden=!it.some(x=>isWH(x.p));
   if(typeof deliveryMsg==="function")deliveryMsg();
   $("cartbar").hidden=!count;document.body.classList.toggle("has-cart",!!count);
   $("cartCount").textContent=count;$("cartTotal").textContent=money(total);$("cartHint").textContent=count?cartHint(total):"";$("panelTotal").textContent=money(total);
-  $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*x.p.price)}</span>${ctrl(x.i)}</div>`).join("")+dealNeed(it).map(g=>`<div class="line dealrow dealneed"><span class="nm">${B(`再选 ${g.need} 件${g.d.label?g.d.label:""}，享${dealText(g.d)[0]}`,`Add ${g.need} more for ${dealText(g.d)[1]}`)}</span></div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
+  $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*upr(x.p,x.n))}</span>${ctrl(x.i)}</div>`).join("")+dealNeed(it).map(g=>`<div class="line dealrow dealneed"><span class="nm">${B(`再选 ${g.need} 件${g.d.label?g.d.label:""}，享${dealText(g.d)[0]}`,`Add ${g.need} more for ${dealText(g.d)[1]}`)}</span></div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
     :`<p class="note">${BB("购物车是空的。","Your basket is empty.")}</p>`;
   {const cb=$("clearCart");if(cb){cb.hidden=!it.length;if(!it.length)resetClear()}}
   updateLink();
@@ -3187,9 +3190,9 @@ document.addEventListener("click",e=>{const cb=e.target.closest&&e.target.closes
   cart={};try{localStorage.setItem("dd-cart4","{}")}catch(x){}resetClear();render();renderCart();});
 const mode=()=>$("modeDelivery").checked?"delivery":"pickup";
 function buildMessage(){
-  const it=items(),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it),d=mode()==="delivery";
+  const it=items(),deals=dealSavings(it),total=it.reduce((s,x)=>s+x.n*upr(x.p,x.n),0)-dealTotal(it),d=mode()==="delivery";
   const L=["東東超市 新订单 New order",`订单编号 Order no.: ${orderNo()}`,""];
-  it.forEach(x=>L.push(`${x.p.kg?(x.p.pc?`${Math.round(x.n/x.p.pc)} 根 pc（约 ${kgFmt(x.n)} kg）×`:`约 ${kgFmt(x.n)} kg ×`):`${x.n} ×`} ${x.p.web?"【网上特价 Online deal】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""}${x.p.exvat?` 【£${x.p.exvat.toFixed(2)} + VAT = £${x.p.price.toFixed(2)}】`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 ${money(x.n*x.p.price)}（${money(x.p.price)}/kg，按实际重量计价 priced by actual weight）`:money(x.n*x.p.price)}${onSale(x.p)&&!x.p.web?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}${x.p.inc?"\n"+x.p.inc.map(c=>"    · "+c[0]).join("\n"):""}`));
+  it.forEach(x=>L.push(`${x.p.kg?(x.p.pc?`${Math.round(x.n/x.p.pc)} 根 pc（约 ${kgFmt(x.n)} kg）×`:`约 ${kgFmt(x.n)} kg ×`):`${x.n} ×`} ${x.p.web?"【网上特价 Online deal】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""}${x.p.exvat?` 【£${x.p.exvat.toFixed(2)} + VAT = £${x.p.price.toFixed(2)}】`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 ${money(x.n*upr(x.p,x.n))}（${money(upr(x.p,x.n))}/kg${x.p.tier&&x.n>=x.p.tier.min-1e-9?` 预订价 pre-order price`:""}，按实际重量计价 priced by actual weight）`:money(x.n*upr(x.p,x.n))}${onSale(x.p)&&!x.p.web?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}${x.p.inc?"\n"+x.p.inc.map(c=>"    · "+c[0]).join("\n"):""}`));
   if(deals.length){L.push("");deals.forEach(dd=>L.push(`优惠 Deal: ${dd.zh} ${dd.en}（${dd.names.map(p=>p.zh).join("/")}）−${money(dd.save)}`));}
   L.push("",`商品合计 Subtotal: ${it.some(x=>x.p.kg||x.p.approx)?"约 approx. ":""}${money(total)}${it.some(x=>x.p.mp)?" + 时价商品 market-price items":""}`,"");
   if(it.some(x=>isAlc(x.p)))L.push("含须年满18岁商品（酒类/刀具/燃气罐），本人已年满18岁 Contains age-restricted items, I am 18 or over","");
@@ -3213,7 +3216,7 @@ const coldItems=()=>items().filter(x=>!x.p.local&&["frozen","chilled","freshzone
 const area=()=>(document.querySelector('input[name="area"]:checked')||{}).value;
 // 全英快递暂时只收银行转账（以后开了 PayPal 再加）
 document.addEventListener("change",e=>{if(e.target.name!=="area")return;const f=$("fPay"),uk=area()==="uk";f.querySelectorAll("option").forEach(o=>{o.disabled=uk&&o.value!=="银行转账 Bank transfer"});if(uk&&f.value!=="银行转账 Bank transfer"){f.value="银行转账 Bank transfer";f.dispatchEvent(new Event("change",{bubbles:true}))}});
-const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*x.p.price,0)-dealTotal(it);};
+const subtotal=()=>{const it=items();return it.reduce((s,x)=>s+x.n*upr(x.p,x.n),0)-dealTotal(it);};
 function deliveryMsg(){const m=$("dmsg");if(mode()!=="delivery"||!area()){m.hidden=true;return;}
   const a=DELIVERY[area()],t=subtotal();m.hidden=false;m.classList.toggle("bad",a.min&&t<a.min);
   if(area()==="far")m.innerHTML=BB("运费会在 WhatsApp 上和您商量。冻货和鲜货也可以送。","We'll agree the delivery fee with you on WhatsApp. Frozen and fresh items can be delivered.");
