@@ -2371,6 +2371,8 @@ const PRODUCTS_RAW=[
  {"c": "tofufresh", "zh": "东方龙 Oriental Dragon 油豆腐泡", "en": "Oriental Dragon 东方龙 Deep Fried Tofu Cubes", "spec": "230g", "price": 2.65, "unit": "/包 pack", "uk": true, "img": "img/nw_ns_p6_oddp.jpg", "vg": "vegan"},
  {"c": "tofufresh", "zh": "北佬 Tofu King 嫩豆腐", "en": "Tofu King 北佬 Medium Firm Tofu", "spec": "800g（沥干 600g）", "price": 1.69, "unit": "/盒 box", "uk": true, "img": "img/nw_tf_nen600.jpg", "vg": "vegan"},
  {"c": "tofufresh", "zh": "北佬 Tofu King 板豆腐", "en": "Tofu King 北佬 Firm Tofu", "spec": "800g", "price": 1.69, "unit": "/盒 box", "uk": true, "img": "img/nw_tf_ban800.jpg", "oos": true, "vg": "vegan"},
+ {"c": "tofufresh", "zh": "北佬 Tofu King 北豆腐", "en": "Tofu King 北佬 Firm Tofu", "spec": "550g（沥干 400g）", "price": 1.49, "unit": "/盒 box", "uk": true, "img": "img/hd3_tk_bei550.jpg", "vg": "vegan", "kw": "北豆腐 老豆腐 firm tofu"},
+ {"c": "tofufresh", "zh": "北佬 Tofu King 嫩豆腐", "en": "Tofu King 北佬 Medium Firm Tofu", "spec": "400g", "price": 1.49, "unit": "/盒 box", "uk": true, "img": "img/hd3_tk_nen400.jpg", "vg": "vegan"},
  {"c": "tofufresh", "zh": "北佬 Tofu King 绢豆腐", "en": "Tofu King 北佬 Silken Tofu", "spec": "480g", "price": 1.29, "unit": "/盒 box", "uk": true, "img": "img/nw_tf_juan480.jpg", "oos": true, "vg": "vegan"},
  {"c": "tofufresh", "zh": "北佬 Tofu King 鸡蛋豆腐", "en": "Tofu King 北佬 Egg Tofu", "spec": "130g", "oos": true, "price": 1.19, "unit": "/条 tube", "uk": true, "img": "img/tf_egg.jpg", "vg": "veg"},
  {"c": "tofufresh", "zh": "北佬 Tofu King 干豆腐", "en": "Tofu King 北佬 Paper Tofu", "spec": "230g", "price": 2.59, "uk": true, "img": "img/nw_tf_gan230.jpg", "oos": true, "vg": "vegan"},
@@ -2872,7 +2874,7 @@ const GROUP_N_MIN={soy:6};  // 某些分类手机上多显示几样（酱油：�
 const GN=id=>Math.max(GROUP_N,GROUP_N_MIN[id]||0);
 /* 分类内小类：SUB_MODE 选用哪种分法；组内顺序固定（不受售罄、回货影响） */
 const SUBDEF={tofufresh:{
-  type:[{zh:"北豆腐 · 老豆腐",en:"Firm tofu",t:/老豆腐|板豆腐|手工豆腐/},{zh:"嫩豆腐",en:"Medium firm tofu",t:/嫩豆腐/},{zh:"绢豆腐 · 鸡蛋豆腐",en:"Silken & egg tofu",t:/绢豆腐|鸡蛋豆腐/},{zh:"豆泡 · 豆干",en:"Fried & pressed tofu",t:/豆腐泡|炸豆腐|豆腐条|豆干|干豆腐|百叶/,o:[/豆腐泡|炸豆腐/,/豆腐条/,/五香豆干/,/豆干/,/干豆腐|百叶/]}],
+  type:[{zh:"北豆腐 · 老豆腐",en:"Firm tofu",t:/老豆腐|板豆腐|手工豆腐|北豆腐/},{zh:"嫩豆腐",en:"Medium firm tofu",t:/嫩豆腐/},{zh:"绢豆腐 · 鸡蛋豆腐",en:"Silken & egg tofu",t:/绢豆腐|鸡蛋豆腐/},{zh:"豆泡 · 豆干",en:"Fried & pressed tofu",t:/豆腐泡|炸豆腐|豆腐条|豆干|干豆腐|百叶/,o:[/豆腐泡|炸豆腐/,/豆腐条/,/五香豆干/,/豆干/,/干豆腐|百叶/]}],
   brand:[{zh:"北佬 Tofu King",en:"",t:/北佬/},{zh:"永安 Wing On",en:"",t:/永安/},{zh:"东方龙 Oriental Dragon",en:"",t:/东方龙/}]}};
 SUBDEF.soy={type:[{zh:"生抽 · 头抽",en:"Light soy sauce",t:/生抽|头抽/},{zh:"老抽 · 草菇老抽",en:"Dark soy sauce",t:/老抽|红烧酱油/},{zh:"味极鲜 · 特级酱油",en:"Premium soy sauce",t:/味极鲜|特级酱油|海鲜酱油|凉拌酱油/},{zh:"蒸鱼豉油 · 调味汁",en:"Seasoned soy & sauces",t:/蒸鱼|白灼|饺子|卤水|甜酱油|酱油膏/}]};
 const SUB_MODE={tofufresh:"type",soy:"type"};
