@@ -2603,7 +2603,9 @@ const ARR_DAYS=4;  // 新到货标签显示几天
 const isArr=p=>!p.oos&&!p._preOOS&&((p.arr&&(today0-ukDate(p.arr))/864e5<(p.arrDays||ARR_DAYS)&&(today0-ukDate(p.arr))>=0)||isNew(p)); /* 新品并入新到货 */  // 单个商品可用 "arrDays": 10 延长
 /* 東東厨房 菜谱数据。ing 里的 p = 网站商品中文名（可加 "|规格" 区分同名），网站上有就显示商品卡片、能一键加进购物车；没有 p 的就是普通文字。
    feature: true 的那一道显示在「本周推荐」。cat: quick 快手菜 / home 家常菜 / hotpot 火锅 / sweet 点心甜品 */
-const RECIPES=[
+const RECIPES=[]; /* 店主说用哪道再加进来 */
+/* 草稿：之前写好的 8 道，店主要用时把对象挪进上面的 RECIPES */
+const RECIPES_DRAFT=[
 {id:"mapo",cat:"quick",zh:"麻婆豆腐",en:"Mapo Tofu",serves:2,mins:15,level:1,feature:true,
  intro:["麻辣鲜香的川菜经典，下饭神器。","A Sichuan classic: spicy, numbing and great over rice."],
  ing:[{q:"1 盒",p:"北佬 Tofu King 嫩豆腐|400g"},{q:"150g",zh:"猪肉末（或牛肉末）",en:"Minced pork or beef"},{q:"1 汤匙",p:"川老汇郫县豆瓣"},{q:"半茶匙",p:"正丰特级四川花椒粒"},{q:"1 汤匙",p:"李锦记 Lee Kum Kee 特级鲜味生抽"},{q:"2 根",p:"小葱"},{q:"2 瓣",zh:"蒜",en:"Garlic cloves"},{q:"1 茶匙",zh:"淀粉（勾芡）",en:"Cornflour"}],
@@ -2683,7 +2685,7 @@ function recipeHTML(r,open){const items=r.ing.map(x=>({x,p:recP(x)}));const buy=
   ${buy.length?`<button type="button" class="add raddall" data-raddall="${r.id}">${B(`把 ${buy.length} 样用料加进购物车`,`Add ${buy.length} ingredients to basket`)}</button>`:""}
   <h4>${B("做法","Method")}</h4><ol class="rsteps">${r.steps.map(s=>`<li>${B(s[0],s[1])}</li>`).join("")}</ol>
   ${r.tip?`<p class="rtip">💡 ${B(r.tip[0],r.tip[1])}</p>`:""}</details></article>`}
-function kitchenHTML(){const f=RECIPES.find(r=>r.feature)||RECIPES[0];
+function kitchenHTML(){if(!RECIPES.length)return `<section class="kbox"><h3>${B("東東厨房","Dong Dong Kitchen")}</h3><p>${B("家常菜谱马上就来！用料在店里都买得到，到时候点一下就能加进购物车。","Home recipes are coming soon! Every ingredient we stock will go straight into your basket with one tap.")}</p></section>`;const f=RECIPES.find(r=>r.feature)||RECIPES[0];
   return `<section class="kbox"><h3>${B("東東厨房","Dong Dong Kitchen")}</h3><p>${B("家常菜谱，用料在店里都买得到，点一下就能加进购物车。定期更新。","Easy home recipes. Every ingredient we stock can go straight into your basket. New dishes added regularly.")}</p></section>`+
    `<h3 class="wsph">${B("本周推荐","This week's pick")}</h3>`+recipeHTML(f,true)+
    RCAT.map(([c,zh,en])=>{const L=RECIPES.filter(r=>r.cat===c&&r!==f);return L.length?`<h3 class="wsph">${B(zh,en)}</h3>`+L.map(r=>recipeHTML(r,false)).join(""):""}).join("")}
@@ -2697,8 +2699,8 @@ const ukDate=t=>{const [d,m,y]=t.split("/").map(Number);return new Date(y,m-1,d)
 const today0=new Date(new Date().toDateString());
 const isNew=p=>p.new&&(today0-ukDate(p.new))/864e5<=NEW_DAYS&&(today0-ukDate(p.new))>=0;
 
-if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});{const wi=liveZones.findIndex(z=>z.id==="webonly");liveZones.splice(wi<0?liveZones.length:wi+1,0,{id:"ws",zh:"批发 · 餐饮",en:"Wholesale & catering",isws:true});liveZones.splice(liveZones.findIndex(z=>z.id==="ws"),0,{id:"kitchen",zh:"東東厨房",en:"Dong Dong Kitchen",isws:true});};
-{const ORD=["arr","sale","hotpotz","webonly","snacks","grocery","staples","jpkr","sea","frozen","freshzone","fresh","bakery","preorder","chilled","drinks","household","bulk","ws"];liveZones.sort((x,y)=>{const i=ORD.indexOf(x.id),j=ORD.indexOf(y.id);return (i<0?90:i)-(j<0?90:j)});} /* 分区顺序（店主 19/11 定） */
+if(PRODUCTS.some(isArr))liveZones.splice(0,0,{id:"arr",zh:"新到货",en:"Just in",sale:false,isnew:true});{const wi=liveZones.findIndex(z=>z.id==="webonly");liveZones.splice(wi<0?liveZones.length:wi+1,0,{id:"ws",zh:"批发 · 餐饮",en:"Wholesale & catering",isws:true});liveZones.splice(0,0,{id:"kitchen",zh:"東東厨房",en:"Dong Dong Kitchen",isws:true});};
+{const ORD=["kitchen","arr","sale","hotpotz","webonly","snacks","grocery","staples","jpkr","sea","frozen","freshzone","fresh","bakery","preorder","chilled","drinks","household","bulk","ws"];liveZones.sort((x,y)=>{const i=ORD.indexOf(x.id),j=ORD.indexOf(y.id);return (i<0?90:i)-(j<0?90:j)});} /* 分区顺序（店主 19/11 定） */
 let slides=[],si=0,ptimer=null,ppaused=false;
 function miniCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};
   return `<button type="button" class="pit${p.kg?" kgc":""}" data-zoom="${i}" aria-label="${p.zh} ${p.en}"><span class="pimg">${p.img?`<img src="${src(p.img)}" alt="" loading="lazy">`:`<span class="glyph">${c.g||"食"}</span>`}${onSale(p)?`<span class="pctbadge">Save ${pct(p)}%</span>`:""}${!onSale(p)&&isNew(p)?`<span class="pctbadge newmini minibadge">${B("新品","NEW")}</span>`:""}${!onSale(p)&&!isNew(p)&&isArr(p)?`<span class="pctbadge arrbadge minibadge">${p.arrNew?B("新到货","Just in"):B("回货","Back in stock")}</span>`:""}</span><span class="pn"><span class="lz pnz">${p.zh}</span><span class="lb"> </span><span class="le pne">${p.en}</span>${(p._per&&p.kg?p._sp0:p.spec)?" "+sp(p._per&&p.kg?p._sp0:p.spec):""}</span><span class="pp${p.kg?" kgp":""}">${p.mp?B("时价","Market price"):p.kg?`${money(p.price)}<small class="ppkg">/kg</small>`:p.c==="veg"&&p.unit?`${money(p.price)}<small class="ppkg">${sp(p.unit)}</small>`:money(p.price)}${onSale(p)?`<s>${money(p.was)}</s>`:""}</span>${p.kg?`<span class="pper pperx">${p.per?sp(p.per):`250g ≈ ${money(p.price/4)}`}</span>`:""}${p.short&&p.bbd?`<span class="pshort">${B("临期","Best before")} ${p.bbd}</span>`:""}</button>`;}
@@ -3210,7 +3212,7 @@ $("drawer").addEventListener("click",e=>{if(e.target===$("drawer"))$("drawer").h
 /* ---------- 全部分类 ---------- */
 function wsHTML(){return `<section class="wsbox"><h3>${B("批发 · 餐饮供货","Wholesale &amp; catering")}</h3><p>${B("为餐馆、外卖店、奶茶店和其他商家供货。东東超市 2007 年开业，货源稳定，品种齐全。","We supply restaurants, takeaways, cafés and other businesses. Dong Dong has been trading in Huddersfield since 2007.")}</p><ul class="wsl"><li>${B("整箱批发价","Wholesale prices by the case")}</li><li>${B("可开发票","Invoices provided")}</li><li>${B("网站上没有的货也可以问","Ask about items not on the website")}</li></ul><p class="wsq">${B("价格和详情请 WhatsApp 咨询，把要的货发给我们就行。","Message us on WhatsApp for prices and details. Just send us your list.")}</p><a class="abtn wsbtn" href="https://wa.me/447546185999?text=%E4%BD%A0%E5%A5%BD%EF%BC%8C%E6%88%91%E6%83%B3%E5%92%A8%E8%AF%A2%E6%89%B9%E5%8F%91%20/%20%E9%A4%90%E9%A5%AE%E4%BE%9B%E8%B4%A7%E3%80%82%0AHello%2C%20I%27d%20like%20to%20ask%20about%20wholesale%20/%20catering%20supply." target="_blank" rel="noopener">${B("WhatsApp 咨询批发","Ask about wholesale on WhatsApp")}</a><p class="wstel">WhatsApp / Tel: 07546 185999</p></section>`;}
 function allCatsHTML(){
-  const Q=[["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["preorder","预订","Pre-order"],["kitchen","東東厨房","Dong Dong Kitchen"],["ws","批发 · 餐饮","Wholesale & catering"]].filter(([id])=>liveZones.some(z=>z.id===id));
+  const Q=[["kitchen","東東厨房","Dong Dong Kitchen"],["arr","新到货","Just in"],["sale","特价","Special offer"],["webonly","网上专享","Online exclusive"],["preorder","预订","Pre-order"],["ws","批发 · 餐饮","Wholesale & catering"]].filter(([id])=>liveZones.some(z=>z.id===id));
   const TOP=["snacks","grocery","staples","jpkr","sea","frozen","freshzone","fresh","bakery","preorder","chilled","drinks","household","bulk"];const rest=liveZones.filter(z=>!["arr","sale","new","webonly","preorder","ws","kitchen"].includes(z.id)).sort((a,b)=>{const i=TOP.indexOf(a.id),j=TOP.indexOf(b.id);return (i<0?99:i)-(j<0?99:j)});
   const thumb=z=>{const L=PRODUCTS.filter(p=>inZone(p,z.id)&&p.img&&!isOOS(p));const p=L.find(x=>/\/hd_/.test(x.img))||L[0];return p?`<img src="${src(p.img)}" alt="" loading="lazy">`:'<span class="ph"></span>';};
   return `<div class="caquick">${Q.map(([id,zh,en])=>`<button type="button" class="q-${id}" data-gz="${id}">${zh}<small>${en}</small></button>`).join("")}</div>`+
