@@ -2784,10 +2784,19 @@ const ARR_DAYS=4;  // 新到货标签显示几天
 const isArr=p=>!p.oos&&!p._preOOS&&((p.arr&&(today0-ukDate(p.arr))/864e5<(p.arrDays||ARR_DAYS)&&(today0-ukDate(p.arr))>=0)||isNew(p)); /* 新品并入新到货 */  // 单个商品可用 "arrDays": 10 延长
 /* 東東厨房 菜谱数据。ing 里的 p = 网站商品中文名（可加 "|规格" 区分同名），网站上有就显示商品卡片、能一键加进购物车；没有 p 的就是普通文字。
    feature: true 的那一道显示在「本周推荐」。cat: quick 快手菜 / home 家常菜 / hotpot 火锅 / sweet 点心甜品 */
-const RECIPES=[]; /* 店主说用哪道再加进来 */
+const RECIPES=[
+{id:"hotpothome",feature:true,cat:"hotpot",zh:"在家吃火锅怎么配",en:"How to Set Up Hot Pot at Home",serves:4,mins:30,level:1,
+ intro:["一锅辣一锅不辣，4 个人吃饱的份量清单。","One spicy broth, one mild. A shopping list that feeds four."],
+ ing:[{q:"1 包",p:"海底捞 Haidilao 浓香牛油火锅底料"},{q:"1 包",p:"海底捞番茄火锅底料|200g"},{q:"1 盒",p:"京厨火锅羊肉卷"},{q:"1 盒",p:"京厨火锅牛肉卷"},{q:"1 包",p:"Oriental Kitchen 万兴 牛肉丸"},{q:"1 包",p:"永安 Wing On 火锅冻豆腐"},{q:"1 包",p:"金针菇"},{q:"1 颗",p:"大白菜"},{q:"2 包",p:"海底捞 Haidilao 火锅蘸料 原味（袋装）"},{q:"1 袋",p:"六必居 Liubiju 老北京二八酱（芝麻花生酱）"}],
+ steps:[["鸳鸯锅一边放牛油底料、一边放番茄底料，各加 1 升水煮开。","Use a split pot: beef tallow base on one side, tomato on the other, each with 1 litre of water, and bring to the boil."],
+  ["先下耐煮的：丸子、冻豆腐、白菜梗。","Start with the slow-cooking items: meatballs, frozen tofu and cabbage stems."],
+  ["肉卷最后涮，变色就捞，七八秒就好。","Cook the meat slices last, lifting them out as soon as they change colour, about 8 seconds."],
+  ["蘸料：二八酱加一点热汤调稀，放蒜末、葱花、香菜，或直接用海底捞蘸料。","Dipping sauce: thin the sesame-peanut paste with a little hot broth and add garlic, spring onion and coriander, or use the ready-made dipping sauce."]],
+ tip:["肉卷不用解冻，直接下锅更好夹。","Cook the meat slices from frozen. They hold together better."]}
+]; /* 店主说用哪道再加进来 */
 /* 草稿：之前写好的 8 道，店主要用时把对象挪进上面的 RECIPES */
 const RECIPES_DRAFT=[
-{id:"mapo",cat:"quick",zh:"麻婆豆腐",en:"Mapo Tofu",serves:2,mins:15,level:1,feature:true,
+{id:"mapo",cat:"quick",zh:"麻婆豆腐",en:"Mapo Tofu",serves:2,mins:15,level:1,
  intro:["麻辣鲜香的川菜经典，下饭神器。","A Sichuan classic: spicy, numbing and great over rice."],
  ing:[{q:"1 盒",p:"北佬 Tofu King 嫩豆腐|400g"},{q:"150g",zh:"猪肉末（或牛肉末）",en:"Minced pork or beef"},{q:"1 汤匙",p:"川老汇郫县豆瓣"},{q:"半茶匙",p:"正丰特级四川花椒粒"},{q:"1 汤匙",p:"李锦记 Lee Kum Kee 特级鲜味生抽"},{q:"2 根",p:"小葱"},{q:"2 瓣",zh:"蒜",en:"Garlic cloves"},{q:"1 茶匙",zh:"淀粉（勾芡）",en:"Cornflour"}],
  steps:[["豆腐切 2cm 小块，放进加了一点盐的开水里煮 1 分钟，捞出备用，这样不容易碎。","Cut the tofu into 2cm cubes and simmer in lightly salted water for 1 minute, then drain. This keeps it from breaking."],
@@ -2837,14 +2846,6 @@ const RECIPES_DRAFT=[
   ["鸡蛋打散，加菜脯、葱花和胡椒粉拌匀。","Beat the eggs and mix in the radish, spring onion and pepper."],
   ["锅里多放点油，倒入蛋液，中小火煎到两面金黄。","Pour into a well-oiled pan and fry over medium-low heat until golden on both sides."]],
  tip:["菜脯本身有咸味，蛋液不用再加盐。","The radish is already salty, so no need to add salt to the eggs."]},
-{id:"hotpothome",cat:"hotpot",zh:"在家吃火锅怎么配",en:"How to Set Up Hot Pot at Home",serves:4,mins:30,level:1,
- intro:["一锅辣一锅不辣，4 个人吃饱的份量清单。","One spicy broth, one mild. A shopping list that feeds four."],
- ing:[{q:"1 包",p:"海底捞 Haidilao 浓香牛油火锅底料"},{q:"1 包",p:"海底捞番茄火锅底料|200g"},{q:"1 盒",p:"京厨火锅羊肉卷"},{q:"1 盒",p:"京厨火锅牛肉卷"},{q:"1 包",p:"Oriental Kitchen 万兴 牛肉丸"},{q:"1 包",p:"永安 Wing On 火锅冻豆腐"},{q:"1 包",p:"金针菇"},{q:"1 颗",p:"大白菜"},{q:"2 包",p:"海底捞 Haidilao 火锅蘸料 原味（袋装）"},{q:"1 袋",p:"六必居 Liubiju 老北京二八酱（芝麻花生酱）"}],
- steps:[["鸳鸯锅一边放牛油底料、一边放番茄底料，各加 1 升水煮开。","Use a split pot: beef tallow base on one side, tomato on the other, each with 1 litre of water, and bring to the boil."],
-  ["先下耐煮的：丸子、冻豆腐、白菜梗。","Start with the slow-cooking items: meatballs, frozen tofu and cabbage stems."],
-  ["肉卷最后涮，变色就捞，七八秒就好。","Cook the meat slices last, lifting them out as soon as they change colour, about 8 seconds."],
-  ["蘸料：二八酱加一点热汤调稀，放蒜末、葱花、香菜，或直接用海底捞蘸料。","Dipping sauce: thin the sesame-peanut paste with a little hot broth and add garlic, spring onion and coriander, or use the ready-made dipping sauce."]],
- tip:["肉卷不用解冻，直接下锅更好夹。","Cook the meat slices from frozen. They hold together better."]},
 {id:"tangyuan",cat:"sweet",zh:"姜汤芝麻汤圆",en:"Sesame Tang Yuan in Ginger Syrup",serves:2,mins:15,level:1,
  intro:["冬天暖身的甜点，元宵、冬至都适合。","A warming winter dessert, perfect for the Lantern Festival and the winter solstice."],
  ing:[{q:"1 包",p:"第一家 Spring Home 芝麻汤圆"},{q:"1 块（约 30g）",p:"姜"},{q:"2 片",p:"南字牌黄片糖"}],
