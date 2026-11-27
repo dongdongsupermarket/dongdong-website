@@ -2931,7 +2931,7 @@ $("q").addEventListener("compositionend",e=>{qComp=false;e.target.dispatchEvent(
 $("q").addEventListener("input",e=>{if(qComp||e.isComposing)return;const v=e.target.value.trim().toLowerCase();clearTimeout(qT);
   qT=setTimeout(()=>doSearch(v),e.isTrusted?(v.length<=1?260:180):0)});
 /* ---------- 搜索联想：一边打字一边弹出建议（关键词 + 商品），拼音输入法打字时也按字母先给建议 ---------- */
-const SUGGEST_ON=false; // 老板确认样子后改成 true
+const SUGGEST_ON=true;
 let _SUGT=null,suggSel=-1,suggT=0;
 function suggTerms(){if(_SUGT)return _SUGT;const M=new Map(),add=(t,w)=>{t=String(t||"").trim();if(t.length<2||t.length>16)return;const k=t.toLowerCase();if(!M.has(k)||M.get(k).w<w)M.set(k,{t,w});};
   PRODUCTS.forEach(p=>{if(p.off)return;const z=toSimp(String(p.zh||"")).replace(/（[^）]*）|\([^)]*\)/g,"").trim();add(z,3);
