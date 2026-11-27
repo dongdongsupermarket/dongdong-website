@@ -1,5 +1,5 @@
-// 東東超市 离线缓存 20261127204701
-const V="dd-20261127204701";
+// 東東超市 离线缓存 20261127205439
+const V="dd-20261127205439";
 self.addEventListener("install",e=>{self.skipWaiting()});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V&&k.startsWith("dd-")&&!k.startsWith("dd-img")).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",e=>{const r=e.request;if(r.method!=="GET")return;const u=new URL(r.url);
