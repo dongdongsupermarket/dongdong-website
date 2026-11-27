@@ -718,6 +718,9 @@ html .pit.dcard .pp.dpp{margin-top:auto}
 .dcard .dmeta s{color:var(--muted)}
 .dcard .dsave{color:#b02824;font-weight:700}
 .dcard .dbbd{padding-bottom:8px;color:#8a5a00;font-weight:600}
+/* 价格对齐：没有保质期那一行的，底下留同样的空，所有价格在同一条线上 */
+.dcard .dwasline:last-child{padding-bottom:31px!important}
+html .pit.dcard .pp.dpp:last-child{margin-bottom:50px}
 .pit .pp .ppkg{font-size:12px;font-weight:600;margin-left:1px;white-space:nowrap}
 .swrap{position:relative;min-width:0;width:100%;max-width:100%}.sarr{position:absolute;top:38%;transform:translateY(-50%);z-index:3;width:40px;height:40px;border-radius:50%;border:1px solid rgba(0,0,0,.12);background:rgba(255,255,255,.95);color:var(--ink);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.18);cursor:pointer;padding:0}.sarr.l{left:-6px}.sarr.r{right:-6px}.sarr:hover{background:#fff}.sarr[hidden]{display:none}@media(max-width:600px){.sarr{width:34px;height:34px}}
 .pit .pper{display:block;padding:0 8px 8px;font-size:11.5px;line-height:1.3;color:var(--muted)}
