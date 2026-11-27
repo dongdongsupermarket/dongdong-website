@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /haibao/
 Sitemap: https://dongdong.co.uk/sitemap.xml
