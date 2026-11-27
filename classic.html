@@ -588,6 +588,7 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
 .promohint{margin:6px 0 2px;padding:8px 10px;border-radius:10px;background:#fff1ec;color:#9a2a12;font-size:14px}
 .promohint .pbar{height:6px;border-radius:6px;background:#f6d5c8;margin-top:6px;overflow:hidden}.promohint .pbar i{display:block;height:100%;background:#d9480f;border-radius:6px}
 .promohint.ok{background:#e3f1e8;color:#1f6b3c}
+.wend{display:block;margin-top:3px;font-size:12px;font-weight:700;color:#b3261e;background:#fff1ec;border-radius:6px;padding:1px 6px;width:fit-content}
 </style>
 
 <div class="promobar" id="promobar" hidden></div>
@@ -2863,7 +2864,7 @@ $("promo").addEventListener("focusin",()=>ppaused=true);$("promo").addEventListe
 let tx=null;$("pv").addEventListener("touchstart",e=>{tx=e.touches[0].clientX;ppaused=true},{passive:true});
 $("pv").addEventListener("touchend",e=>{if(tx!==null){const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40){showSlide(si+(dx<0?1:-1));}}tx=null;ppaused=false;startAuto();});
 // 首页"网上专享"那一排：暂时关掉（改成 true 就重新显示）
-const SHOW_WEB=false;
+const SHOW_WEB=false; // 老板确认后改 true
 function renderArr(){const L=PRODUCTS.filter(p=>isArr(p)&&!p.arrHide).sort((a,b)=>((isNew(b)?1:0)-(isNew(a)?1:0))||(ukDate(b.arr||b.new)-ukDate(a.arr||a.new)));$("arrivals").hidden=!L.length;if(!L.length)return;
   $("ago").dataset.go="arr";
   $("atitle").innerHTML=BS("新到货","Just in"," ");
@@ -2871,8 +2872,11 @@ function renderArr(){const L=PRODUCTS.filter(p=>isArr(p)&&!p.arrHide).sort((a,b)
   if(true){$("astrip").innerHTML=L.map(miniCard).join("");return;}
   $("astrip").innerHTML=G.map(g=>{const ims=g.items.filter(p=>p.img).slice(0,4);
     return `<button type="button" class="pit agrp" data-ag="${g.c.id}" aria-label="${g.c.zh} ${g.c.en}"><span class="pimg"><span class="acol n${ims.length}">${ims.map(p=>`<img src="${src(p.img)}" alt="" loading="lazy">`).join("")||`<span class="glyph">${g.c.g||"食"}</span>`}</span></span><span class="pn"><span class="le pne">${g.c.en}</span><span class="lb"> </span><span class="lz pnz">${g.c.zh}</span></span><span class="pp">${g.items.length} ${B("样","items")} ›</span></button>`}).join("");}
-function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&!isOOS(p)):[];$("webdeals").hidden=!L.length;if(!L.length)return;
-  $("wtitle").innerHTML=BS("网上专享","Online exclusive"," ");$("wstrip").innerHTML=L.map(miniCard).join("");}
+function renderWeb(){renderArr();const L=SHOW_WEB?PRODUCTS.filter(p=>p.web&&p.c!=="bundle"&&!isOOS(p)):[];$("webdeals").hidden=!L.length;if(!L.length)return;
+  L.sort((a,b)=>(a.until?ukDate(a.until):9e15)-(b.until?ukDate(b.until):9e15)); /* 快结束的排前面 */
+  const wd=t=>["周日","周一","周二","周三","周四","周五","周六"][ukDate(t).getDay()];
+  $("wtitle").innerHTML=BS("网上特价","Online deals"," ");
+  $("wstrip").innerHTML=L.map(p=>{const h=miniCard(p);return p.until?h.replace('</span><span class="pp',`<span class="wend">${B(`${wd(p.until)} ${p.until.slice(0,5)} 结束`,`Ends ${p.until.slice(0,5)}`)}</span></span><span class="pp`):h;}).join("");}
 // 首页特价那一排：暂时关掉（改成 true 就重新显示）
 const SHOW_DEALS=true; /* 特价少于 3 样时自动不显示 */
 function dealCard(p){const i=PRODUCTS.indexOf(p),c=CATS.find(x=>x.id===p.c)||{};const sv=onSale(p)?p.was-p.price:0;
