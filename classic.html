@@ -568,8 +568,17 @@ html #arrivals .pit .pp,html #arrivals .pit .pp .ppkg{color:var(--ink)}html .pit
 .hsopts input:focus-visible+span{outline:2px solid #1f7a46;outline-offset:2px}
 button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
 .sendbtn[hidden],.sendnote[hidden]{display:none!important}
+.promobar{background:linear-gradient(90deg,#b3261e,#d9480f);color:#fff;text-align:center;padding:9px 14px;font-size:15px;line-height:1.35;cursor:pointer}
+.promobar[hidden]{display:none}.promobar b{letter-spacing:.3px}.promobar .pcd{display:inline-block;margin-left:8px;background:rgba(255,255,255,.2);border-radius:999px;padding:1px 10px;font-size:13px;font-variant-numeric:tabular-nums}
+.promobar .pl1{font-size:16px}.promobar .pl2{font-size:13px;margin-top:3px;opacity:.95}.promobar .pcd{margin:0 4px 0 0}
+.promoline{display:flex;justify-content:space-between;color:#b3261e;font-weight:700;padding:2px 0}
+.promoline[hidden],.promohint[hidden]{display:none}
+.promohint{margin:6px 0 2px;padding:8px 10px;border-radius:10px;background:#fff1ec;color:#9a2a12;font-size:14px}
+.promohint .pbar{height:6px;border-radius:6px;background:#f6d5c8;margin-top:6px;overflow:hidden}.promohint .pbar i{display:block;height:100%;background:#d9480f;border-radius:6px}
+.promohint.ok{background:#e3f1e8;color:#1f6b3c}
 </style>
 
+<div class="promobar" id="promobar" hidden></div>
 <header>
   <div class="sign"><div class="wrap">
     <span class="cn-name">東東超市</span>
@@ -709,7 +718,10 @@ button.wa{width:100%;border:0;cursor:pointer;font-family:inherit}
     <div class="panel-head"><h2 id="cartTitle"><span class="lz">购物车</span> <span class="le en">Basket</span></h2><button type="button" class="x" id="closeCart"><span class="lz">关闭</span> <span class="le">Close</span></button></div>
     <div class="lines" id="lines"></div>
     <div class="clearrow"><button type="button" class="clearcart" id="clearCart" hidden><span class="lz">🗑 清空购物车</span> <span class="le">Clear basket</span></button></div>
+    <div class="promohint" id="promoHint" hidden></div>
     <div class="total"><span><span class="lz">商品合计</span> <span class="le">Subtotal</span></span><span id="panelTotal">£0.00</span></div>
+    <div class="promoline" id="promoLine" hidden><span id="promoName"></span><span id="promoOff"></span></div>
+    <div class="total" id="promoPayRow" hidden><span><span class="lz">优惠后合计</span> <span class="le">Total after offer</span></span><span id="promoPay"></span></div>
     <form id="orderForm" novalidate>
       <fieldset>
         <legend><span class="lz">取货方式</span><span class="lb"> · </span><span class="le">Pickup or delivery</span></legend>
@@ -3984,7 +3996,7 @@ function renderCart(){
   $("alcNote").hidden=!it.some(x=>isAlc(x.p));$("preNote").hidden=!it.some(x=>isPre(x.p));$("whNote").hidden=!it.some(x=>isWH(x.p));
   if(typeof deliveryMsg==="function")deliveryMsg();
   $("cartbar").hidden=!count;document.body.classList.toggle("has-cart",!!count);
-  $("cartCount").textContent=count;$("cartTotal").textContent=money(total);$("cartHint").textContent=count?cartHint(total):"";$("panelTotal").textContent=money(total);
+  $("cartCount").textContent=count;$("cartTotal").textContent=money(total);$("cartHint").textContent=count?cartHint(total):"";$("panelTotal").textContent=money(total);renderPromoCart(total);{const c=promoCalc();if(c&&c.got)$("cartTotal").textContent=money(total-c.off);}
   $("lines").innerHTML=it.length?it.map(x=>`<div class="line"><span class="nm"><span class="lz">${x.p.zh}</span><span class="lb"><br></span><span class="le en">${x.p.en}</span>${x.p.spec?` <span class="en">· ${sp(x.p.spec)}</span>`:""}${isPre(x.p)&&nextArrival(x.p)?`<span class="precart">${B("预订 · 最早","Pre-order · earliest")} ${dm(nextArrival(x.p))}</span>`:""}</span><span class="lp">${x.p.mp?B("时价","Market price"):(x.p.kg||x.p.approx?"≈ ":"")+money(x.n*upr(x.p,x.n))}</span>${ctrl(x.i)}</div>`).join("")+dealNeed(it).map(g=>`<div class="line dealrow dealneed"><span class="nm">${B(`再选 ${g.need} 件${g.d.label?g.d.label:""}，享${dealText(g.d)[0]}`,`Add ${g.need} more for ${dealText(g.d)[1]}`)}</span></div>`).join("")+deals.map(d=>`<div class="line dealrow"><span class="nm">${B("优惠","Deal")}：${B(d.zh,d.en)}<span class="en"> · ${d.names.map(p=>LANG==="en"?p.en:p.zh).join(" / ")}</span></span><span class="lp">−${money(d.save)}</span></div>`).join("")
     :`<p class="note">${BB("购物车是空的。","Your basket is empty.")}</p>`;
   {const cb=$("clearCart");if(cb){cb.hidden=!it.length;if(!it.length)resetClear()}}
@@ -4001,7 +4013,9 @@ function buildMessage(){
   const L=["東東超市 新订单 New order",`订单编号 Order no.: ${orderNo()}`,""];
   it.forEach(x=>L.push(`${x.p.kg?(x.p.pc?`${Math.round(x.n/x.p.pc)} 根 pc（约 ${kgFmt(x.n)} kg）×`:`约 ${kgFmt(x.n)} kg ×`):`${x.n} ×`} ${x.p.web?"【网上特价 Online deal】":""}${x.p.zh} ${x.p.en}${x.p.spec?` (${x.p.spec})`:""}${x.p.exvat?` 【£${x.p.exvat.toFixed(2)} + VAT = £${x.p.price.toFixed(2)}】`:""} = ${x.p.mp?"时价，待确认 Market price, to be confirmed":x.p.kg?`约 ${money(x.n*upr(x.p,x.n))}（${money(upr(x.p,x.n))}/kg${x.p.tier&&x.n>=x.p.tier.min-1e-9?` 预订价 pre-order price`:""}，按实际重量计价 priced by actual weight）`:money(x.n*upr(x.p,x.n))}${onSale(x.p)&&!x.p.web?` 【特价 SALE，原价 was ${money(x.p.was)}${x.p.bbd?`，BBD ${x.p.bbd}`:""}】`:""}${isWH(x.p)?` 【仓库货，需提前 ${whLead(x.p)} 天 Warehouse item, ${whLead(x.p)} days' notice】`:""}${x.p.approx?" 【约价，按实际重量计 approx., priced by actual weight】":""}${hasDeal(x.p)?` 【优惠 DEAL：${dealText(x.p.deal).join(" ")}】`:""}${isPre(x.p)&&nextArrival(x.p)?` 【预订 PRE-ORDER，最早 earliest ${DAYS[nextArrival(x.p).getDay()][0]} ${DAYS[nextArrival(x.p).getDay()][1]} ${dm(nextArrival(x.p))}】`:""}${x.p.inc?"\n"+x.p.inc.map(c=>"    · "+c[0]).join("\n"):""}`));
   if(deals.length){L.push("");deals.forEach(dd=>L.push(`优惠 Deal: ${dd.zh} ${dd.en}（${dd.names.map(p=>p.zh).join("/")}）−${money(dd.save)}`));}
-  L.push("",`商品合计 Subtotal: ${it.some(x=>x.p.kg||x.p.approx)?"约 approx. ":""}${money(total)}${it.some(x=>x.p.mp)?" + 时价商品 market-price items":""}`,"");
+  L.push("",`商品合计 Subtotal: ${it.some(x=>x.p.kg||x.p.approx)?"约 approx. ":""}${money(total)}${it.some(x=>x.p.mp)?" + 时价商品 market-price items":""}`);
+  {const c=promoCalc();if(c&&c.got)L.push(`网上满减 Online offer（满 ${pm(c.got[0])} 减 ${pm(c.got[1])}）: −${money(c.got[1])}`,`优惠后合计 Total after offer: ${money(total-c.got[1])}`);}
+  L.push("");
   if(it.some(x=>isAlc(x.p)))L.push("含须年满18岁商品（酒类/刀具/燃气罐），本人已年满18岁 Contains age-restricted items, I am 18 or over","");
   L.push(`方式 Method: ${d?"送货上门 Delivery":"到店自取 Collect in store"}`);
   L.push(`姓名 Name: ${$("fName").value.trim()}`,`电话 Phone: ${$("fPhone").value.trim()}`);
@@ -4048,6 +4062,34 @@ function problem(){
   if(mode()==="delivery"&&(!$("fAddr").value.trim()||!$("fPost").value.trim()))return B("送货请填写地址和邮编。","Please enter your address and postcode for delivery.");
   return "";
 }
+/* ---------- 网上满减活动 ----------
+   每次活动加一行：from/until 写 dd/mm/yyyy（含当天），tiers 写 [满多少, 减多少]，可以多档。到期自动消失。
+   saleCounts：已经特价的商品算不算进门槛（true 算 / false 不算）。预订鲜肉、批发不算。 */
+const PROMOS=[];
+const activePromo=()=>PROMOS.find(p=>today0>=ukDate(p.from)&&today0<=ukDate(p.until))||null;
+function promoBase(P){const it=items().filter(x=>!isPre(x.p)&&!isWH(x.p)&&(P.saleCounts!==false||!onSale(x.p)));
+  return it.reduce((s,x)=>s+x.n*upr(x.p,x.n),0);}
+function promoCalc(){const P=activePromo();if(!P)return null;const base=promoBase(P),T=[...P.tiers].sort((a,b)=>a[0]-b[0]);
+  let got=null;T.forEach(t=>{if(base>=t[0])got=t});const next=T.find(t=>base<t[0])||null;return {P,base,got,next,off:got?got[1]:0};}
+const pm=v=>"£"+(Number.isInteger(v)?v:v.toFixed(2));
+function promoTierTxt(P,lang){return P.tiers.map(t=>lang==="en"?`spend ${pm(t[0])}, save ${pm(t[1])}`:`满 ${pm(t[0])} 减 ${pm(t[1])}`).join(lang==="en"?" · ":"，");}
+function renderPromoBar(){const P=activePromo(),b=$("promobar");if(!b)return;if(!P){b.hidden=true;return;}
+  const end=ukDate(P.until);end.setHours(23,59,59);const ms=end-new Date();if(ms<=0){b.hidden=true;return;}
+  const d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);
+  const wd=["周日","周一","周二","周三","周四","周五","周六"][end.getDay()],wde=end.toLocaleDateString("en-GB",{weekday:"short"});
+  const cd=d>0?B(`还剩 ${d} 天 ${h} 小时`,`${d}d ${h}h left`):B(`还剩 ${h} 小时 ${m} 分`,`${h}h ${m}m left`);
+  const dd=P.until.slice(0,5);
+  b.innerHTML=`<div class="pl1">🔥 <span class="lz"><b>网上下单${promoTierTxt(P,"zh")}</b></span><span class="lb"> · </span><span class="le"><b>Online: ${promoTierTxt(P,"en")}</b></span></div><div class="pl2"><span class="pcd">${cd}</span> ${B(`${wd} ${dd} 结束，购物车自动减价`,`Ends ${wde} ${dd}, discount applied in basket`)}</div>`;
+  b.hidden=false;}
+$("promobar")&&$("promobar").addEventListener("click",()=>{const e=$("products");e&&e.scrollIntoView({behavior:"smooth"});});
+function renderPromoCart(total){const c=promoCalc(),h=$("promoHint");if(!h)return;
+  if(!c||!items().length){h.hidden=true;$("promoLine").hidden=true;$("promoPayRow").hidden=true;return;}
+  h.hidden=false;h.classList.toggle("ok",!c.next);
+  if(c.next){const need=c.next[0]-c.base,pct=Math.min(100,c.base/c.next[0]*100);
+    h.innerHTML=BB(`再买 ${money(need)} 就减 ${pm(c.next[1])}${c.got?`（现在已减 ${pm(c.got[1])}）`:""}`,`Add ${money(need)} more to save ${pm(c.next[1])}${c.got?` (now saving ${pm(c.got[1])})`:""}`)+`<div class="pbar"><i style="width:${pct}%"></i></div>`;}
+  else h.innerHTML=BB(`✓ 已满 ${pm(c.got[0])}，减 ${pm(c.got[1])}`,`✓ Over ${pm(c.got[0])}: you save ${pm(c.got[1])}`);
+  $("promoLine").hidden=!c.got;$("promoPayRow").hidden=!c.got;
+  if(c.got){$("promoName").innerHTML=B(`网上满减（满 ${pm(c.got[0])} 减 ${pm(c.got[1])}）`,"Online offer");$("promoOff").textContent="−"+money(c.got[1]);$("promoPay").textContent=money(total-c.got[1]);}}
 function updateLink(){const m=buildMessage();$("sendWa").href=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(m)}`;
   $("sendMail").href=`mailto:info@dongdong.co.uk?subject=${encodeURIComponent("東東超市 新订单 New order "+orderNo())}&body=${encodeURIComponent(m)}`;}
 $("orderForm").addEventListener("input",()=>{$("err").hidden=true;updateLink();});
@@ -4148,7 +4190,7 @@ const toTop=$("toTop");
 addEventListener("scroll",()=>{toTop.hidden=scrollY<700;},{passive:true});
 toTop.addEventListener("click",()=>scrollTo({top:0,behavior:reduce?"auto":"smooth"}));
 applyLang();
-render();renderCart();renderPromo();startAuto();renderDeals();startDeals();startArr();
+render();renderCart();renderPromoBar();setInterval(renderPromoBar,60000);renderPromo();startAuto();renderDeals();startDeals();startArr();
 const now=new Date(new Date().toLocaleString("en-US",{timeZone:"Europe/London"}));
 const d=now.getDay(),h=now.getHours()+now.getMinutes()/60;
 $("hours").innerHTML=[1,2,3,4,5,6,0].map(i=>`<tr class="${i===d?"today":""}"><td>${B(DAYS[i][0],DAYS[i][1],"en")}</td><td>${HOURS[i]?fmt(HOURS[i][0])+" – "+fmt(HOURS[i][1]):B("休息","Closed")}</td></tr>`).join("");
