@@ -531,7 +531,9 @@ html .pit.dcard .dwas{font-size:13px;font-weight:400;color:#8a8a8a;text-decorati
 .dcard .dwasline{display:block!important;padding-bottom:8px}
 html .pit.dcard{display:flex!important;flex-direction:column}
 /* 特价条图片：iPhone/微信里图片框会被压扁成 0 高看不见，固定成正方形不许压缩 */
-html .pit.dcard .pimg{flex:none!important;height:0!important;padding-top:100%;aspect-ratio:auto!important}
+/* 特价条图片：苹果手机里绝对定位的图片不显示，改成普通排版的正方形图 */
+html .pit.dcard .pimg{flex:none!important;height:auto!important;padding-top:0!important;aspect-ratio:auto!important;display:block}
+html .pit.dcard .pimg>img{position:static!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1/1;object-fit:contain}
 html .pit.dcard .pp.dpp{margin-top:auto}
 .dcard .dmeta{display:flex;flex-wrap:wrap;gap:2px 8px;padding:0 8px 4px;font-size:12px;color:var(--muted)}
 .dcard .dmeta s{color:var(--muted)}

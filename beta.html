@@ -713,7 +713,9 @@ html .pit.dcard .dwas{font-size:13px;font-weight:400;color:#8a8a8a;text-decorati
 .dcard .dwasline{display:block!important;padding-bottom:8px}
 html .pit.dcard{display:flex!important;flex-direction:column}
 /* 特价条图片：iPhone/微信里图片框会被压扁成 0 高看不见，固定成正方形不许压缩 */
-html .pit.dcard .pimg{flex:none!important;height:0!important;padding-top:100%;aspect-ratio:auto!important}
+/* 特价条图片：苹果手机里绝对定位的图片不显示，改成普通排版的正方形图 */
+html .pit.dcard .pimg{flex:none!important;height:auto!important;padding-top:0!important;aspect-ratio:auto!important;display:block}
+html .pit.dcard .pimg>img{position:static!important;display:block!important;width:100%!important;height:auto!important;aspect-ratio:1/1;object-fit:contain}
 html .pit.dcard .pp.dpp{margin-top:auto}
 .dcard .dmeta{display:flex;flex-wrap:wrap;gap:2px 8px;padding:0 8px 4px;font-size:12px;color:var(--muted)}
 .dcard .dmeta s{color:var(--muted)}
@@ -1462,7 +1464,7 @@ const PRODUCTS_RAW=[
 {"c": "chilli", "zh": "杨协成娘惹多巴酱（印尼炒饭酱）", "en": "Yeo's Nasi Goreng Paste (Indonesian Style)", "spec": "190g", "price": 2.39, "img": "img/hd_yeo_nasigoreng.jpg", "halal": true},
  {"c": "sauce", "zh": "杨协成炒饭酱", "en": "Yeo's Nasi Goreng Paste", "spec": "190g", "price": 2.39, "img": "img/sw_yeo_nasi.jpg", "halal": true},
  {"c": "chilli", "zh": "李锦记蒜蓉辣椒酱", "en": "Lee Kum Kee Chilli Garlic Sauce", "spec": "368g", "arr": "25/11/2026", "price": 2.55, "img": "img/hd_lkk_chilligarlic.jpg"},
- {"c": "sauce", "zh": "李锦记蒜蓉酱", "en": "Lee Kum Kee Minced Garlic Sauce", "spec": "326g", "price": 3.29, "img": "img/hd_lkk_garlic.jpg"},
+ {"c": "sauce", "zh": "李锦记蒜蓉酱", "en": "Lee Kum Kee Minced Garlic Sauce", "spec": "326g", "price": 3.29, "img": "img/hd_lkk_garlic.jpg", "arr": "27/11/2026"},
  {"c": "sauce", "zh": "李锦记姜蓉酱", "en": "Lee Kum Kee Minced Ginger Sauce", "spec": "326g", "price": 4.35, "img": "img/hd_lkk_ginger.jpg"},
  {"c": "sauce", "zh": "淘大港式车仔风味酱", "en": "Amoy Hong Kong Cart Style Sauce", "spec": "220g", "price": 4.49, "img": "img/hd_amoy_chezai.jpg"},
  {"c": "sauce", "zh": "葱伴侣黄豆酱", "en": "Cong Ban Lv Soybean Paste", "spec": "300g", "price": 1.55, "img": "img2/q7_01.jpg"},
@@ -2364,7 +2366,7 @@ const PRODUCTS_RAW=[
  {"c": "jpsauce", "zh": "工研寿司酱油", "en": "Kong Yen Sushi Soy Sauce", "spec": "200ml", "price": 2.45, "unit": "/瓶 bottle", "img": "img/nw_jp_2_05.jpg"},
  {"c": "jpcook", "zh": "Blue Ville 寿司姜片", "en": "Blue Ville Pickled Sushi Ginger", "spec": "340g", "price": 2.09, "unit": "/瓶 jar", "img": "img/nw_jp_2_06.jpg"},
  {"c": "jpcook", "zh": "工研味醂", "en": "Kong Yen Mirin", "spec": "300ml", "price": 2.49, "unit": "/瓶 bottle", "img": "img/jp_2_07.jpg"},
- {"c": "jpcook", "zh": "工研 Kong Yen 味醂", "en": "Kong Yen 工研 Mirin", "spec": "200ml", "price": 2.39, "unit": "/瓶 bottle", "img": "img/jp_2_08.jpg"},
+ {"c": "jpcook", "zh": "工研 Kong Yen 味醂", "en": "Kong Yen 工研 Mirin", "spec": "200ml", "price": 2.39, "unit": "/瓶 bottle", "img": "img/jp_2_08.jpg", "arr": "27/11/2026"},
  {"c": "jpcook", "zh": "岛屋高汤粉", "en": "Shimaya Dashi Powder", "spec": "40g", "price": 2.59, "unit": "/盒 box", "img": "img/nw_shimaya_dashi.jpg"},
  {"c": "jpcook", "zh": "竹制寿司卷帘", "en": "Bamboo Sushi Mat", "price": 0.99, "unit": "/张 each", "img": "img/nw_jp_2_10.jpg"},
  {"c": "jpcook", "zh": "味之素鲣鱼高汤粉", "en": "Ajinomoto Hondashi", "spec": "40g", "price": 2.99, "unit": "/包 pack", "img": "img/nw_jp_2_11.jpg"},
