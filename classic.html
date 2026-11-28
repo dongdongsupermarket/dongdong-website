@@ -2619,7 +2619,7 @@ function dealText(d){
   if(d.type==="nfor")return [d.tiers.map(t=>`${t.n} 个 ${money(t.price)}`).join("、"),d.tiers.map(t=>`${t.n} for ${money(t.price)}`).join(", ")];
   if(d.type==="bxgy")return [`买${CN_NUM[d.buy]||d.buy}送${CN_NUM[d.free]||d.free}`,`Buy ${d.buy} get ${d.free} free`];
   if(d.type==="half")return ["第二件半价","Second one half price"];
-  if(d.type==="pct"){const r=100-d.off,zk=r%10===0?r/10:r;return [`任选 ${d.min} 件 ${zk} 折`,`${d.off}% off any ${d.min}+`];}
+  if(d.type==="pct"){const r=100-d.off,zk=r%10===0?r/10:r;return d.group?[`任选 ${d.min} 件 ${zk} 折`,`${d.off}% off any ${d.min}+`]:[`买 ${d.min} 件以上 ${zk} 折`,`Buy ${d.min}+ save ${d.off}%`];}
   return ["",""];}
 function dealLine(p){if(!hasDeal(p))return "";const [z,e]=dealText(p.deal);
   return `<div class="dealline">${B(z,e)}${p.deal.group?`<span class="mix">${B("同类可混搭","Mix & match")}</span>`:""}</div>`;}
